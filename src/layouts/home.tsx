@@ -42,6 +42,12 @@ export default function HomeLayout() {
           {_eachSide("Dashboard", "", IC.dashboard, IC.dashboard_)}
           {_eachSide("Users", "users", IC.users, IC.users_)}
           {_eachSide("Validator", "validator", IC.validator, IC.validator_)}
+          {_eachSide(
+            "Withdraw Request",
+            "withdraw-requests",
+            IC.withdraw,
+            IC.withdraw_
+          )}
         </div>
         <div className="w-[80%]">
           <Logout />
@@ -57,9 +63,10 @@ export default function HomeLayout() {
             {pathname === `/` && "Dashboard"}
             {pathname === `/users` && "Users"}
             {pathname === `/validator` && "Validators"}
+            {pathname === `/withdraw-requests` && "Withdraw Requests"}
           </div>
         </div>
-        <div className="h-[calc(100vh-88px)] overflow-auto">
+        <div className="h-[calc(100vh-88px)] overflow-auto bg-gradient-to-b from-[#101B2D] via-[#101B2D] to-[#182842]">
           <Outlet />
         </div>
       </div>

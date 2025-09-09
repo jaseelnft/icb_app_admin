@@ -1,3 +1,3 @@
 export default function ValidatorsPage() {
-  return <div>ValidatorsPage</div>;
+  return <div className="p-8"></div>;
 }

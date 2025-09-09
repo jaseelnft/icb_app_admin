@@ -6,6 +6,7 @@ import UsersPage from "./pages/users";
 import ValidatorsPage from "./pages/validators";
 import LoginPage from "./pages/auth/login";
 import OTPPage from "./pages/auth/otp";
+import WithdrawalPage from "./pages/withdrawel";
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
         <Route path="/" element={<HomeLayout />}>
           <Route path="" element={<DashboardPage />} />
           <Route path="users" element={<UsersPage />} />
-          <Route path="validators" element={<ValidatorsPage />} />
+          <Route path="validator" element={<ValidatorsPage />} />
+          <Route path="withdraw-requests" element={<WithdrawalPage  />} />
           <Route path="*" element={<DashboardPage />} />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
