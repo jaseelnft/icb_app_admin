@@ -4,13 +4,7 @@ import { showErrorToast } from "./toast";
 export const APP_VERSION = "0.0.1";
 document.title = "Admin | ICB Network App " + APP_VERSION;
 
-var BASE_URL = "https://dapps-api.icb.network";
-// var BASE_URL = "https://app-backend.nftzeus.io";
-
-if (import.meta.env.MODE === "development") {
-  // BASE_URL = "https://app-backend.nftzeus.io";
-  BASE_URL = "http://localhost:7022";
-}
+var BASE_URL = import.meta.env.VITE_BASE_URL || "https://dapps-api.icb.network";
 
 const api = axios.create({
   baseURL: BASE_URL,
