@@ -66,7 +66,7 @@ export default function HomeLayout() {
             {pathname === `/withdraw-requests` && "Withdraw Requests"}
           </div>
         </div>
-        <div className="h-[calc(100vh-88px)] overflow-auto bg-gradient-to-b from-[#101B2D] via-[#101B2D] to-[#182842]">
+        <div className="h-[calc(100vh-88px)] overflow-auto bg-gradient-to-b from-[#101B2D] via-[#142442] to-[#101B2D]">
           <Outlet />
         </div>
       </div>

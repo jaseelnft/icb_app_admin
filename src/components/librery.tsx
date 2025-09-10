@@ -13,6 +13,11 @@ import ICdoller from "../assets/icons/ICdoller.svg";
 import ICtxn from "../assets/icons/ICtxn.svg";
 import ICusers1 from "../assets/icons/ICusers1.svg";
 import ICpending from "../assets/icons/ICpending.svg";
+import ICcalender from "../assets/icons/ICcalender.svg";
+import IClens from "../assets/icons/IClens.svg";
+import ICeye from "../assets/icons/ICeye.svg";
+import ICdone from "../assets/icons/ICdone.svg";
+import ICcloseRed from "../assets/icons/ICcloseRed.svg";
 
 import BGlogin from "../assets/images/BGlogin.webp";
 import BGlogin2 from "../assets/images/BGlogin2.webp";
@@ -23,8 +28,6 @@ import BGp from "../assets/images/BGp.svg";
 
 import LOGOapp from "../assets/logos/LOGOnetwork.svg";
 import LOGOappfull from "../assets/logos/LOGOnetwork_.svg";
-
-export { BGlogin };
 
 export class IC {
   static dashboard = ICdashboard;
@@ -44,6 +47,11 @@ export class IC {
   static txn = ICtxn;
   static users1 = ICusers1;
   static pending = ICpending;
+  static calender = ICcalender;
+  static lens = IClens;
+  static eye = ICeye;
+  static done = ICdone;
+  static closeRed = ICcloseRed;
 }
 
 export class BG {

@@ -17,7 +17,14 @@ export async function getUsers(page_: number): Promise<any> {
   return { total, page, data: res.data };
 }
 
-export async function getWithdrawal(): Promise<any> {
-  const res = await api.get("api/admin/withdrawal");
+export async function getValidators(): Promise<any> {
+  const res = await api.get("api/admin/validators");
   return res.data;
+}
+
+export async function getWithdrawal(page_: number): Promise<any> {
+  const res = await api.get("api/admin/withdrawal?page=" + page_);
+  const total = Number(res.headers["x-total"]);
+  const page = Number(res.headers["x-page"]);
+  return { total, page, data: res.data };
 }
