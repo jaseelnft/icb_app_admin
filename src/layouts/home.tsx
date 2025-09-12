@@ -4,16 +4,18 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Popup1 } from "./popup";
 import { APP_VERSION } from "../services/axios";
 import { getDetails } from "../services/dashboard";
+import LoadingPage from "../components/loadingPage";
 
 export default function HomeLayout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [busy, setbusy] = useState(true);
 
   useEffect(() => {
     getDetails()
       .then(() => {})
       .catch(() => {})
-      .finally(() => {});
+      .finally(() => setbusy(false));
   }, []);
 
   const _eachSide = (title: string, value: string, i1: string, i2: string) => {
@@ -31,6 +33,8 @@ export default function HomeLayout() {
       </div>
     );
   };
+
+  if (busy) return <LoadingPage />;
 
   return (
     <div className="flex w-full h-[100vh]">

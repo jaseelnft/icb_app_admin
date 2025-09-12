@@ -8,12 +8,13 @@ export default function UsersPage() {
   const [users, setusers] = useState([]);
   const [page, setpage] = useState(1);
   const [total, settotal] = useState(0);
+  const [search, setsearch] = useState("");
 
-  useEffect(() => _loadUsers(1), []);
+  useEffect(() => _loadDatas(1, ""), []);
 
-  const _loadUsers = (page_: number) => {
+  const _loadDatas = (page_: number, search_: string) => {
     setbusy(true);
-    getUsers(page_)
+    getUsers(page_, search_)
       .then((res) => {
         setusers(res.data);
         setpage(res.page);
@@ -23,14 +24,22 @@ export default function UsersPage() {
       .finally(() => setbusy(false));
   };
 
+  const _search = (e: any) => {
+    const value = e.target.value;
+    setsearch(value);
+    if (value.length > 2) _loadDatas(1, value);
+    else if (value.length === 0) _loadDatas(1, "");
+  };
+
   const elSt =
     "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 ";
 
   return (
     <div className="p-8">
       <div className="flex justify-between">
-        <div className="text-[#4F8FE1] font-bold text-xl">
-          Platform Users (10)
+        <div className="text-xl">
+          <span className="text-[#4F8FE1] font-bold ">Platform Users</span> (
+          {total})
         </div>
       </div>
       <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px]">
@@ -39,14 +48,14 @@ export default function UsersPage() {
             placeholder="Search by User, Email, or Wallet Address"
             className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
             style={{ backgroundImage: `url('${IC.lens}')` }}
-            id="search"
+            onChange={_search}
           />
-          <select
+          {/* <select
             className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
             id="search"
           >
             <option>All Status</option>
-          </select>
+          </select> */}
         </div>
         <div className="flex text-[14px] px-2">
           <div className="min-w-16" />
@@ -96,14 +105,14 @@ export default function UsersPage() {
           <div className="flex border border-[#16263B] rounded-[8px]">
             <div
               className="cursor-pointer py-2 px-4 border-r-1 border-[#16263B]"
-              onClick={() => (page > 1 ? _loadUsers(page - 1) : null)}
+              onClick={() => (page > 1 ? _loadDatas(page - 1, search) : null)}
             >
               Previous
             </div>
             {Array.from({ length: Math.ceil(total / 10) }, (_, i) => i + 1).map(
               (it, k) => (
                 <div
-                  onClick={() => _loadUsers(it)}
+                  onClick={() => _loadDatas(it, search)}
                   className={
                     "cursor-pointer p-2 min-w-9 border-r-1 border-[#16263B] text-center" +
                     (page === it ? " bg-[#256DC9] text-white" : "")
@@ -118,7 +127,9 @@ export default function UsersPage() {
             <div
               className="cursor-pointer py-2 px-4"
               onClick={() =>
-                page < Math.ceil(total / 10) ? _loadUsers(page + 1) : null
+                page < Math.ceil(total / 10)
+                  ? _loadDatas(page + 1, search)
+                  : null
               }
             >
               Next

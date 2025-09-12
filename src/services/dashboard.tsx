@@ -10,21 +10,40 @@ export async function getStatistics(): Promise<any> {
   return res.data;
 }
 
-export async function getUsers(page_: number): Promise<any> {
-  const res = await api.get("api/admin/users?page=" + page_);
+export async function getUsers(p: number, s: string): Promise<any> {
+  const res = await api.get(`api/admin/users?page=${p}&search=${s}`);
   const total = Number(res.headers["x-total"]);
   const page = Number(res.headers["x-page"]);
   return { total, page, data: res.data };
 }
 
-export async function getValidators(): Promise<any> {
-  const res = await api.get("api/admin/validators");
+export async function getWithdrawal(
+  page_: number,
+  status: string
+): Promise<any> {
+  const res = await api.get(
+    `api/admin/withdrawal?page=${page_}&status=${status}`
+  );
+  const total = Number(res.headers["x-total"]);
+  const page = Number(res.headers["x-page"]);
+  return { total, page, data: res.data };
+}
+
+export async function aproveWithdraw(
+  id: string,
+  hash: string,
+  note: string
+): Promise<any> {
+  const res = await api.patch(`api/admin/withdrawal/${id}/accept`, {
+    hash,
+    note,
+  });
   return res.data;
 }
 
-export async function getWithdrawal(page_: number): Promise<any> {
-  const res = await api.get("api/admin/withdrawal?page=" + page_);
-  const total = Number(res.headers["x-total"]);
-  const page = Number(res.headers["x-page"]);
-  return { total, page, data: res.data };
+export async function rejectWithdraw(id: string, note: string): Promise<any> {
+  const res = await api.patch(`api/admin/withdrawal/${id}/reject`, {
+    note,
+  });
+  return res.data;
 }

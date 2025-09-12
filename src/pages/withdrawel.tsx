@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
-import { getWithdrawal } from "../services/dashboard";
+import {
+  aproveWithdraw,
+  getWithdrawal,
+  rejectWithdraw,
+} from "../services/dashboard";
 import { AddressT } from "../widgets/ethers";
 import { formatDate, formatEther } from "../services/simple";
 import { IC } from "../components/librery";
+import { Popup1 } from "../layouts/popup";
+import { showErrorToast } from "../services/toast";
 
 export default function WithdrawalPage() {
   const [busy, setbusy] = useState(true);
   const [datas, setdatas] = useState([]);
   const [page, setpage] = useState(1);
   const [total, settotal] = useState(0);
+  const [status, setstatus] = useState("");
 
   useEffect(() => _loadDatas(1), []);
 
-  const _loadDatas = (page_: number) => {
+  const _loadDatas = (page_: number, status_?: string) => {
     setbusy(true);
-    getWithdrawal(page_)
+    getWithdrawal(page_, status_ ?? status)
       .then((res) => {
         setdatas(res.data);
         setpage(res.page);
@@ -24,30 +31,36 @@ export default function WithdrawalPage() {
       .finally(() => setbusy(false));
   };
 
+  const _onFilterStatus = (e: any) => {
+    setstatus(e.target.value);
+    _loadDatas(1, e.target.value);
+  };
+
   const elSt =
     "px-4 py-3 flex items-center border-r border-[#16263B] last:border-0 ";
 
   const _status = (status: string) => {
-    let bg = "#00B6761A";
-    let c = "#00B676";
+    let s1 =
+      "bg-[#00B6761A] px-2 py-1 rounded-[4px] text-xs text-[#00B676] font-[600] flex items-center gap-1";
+    let s2 = "w-2 h-2 bg-[#00B676] rounded-[4px] mt-[1px]";
     if (status === "succes") {
       status = "Aproved";
     } else if (status === "rejected") {
       status = "Rejected";
-      bg = "#DF3A451A";
-      c = "#DF3A45";
+      s1 =
+        "bg-[#DF3A451A] px-2 py-1 rounded-[4px] text-xs text-[#DF3A45] font-[600] flex items-center gap-1";
+      s2 = "w-2 h-2 bg-[#DF3A45] rounded-[4px] mt-[1px]";
     } else if (status === "pending") {
       status = "Pending";
-      bg = "#F17F1B1A";
-      c = "#F1941B";
+      s1 =
+        "bg-[#F17F1B1A] px-2 py-1 rounded-[4px] text-xs text-[#F1941B] font-[600] flex items-center gap-1";
+      s2 = "w-2 h-2 bg-[#F1941B] rounded-[4px] mt-[1px]";
     }
 
     return (
       <div className={elSt + "w-[18%]"}>
-        <div
-          className={`bg-[${bg}] px-2 py-1 rounded-[4px] text-xs text-[${c}] font-[600] flex items-center gap-1"`}
-        >
-          <div className={`w-2 h-2 bg-[${c}] rounded-[4px] mt-[1px]`} />
+        <div className={s1}>
+          <div className={s2} />
           {status}
         </div>
       </div>
@@ -64,25 +77,25 @@ export default function WithdrawalPage() {
       </div>
       <div className="bg-[#010513] border-[1.5px] border-[#010513] mt-6 rounded-[16px] shadow-[0_0_8px_0_#4F8FE129] overflow-hidden">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          <input
+          {/* <input
             placeholder="Search by Name, Email, or Wallet Address"
             className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
             style={{ backgroundImage: `url('${IC.lens}')` }}
-            id="search"
-          />
+            onChange={_search}
+          /> */}
           <select
             className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
-            id="search"
+            onChange={_onFilterStatus}
+            value={status}
           >
-            <option>All Requiest</option>
-            <option>Approved</option>
-            <option>Pending</option>
-            <option>Rejected</option>
+            <option value="">All Requiest</option>
+            <option value="succes">Approved</option>
+            <option value="pending">Pending</option>
+            <option value="rejected">Rejected</option>
           </select>
-          <select
+          {/* <select
             className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
-            id="search"
-          ></select>
+          ></select> */}
         </div>
         <div className="flex text-[14px] px-1">
           <div className={elSt + "py-5 w-[30%]"}>User</div>
@@ -140,10 +153,10 @@ export default function WithdrawalPage() {
             {_status(_it.status)}
             <div className={elSt + "w-[20%] gap-2"}>
               <div className="bg-[#00B6761A] border border-[#00B6761A] w-8 h-8 rounded cursor-pointer flex">
-                <img src={IC.done} className="min-w-2 min-h-2 p-1" />
+                <AproveBtn it={_it} done={() => _loadDatas(page)} />
               </div>
               <div className="bg-[#F93C651A] border border-[#F93C654D] w-8 h-8 rounded cursor-pointer flex">
-                <img src={IC.closeRed} className="min-w-2 min-h-2 p-1" />
+                <RejectBtn it={_it} done={() => _loadDatas(page)} />
               </div>
             </div>
           </div>
@@ -187,5 +200,122 @@ export default function WithdrawalPage() {
         )}
       </div>
     </div>
+  );
+}
+
+function AproveBtn({ it, done }: any) {
+  const [on, seton] = useState(false);
+  const [busy, setbusy] = useState(false);
+  const [hash, sethash] = useState("");
+
+  const _confirm = async () => {
+    if (hash === "") return showErrorToast("Enter hash");
+    setbusy(true);
+    await aproveWithdraw(it._id, hash, "")
+      .then(() => {
+        seton(false);
+        done();
+      })
+      .catch(() => {})
+      .finally(() => setbusy(false));
+  };
+
+  return (
+    <>
+      <img
+        src={IC.done}
+        className="min-w-2 min-h-2 p-1 cursor-pointer"
+        onClick={() => seton(true)}
+      />
+      <Popup1
+        selected={on}
+        className="p-8 max-w-[540px] w-full"
+        close={() => seton(false)}
+      >
+        <img src={IC.succes} className="w-25" />
+        <div className="text-[24px] mt-5 mb-7 font-[600]">
+          Approve Withdrawal Request
+        </div>
+        <div className="text-[#C7CCD2] mb-2">
+          Transaction Hash <span className="text-[#DF3A45]">*</span>
+        </div>
+        <input
+          placeholder="Enter Txn Hash"
+          className="border border-[#16263B] bg-[#0F1626] rounded-[8px] py-3 px-5 w-full"
+          value={hash}
+          onChange={(e) => sethash(e.target.value)}
+        />
+        <div className="flex gap-4 mt-12">
+          <button className="btn2 w-full" onClick={() => seton(false)}>
+            Cancel
+          </button>
+          <button
+            className={"btn1 w-full" + (busy ? " busybtn" : "")}
+            onClick={_confirm}
+          >
+            Confirm & Approve
+          </button>
+        </div>
+      </Popup1>
+    </>
+  );
+}
+
+function RejectBtn({ it, done }: any) {
+  const [on, seton] = useState(false);
+  const [busy, setbusy] = useState(false);
+  const [note, setnote] = useState("");
+
+  const _rejects = async () => {
+    setbusy(true);
+    await rejectWithdraw(it._id, note)
+      .then(() => {
+        seton(false);
+        done();
+      })
+      .catch(() => {})
+      .finally(() => setbusy(false));
+  };
+
+  return (
+    <>
+      <img
+        src={IC.closeRed}
+        className="min-w-2 min-h-2 p-1 cursor-pointer"
+        onClick={() => seton(true)}
+      />
+      <Popup1
+        selected={on}
+        className="p-8 max-w-[540px] w-full"
+        close={() => seton(false)}
+      >
+        <img src={IC.error} className="w-25" />
+        <div className="text-[24px] mt-5 mb-2 font-[600]">
+          Reject Withdrawal Request
+        </div>
+        <div>
+          Are you sure you want to reject this withdrawal request? This action
+          cannot be undone.
+        </div>
+        <div className="text-[#C7CCD2] mt-8 mb-2">Note</div>
+        <input
+          placeholder="Enter reason"
+          className="border border-[#16263B] bg-[#0F1626] rounded-[8px] py-3 px-5 w-full"
+          value={note}
+          onChange={(e) => setnote(e.target.value)}
+        />
+        <div className="flex gap-4 mt-12">
+          <button className="btn2 w-full" onClick={() => seton(false)}>
+            Cancel
+          </button>
+          <button
+            className={"btn1 red w-full" + (busy ? " busybtn" : "")}
+            onClick={_rejects}
+          >
+            Reject Request
+          </button>
+        </div>
+      </Popup1>
+    </>
   );
 }

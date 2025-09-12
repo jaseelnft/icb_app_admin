@@ -16,8 +16,14 @@ import ICpending from "../assets/icons/ICpending.svg";
 import ICcalender from "../assets/icons/ICcalender.svg";
 import IClens from "../assets/icons/IClens.svg";
 import ICeye from "../assets/icons/ICeye.svg";
+import ICeyeWhite from "../assets/icons/ICeyeWhite.svg";
 import ICdone from "../assets/icons/ICdone.svg";
 import ICcloseRed from "../assets/icons/ICcloseRed.svg";
+import ICedit from "../assets/icons/ICedit.svg";
+import ICsucces from "../assets/icons/ICsucces.svg";
+import ICerror from "../assets/icons/ICerror.svg";
+import ICusersWhite from "../assets/icons/ICusersWhite.svg";
+import ICplus from "../assets/icons/ICplus.svg";
 
 import BGlogin from "../assets/images/BGlogin.webp";
 import BGlogin2 from "../assets/images/BGlogin2.webp";
@@ -50,8 +56,14 @@ export class IC {
   static calender = ICcalender;
   static lens = IClens;
   static eye = ICeye;
+  static eyeWhite = ICeyeWhite;
   static done = ICdone;
   static closeRed = ICcloseRed;
+  static edit = ICedit;
+  static succes = ICsucces;
+  static error = ICerror;
+  static usersWhite = ICusersWhite;
+  static plus = ICplus;
 }
 
 export class BG {

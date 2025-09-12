@@ -16,7 +16,7 @@ function App() {
           <Route path="" element={<DashboardPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="validator" element={<ValidatorsPage />} />
-          <Route path="withdraw-requests" element={<WithdrawalPage  />} />
+          <Route path="withdraw-requests" element={<WithdrawalPage />} />
           <Route path="*" element={<DashboardPage />} />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
