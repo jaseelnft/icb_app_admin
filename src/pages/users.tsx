@@ -61,7 +61,7 @@ export default function UsersPage() {
           <div className="min-w-16" />
           <div className={elSt + "py-5 w-[40%]"}>User</div>
           <div className={elSt + "py-5 w-[34%]"}>Wallet Address</div>
-          <div className={elSt + "py-5 w-[26%]"}>Total Invested</div>
+          <div className={elSt + "py-5 w-[26%]"}>PICBX Balance</div>
           <div className={elSt + "py-5 w-[26%]"}>ICBX Balance</div>
           <div className={elSt + "py-5 w-[20%]"}>Action</div>
         </div>
@@ -88,9 +88,9 @@ export default function UsersPage() {
             />
 
             <div className={elSt + "w-[26%] text-[#A5A7AA] text-sm"}>
-              103,756.56 ICBX
+              0.00 ICBX
             </div>
-            <div className={elSt + "w-[26%] text-sm"}>103,756.56 ICBX</div>
+            <div className={elSt + "w-[26%] text-sm"}>0.00 ICBX</div>
 
             <div className={elSt + "w-[20%]"}>
               <div className="bg-[#4F8FE11A] border border-[#4F8FE14D] w-8 h-8 rounded cursor-pointer flex">

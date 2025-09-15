@@ -7,6 +7,13 @@ import ICvalidator from "../assets/icons/ICvalidator.svg";
 import ICvalidator_ from "../assets/icons/ICvalidator_.svg";
 import ICwithdraw from "../assets/icons/ICwithdraw.svg";
 import ICwithdraw_ from "../assets/icons/ICwithdraw_.svg";
+import ICgear from "../assets/icons/ICgear.svg";
+import ICgear_ from "../assets/icons/ICgear_.svg";
+import ICtrophy from "../assets/icons/ICtrophy.svg";
+import ICtrophy_ from "../assets/icons/ICtrophy_.svg";
+import ICcard from "../assets/icons/ICcard.svg";
+import ICcard_ from "../assets/icons/ICcard_.svg";
+
 import IClogout from "../assets/icons/IClogout.svg";
 import IClogout1 from "../assets/icons/IClogout1.svg";
 import ICdoller from "../assets/icons/ICdoller.svg";
@@ -44,6 +51,12 @@ export class IC {
   static validator_ = ICvalidator_;
   static withdraw = ICwithdraw;
   static withdraw_ = ICwithdraw_;
+  static gear = ICgear;
+  static gear_ = ICgear_;
+  static trophy = ICtrophy;
+  static trophy_ = ICtrophy_;
+  static card = ICcard;
+  static card_ = ICcard_;
 
   static close = ICclose;
   static logout = IClogout;

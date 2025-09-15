@@ -43,6 +43,7 @@ export default function HomeLayout() {
           <img src={Logo.appFull} className="h-15" />
           <div className="bg-gradient-to-r from-[#101B2D] to-[#182842]" />
           <div className="h-[2px] w-full bg-gradient-to-r from-[#011022] via-[#3D6FAE] to-[#011022] mt-5 mb-8"></div>
+          <div className="text-[11px] text-[#C7CCD2] px-3 font-[600]">MAIN</div>
           {_eachSide("Dashboard", "", IC.dashboard, IC.dashboard_)}
           {_eachSide("Users", "users", IC.users, IC.users_)}
           {_eachSide("Validator", "validator", IC.validator, IC.validator_)}
@@ -52,6 +53,13 @@ export default function HomeLayout() {
             IC.withdraw,
             IC.withdraw_
           )}
+          {_eachSide("Reward Logs", "reward-logs", IC.trophy, IC.trophy_)}
+          {_eachSide("Transactions", "transactions", IC.card, IC.card_)}
+          <div className="bg-[#16263B] h-[2px] my-6" />
+          <div className="text-[11px] text-[#C7CCD2] px-3 font-[600]">
+            SETTINGS
+          </div>
+          {_eachSide("App Settings", "app-settings", IC.gear, IC.gear_)}
         </div>
         <div className="w-[80%]">
           <Logout />
@@ -68,6 +76,9 @@ export default function HomeLayout() {
             {pathname === `/users` && "Users"}
             {pathname === `/validator` && "Validators"}
             {pathname === `/withdraw-requests` && "Withdraw Requests"}
+            {pathname === `/reward-logs` && "Reward Logs"}
+            {pathname === `/transactions` && "Transactions"}
+            {pathname === `/app-settings` && "App Settings"}
           </div>
         </div>
         <div className="h-[calc(100vh-88px)] overflow-auto bg-gradient-to-b from-[#101B2D] via-[#142442] to-[#101B2D]">

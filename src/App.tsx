@@ -7,6 +7,9 @@ import ValidatorsPage from "./pages/validators";
 import LoginPage from "./pages/auth/login";
 import OTPPage from "./pages/auth/otp";
 import WithdrawalPage from "./pages/withdrawel";
+import RewardLogsPage from "./pages/reward-logs";
+import TransactionsPage from "./pages/transactions";
+import AppSettingsPage from "./pages/app-settings";
 
 function App() {
   return (
@@ -17,6 +20,9 @@ function App() {
           <Route path="users" element={<UsersPage />} />
           <Route path="validator" element={<ValidatorsPage />} />
           <Route path="withdraw-requests" element={<WithdrawalPage />} />
+          <Route path="reward-logs" element={<RewardLogsPage />} />
+          <Route path="transactions" element={<TransactionsPage />} />
+          <Route path="app-settings" element={<AppSettingsPage />} />
           <Route path="*" element={<DashboardPage />} />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
