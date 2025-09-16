@@ -47,3 +47,15 @@ export async function rejectWithdraw(id: string, note: string): Promise<any> {
   });
   return res.data;
 }
+
+export async function updateRewardBalance(): Promise<any> {
+  const res = await api.get("api/admin/rewards/update-history");
+  return res.data;
+}
+
+export async function getTxns(_p: number, _s: string): Promise<any> {
+  const res = await api.get(`api/admin/txns?page=${_p}&search=${_s}`);
+  const total = Number(res.headers["x-total"]);
+  const page = Number(res.headers["x-page"]);
+  return { total, page, data: res.data };
+}

@@ -6,13 +6,15 @@ export function AddressT({
   address,
   style,
   iconSize = 28,
+  showEmpty,
 }: {
   className?: string;
   style?: React.CSSProperties | undefined;
   address: string;
   iconSize?: number | string;
+  showEmpty?: boolean;
 }) {
-  if (!address) return "";
+  if (!address) return showEmpty ? <div>---</div> : "";
 
   return (
     <div

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getUsers } from "../services/dashboard";
 import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { IC } from "../components/librery";
+import { gatEthBalance, haveKYCNFT, weiToICBX } from "../services/ethers";
 
 export default function UsersPage() {
   const [busy, setbusy] = useState(true);
@@ -15,7 +16,11 @@ export default function UsersPage() {
   const _loadDatas = (page_: number, search_: string) => {
     setbusy(true);
     getUsers(page_, search_)
-      .then((res) => {
+      .then(async (res) => {
+        for (let it of res.data) {
+          it.icbx = await gatEthBalance(it.walletAddress);
+          it.haveKYC = await haveKYCNFT(it.walletAddress);
+        }
         setusers(res.data);
         setpage(res.page);
         settotal(res.total);
@@ -42,7 +47,7 @@ export default function UsersPage() {
           {total})
         </div>
       </div>
-      <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px]">
+      <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-hidden">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
           <input
             placeholder="Search by User, Email, or Wallet Address"
@@ -61,8 +66,8 @@ export default function UsersPage() {
           <div className="min-w-16" />
           <div className={elSt + "py-5 w-[40%]"}>User</div>
           <div className={elSt + "py-5 w-[34%]"}>Wallet Address</div>
-          <div className={elSt + "py-5 w-[26%]"}>PICBX Balance</div>
-          <div className={elSt + "py-5 w-[26%]"}>ICBX Balance</div>
+          <div className={elSt + "py-5 w-[26%] justify-end"}>PICBX Balance</div>
+          <div className={elSt + "py-5 w-[26%] justify-end"}>ICBX Balance</div>
           <div className={elSt + "py-5 w-[20%]"}>Action</div>
         </div>
         {busy && <div className="text-center text-sm p-4">Loading...</div>}
@@ -87,10 +92,27 @@ export default function UsersPage() {
               className={elSt + "w-[34%] text-[#B3BDCB] text-sm"}
             />
 
-            <div className={elSt + "w-[26%] text-[#A5A7AA] text-sm"}>
-              0.00 ICBX
+            <div
+              className={
+                elSt + "w-[26%] text-[#A5A7AA] text-sm text-right justify-end"
+              }
+            >
+              {weiToICBX(_it.totalBalance ?? "0")} ICBX
             </div>
-            <div className={elSt + "w-[26%] text-sm"}>0.00 ICBX</div>
+            <div className={elSt + "w-[26%] text-sm items-end flex-col"}>
+              {weiToICBX(_it.icbx ?? "0")} ICBX
+              {_it.haveICBKYC ? (
+                <div className="flex gap-2 items-center text-[green]">
+                  <div className="w-2 h-2 rounded-[4px] bg-[green]" />
+                  KYC Verifide
+                </div>
+              ) : (
+                <div className="flex gap-2 items-center text-[red]">
+                  <div className="w-2 h-2 rounded-[4px] bg-[red]" />
+                  KYC Not Verifide
+                </div>
+              )}
+            </div>
 
             <div className={elSt + "w-[20%]"}>
               <div className="bg-[#4F8FE11A] border border-[#4F8FE14D] w-8 h-8 rounded cursor-pointer flex">

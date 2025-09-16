@@ -10,8 +10,21 @@ import WithdrawalPage from "./pages/withdrawel";
 import RewardLogsPage from "./pages/reward-logs";
 import TransactionsPage from "./pages/transactions";
 import AppSettingsPage from "./pages/app-settings";
+import LoadingPage from "./components/loadingPage";
+import { useEffect, useState } from "react";
+import { setBasicConfig } from "./services/axios";
 
 function App() {
+  const [busy, setbusy] = useState(true);
+
+  useEffect(() => {
+    setBasicConfig().then(() => {
+      setbusy(false);
+    });
+  }, []);
+
+  if (busy) return <LoadingPage />;
+
   return (
     <BrowserRouter>
       <Routes>

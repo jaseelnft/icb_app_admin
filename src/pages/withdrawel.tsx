@@ -9,6 +9,7 @@ import { formatDate, formatEther } from "../services/simple";
 import { IC } from "../components/librery";
 import { Popup1 } from "../layouts/popup";
 import { showErrorToast } from "../services/toast";
+import { StatusTags } from "../widgets/tags";
 
 export default function WithdrawalPage() {
   const [busy, setbusy] = useState(true);
@@ -38,34 +39,6 @@ export default function WithdrawalPage() {
 
   const elSt =
     "px-4 py-3 flex items-center border-r border-[#16263B] last:border-0 ";
-
-  const _status = (status: string) => {
-    let s1 =
-      "bg-[#00B6761A] px-2 py-1 rounded-[4px] text-xs text-[#00B676] font-[600] flex items-center gap-1";
-    let s2 = "w-2 h-2 bg-[#00B676] rounded-[4px] mt-[1px]";
-    if (status === "succes") {
-      status = "Aproved";
-    } else if (status === "rejected") {
-      status = "Rejected";
-      s1 =
-        "bg-[#DF3A451A] px-2 py-1 rounded-[4px] text-xs text-[#DF3A45] font-[600] flex items-center gap-1";
-      s2 = "w-2 h-2 bg-[#DF3A45] rounded-[4px] mt-[1px]";
-    } else if (status === "pending") {
-      status = "Pending";
-      s1 =
-        "bg-[#F17F1B1A] px-2 py-1 rounded-[4px] text-xs text-[#F1941B] font-[600] flex items-center gap-1";
-      s2 = "w-2 h-2 bg-[#F1941B] rounded-[4px] mt-[1px]";
-    }
-
-    return (
-      <div className={elSt + "w-[18%]"}>
-        <div className={s1}>
-          <div className={s2} />
-          {status}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="p-8">
@@ -150,14 +123,20 @@ export default function WithdrawalPage() {
                 className="text-[#B3BDCB] text-sm"
               />
             </div>
-            {_status(_it.status)}
+            <div className={elSt + "w-[18%]"}>
+              <StatusTags status={_it.status} />
+            </div>
             <div className={elSt + "w-[20%] gap-2"}>
-              <div className="bg-[#00B6761A] border border-[#00B6761A] w-8 h-8 rounded cursor-pointer flex">
-                <AproveBtn it={_it} done={() => _loadDatas(page)} />
-              </div>
-              <div className="bg-[#F93C651A] border border-[#F93C654D] w-8 h-8 rounded cursor-pointer flex">
-                <RejectBtn it={_it} done={() => _loadDatas(page)} />
-              </div>
+              {_it.status === "pending" && (
+                <div className="bg-[#00B6761A] border border-[#00B6761A] w-8 h-8 rounded cursor-pointer flex">
+                  <AproveBtn it={_it} done={() => _loadDatas(page)} />
+                </div>
+              )}
+              {_it.status === "pending" && (
+                <div className="bg-[#F93C651A] border border-[#F93C654D] w-8 h-8 rounded cursor-pointer flex">
+                  <RejectBtn it={_it} done={() => _loadDatas(page)} />
+                </div>
+              )}
             </div>
           </div>
         ))}
