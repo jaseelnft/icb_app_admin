@@ -85,9 +85,9 @@ export default function WithdrawalPage() {
         {datas.map((_it: any, k) => (
           <div className="flex odd:bg-[#0a101d] px-1" key={k}>
             <div className={elSt + "flex-col gap-1 items-start w-[30%]"}>
-              <div>{_it?.userId?.username || "null"}</div>
+              <div>{_it?.userId?.name || "null"}</div>
               <AddressT
-                address={_it?.userId?.walletAddress}
+                address={_it?.userId?.address}
                 iconSize={20}
                 className="text-[#256DC9] text-sm"
               />

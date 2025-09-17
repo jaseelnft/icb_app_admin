@@ -74,15 +74,15 @@ export default function TransactionsPage() {
         {datas.map((_it: any, k) => (
           <div className="flex odd:bg-[#0a101d] px-2" key={k}>
             <div className="py-4 pl-4 min-w-16 flex justify-center">
-              <EthereumBlockie address={_it.userId?.walletAddress} size={36} />
+              <EthereumBlockie address={_it.userId?.address} size={36} />
             </div>
             <div className={elSt + "w-[30%]"}>
               <div>
-                <div>{_it.userId?.username || "null"}</div>
+                <div>{_it.userId?.name || "null"}</div>
                 <div className="text-[#256DC9] text-sm">
                   <AddressT
                     showEmpty
-                    address={_it.userId?.walletAddress}
+                    address={_it.userId?.address}
                     iconSize={20}
                   />
                 </div>

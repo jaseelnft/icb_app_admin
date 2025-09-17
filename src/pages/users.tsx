@@ -75,11 +75,11 @@ export default function UsersPage() {
         {users.map((_it: any, k) => (
           <div className="flex odd:bg-[#0a101d] px-2" key={k}>
             <div className="py-4 pl-4 min-w-16 flex justify-center">
-              <EthereumBlockie address={_it.walletAddress} size={36} />
+              <EthereumBlockie address={_it.address} size={36} />
             </div>
             <div className={elSt + "w-[40%]"}>
               <div>
-                <div>{_it.username || "null"}</div>
+                <div>{_it.name || "null"}</div>
                 <div className="text-[#256DC9] text-sm">
                   {_it.email || "null"}
                 </div>
@@ -87,7 +87,7 @@ export default function UsersPage() {
             </div>
 
             <AddressT
-              address={_it.walletAddress}
+              address={_it.address}
               iconSize={20}
               className={elSt + "w-[34%] text-[#B3BDCB] text-sm"}
             />
