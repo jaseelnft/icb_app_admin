@@ -18,8 +18,8 @@ export default function UsersPage() {
     getUsers(page_, search_)
       .then(async (res) => {
         for (let it of res.data) {
-          it.icbx = await gatEthBalance(it.walletAddress);
-          it.haveKYC = await haveKYCNFT(it.walletAddress);
+          it.icbx = await gatEthBalance(it.address);
+          it.haveKYC = await haveKYCNFT(it.address);
         }
         setusers(res.data);
         setpage(res.page);
