@@ -35,6 +35,10 @@ export const setBasicConfig = async () => {
     provider = new ethers.JsonRpcProvider(res.data.rpc);
     icbKycNFTContract = new ethers.Contract(res.data.icbkyc, abi, provider);
   });
+  if (!sessionStorage.getItem("statusId"))
+    api.get("api/app/admin/status").then((res) => {
+      sessionStorage.setItem("statusId", res.data.id);
+    });
 };
 
 const api = axios.create({
