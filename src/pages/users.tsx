@@ -107,7 +107,7 @@ export default function UsersPage() {
             {_it.done ? (
               <div className={elSt + "w-[26%] text-sm items-end flex-col"}>
                 {weiToICBX(_it.icbx ?? "0")} ICBX
-                {_it.haveICBKYC ? (
+                {_it.haveKYC ? (
                   <div className="flex gap-2 items-center text-[green]">
                     <div className="w-2 h-2 rounded-[4px] bg-[green]" />
                     KYC Verifide
