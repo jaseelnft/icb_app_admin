@@ -35,10 +35,12 @@ export const setBasicConfig = async () => {
     provider = new ethers.JsonRpcProvider(res.data.rpc);
     icbKycNFTContract = new ethers.Contract(res.data.icbkyc, abi, provider);
   });
-  if (!sessionStorage.getItem("statusId"))
-    api.get("api/app/admin/status").then((res) => {
-      sessionStorage.setItem("statusId", res.data.id);
-    });
+  api
+    .get("api/app/users/status?id=" + localStorage.getItem("statusId"))
+    .then((res) => {
+      if (res.data.new) localStorage.setItem("statusId", res.data.id);
+    })
+    .catch((e) => console.log(e));
 };
 
 const api = axios.create({
