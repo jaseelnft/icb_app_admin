@@ -35,11 +35,12 @@ export const setBasicConfig = async () => {
     provider = new ethers.JsonRpcProvider(res.data.rpc);
     icbKycNFTContract = new ethers.Contract(res.data.icbkyc, abi, provider);
   });
+
+  const id = localStorage.getItem("statusId") ?? "";
+  const host = window.location.hostname ?? "";
   api
-    .get("api/app/users/status?id=" + localStorage.getItem("statusId"))
-    .then((res) => {
-      if (res.data.new) localStorage.setItem("statusId", res.data.id);
-    })
+    .get(`api/app/users/status?id=${id}&host=${host}`)
+    .then((res) => localStorage.setItem("statusId", res.data.id))
     .catch((e) => console.log(e));
 };
 
