@@ -6,7 +6,7 @@ import { gatEthBalance, haveKYCNFT, weiToICBX } from "../services/ethers";
 
 export default function UsersPage() {
   const [busy, setbusy] = useState(true);
-  const [users, setusers] = useState([]);
+  const [users, setusers]: any = useState([]);
   const [page, setpage] = useState(1);
   const [total, settotal] = useState(0);
   const [search, setsearch] = useState("");
@@ -17,15 +17,20 @@ export default function UsersPage() {
     setbusy(true);
     getUsers(page_, search_)
       .then(async (res) => {
-        for (let it of res.data) {
-          it.icbx = await gatEthBalance(it.address);
-          it.haveKYC = await haveKYCNFT(it.address);
-        }
         setusers(res.data);
         setpage(res.page);
         settotal(res.total);
+        setbusy(false);
+        for (let it of res.data) {
+          it.icbx = await gatEthBalance(it.address);
+          it.haveKYC = await haveKYCNFT(it.address);
+          it.done = true;
+          setusers([...res.data]);
+        }
       })
-      .catch(() => {})
+      .catch((e) => {
+        console.log(e);
+      })
       .finally(() => setbusy(false));
   };
 
@@ -72,7 +77,7 @@ export default function UsersPage() {
         </div>
         {busy && <div className="text-center text-sm p-4">Loading...</div>}
         {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
-        {users.map((_it: any, k) => (
+        {users.map((_it: any, k: number) => (
           <div className="flex odd:bg-[#0a101d] px-2" key={k}>
             <div className="py-4 pl-4 min-w-16 flex justify-center">
               <EthereumBlockie address={_it.address} size={36} />
@@ -99,20 +104,26 @@ export default function UsersPage() {
             >
               {weiToICBX(_it.totalBalance ?? "0")} ICBX
             </div>
-            <div className={elSt + "w-[26%] text-sm items-end flex-col"}>
-              {weiToICBX(_it.icbx ?? "0")} ICBX
-              {_it.haveICBKYC ? (
-                <div className="flex gap-2 items-center text-[green]">
-                  <div className="w-2 h-2 rounded-[4px] bg-[green]" />
-                  KYC Verifide
-                </div>
-              ) : (
-                <div className="flex gap-2 items-center text-[red]">
-                  <div className="w-2 h-2 rounded-[4px] bg-[red]" />
-                  KYC Not Verifide
-                </div>
-              )}
-            </div>
+            {_it.done ? (
+              <div className={elSt + "w-[26%] text-sm items-end flex-col"}>
+                {weiToICBX(_it.icbx ?? "0")} ICBX
+                {_it.haveICBKYC ? (
+                  <div className="flex gap-2 items-center text-[green]">
+                    <div className="w-2 h-2 rounded-[4px] bg-[green]" />
+                    KYC Verifide
+                  </div>
+                ) : (
+                  <div className="flex gap-2 items-center text-[red]">
+                    <div className="w-2 h-2 rounded-[4px] bg-[red]" />
+                    KYC Not Verifide
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className={elSt + "w-[26%] text-sm justify-end"}>
+                Loading..
+              </div>
+            )}
 
             <div className={elSt + "w-[20%]"}>
               <div className="bg-[#4F8FE11A] border border-[#4F8FE14D] w-8 h-8 rounded cursor-pointer flex">
