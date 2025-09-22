@@ -12,7 +12,7 @@ import { showErrorToast } from "../services/toast";
 import { StatusTags } from "../widgets/tags";
 
 export default function WithdrawalPage() {
-  const [busy, setbusy] = useState(true);
+  const [busy, setbusy] = useState(false);
   const [datas, setdatas] = useState([]);
   const [page, setpage] = useState(1);
   const [total, settotal] = useState(0);
@@ -21,6 +21,7 @@ export default function WithdrawalPage() {
   useEffect(() => _loadDatas(1), []);
 
   const _loadDatas = (page_: number, status_?: string) => {
+    if (busy) return;
     setbusy(true);
     getWithdrawal(page_, status_ ?? status)
       .then((res) => {
@@ -38,7 +39,7 @@ export default function WithdrawalPage() {
   };
 
   const elSt =
-    "px-4 py-3 flex items-center border-r border-[#16263B] last:border-0 ";
+    "px-4 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
   return (
     <div className="p-8">

@@ -48,6 +48,13 @@ export async function rejectWithdraw(id: string, note: string): Promise<any> {
   return res.data;
 }
 
+export async function getRewardUsers(p: number, s: string): Promise<any> {
+  const res = await api.get(`api/admin/rewards?page=${p}&search=${s}`);
+  const total = Number(res.headers["x-total"]);
+  const page = Number(res.headers["x-page"]);
+  return { total, page, data: res.data };
+}
+
 export async function updateRewardBalance(): Promise<any> {
   const res = await api.get("api/admin/rewards/update-history");
   return res.data;

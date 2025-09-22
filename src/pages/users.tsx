@@ -3,9 +3,10 @@ import { getUsers } from "../services/dashboard";
 import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { IC } from "../components/librery";
 import { gatEthBalance, haveKYCNFT, weiToICBX } from "../services/ethers";
+import { Paging } from "../components/paging";
 
 export default function UsersPage() {
-  const [busy, setbusy] = useState(true);
+  const [busy, setbusy] = useState(false);
   const [users, setusers]: any = useState([]);
   const [page, setpage] = useState(1);
   const [total, settotal] = useState(0);
@@ -14,19 +15,20 @@ export default function UsersPage() {
   useEffect(() => _loadDatas(1, ""), []);
 
   const _loadDatas = (page_: number, search_: string) => {
+    if (busy) return;
     setbusy(true);
     getUsers(page_, search_)
       .then(async (res) => {
         setusers(res.data);
         setpage(res.page);
         settotal(res.total);
-        setbusy(false);
         for (let it of res.data) {
           it.icbx = await gatEthBalance(it.address);
           it.haveKYC = await haveKYCNFT(it.address);
           it.done = true;
           setusers([...res.data]);
         }
+        setbusy(false);
       })
       .catch((e) => {
         console.log(e);
@@ -42,7 +44,7 @@ export default function UsersPage() {
   };
 
   const elSt =
-    "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 ";
+    "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
   return (
     <div className="p-8">
@@ -133,7 +135,12 @@ export default function UsersPage() {
           </div>
         ))}
       </div>
-      {total > 10 && (
+      <Paging
+        total={total}
+        page={page}
+        reload={(a1: any) => _loadDatas(a1, search)}
+      />
+      {/* {total > 10 && (
         <div className="flex justify-center mt-8">
           <div className="flex border border-[#16263B] rounded-[8px]">
             <div
@@ -169,7 +176,7 @@ export default function UsersPage() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

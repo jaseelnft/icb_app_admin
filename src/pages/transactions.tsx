@@ -4,9 +4,10 @@ import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { IC } from "../components/librery";
 import { weiToICBX } from "../services/ethers";
 import { StatusTags } from "../widgets/tags";
+import { Paging } from "../components/paging";
 
 export default function TransactionsPage() {
-  const [busy, setbusy] = useState(true);
+  const [busy, setbusy] = useState(false);
   const [datas, setdatas] = useState([]);
   const [page, setpage] = useState(1);
   const [total, settotal] = useState(0);
@@ -15,6 +16,7 @@ export default function TransactionsPage() {
   useEffect(() => _loadDatas(1, ""), []);
 
   const _loadDatas = (page_: number, search_: string) => {
+    if (busy) return;
     setbusy(true);
     getTxns(page_, search_)
       .then(async (res) => {
@@ -34,7 +36,7 @@ export default function TransactionsPage() {
   };
 
   const elSt =
-    "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 ";
+    "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
   return (
     <div className="p-8">
@@ -117,7 +119,12 @@ export default function TransactionsPage() {
           </div>
         ))}
       </div>
-      {total > 10 && (
+      <Paging
+        total={total}
+        page={page}
+        reload={(a1: any) => _loadDatas(a1, search)}
+      />
+      {/* {total > 10 && (
         <div className="flex justify-center mt-8">
           <div className="flex border border-[#16263B] rounded-[8px]">
             <div
@@ -153,7 +160,7 @@ export default function TransactionsPage() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
