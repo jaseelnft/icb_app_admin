@@ -31,6 +31,8 @@ import ICsucces from "../assets/icons/ICsucces.svg";
 import ICerror from "../assets/icons/ICerror.svg";
 import ICusersWhite from "../assets/icons/ICusersWhite.svg";
 import ICplus from "../assets/icons/ICplus.svg";
+import ICusers2 from "../assets/icons/ICusers2.svg";
+import ICservers from "../assets/icons/ICservers.svg";
 
 import BGlogin from "../assets/images/BGlogin.webp";
 import BGlogin2 from "../assets/images/BGlogin2.webp";
@@ -38,6 +40,7 @@ import BGb from "../assets/images/BGb.svg";
 import BGg from "../assets/images/BGg.svg";
 import BGo from "../assets/images/BGo.svg";
 import BGp from "../assets/images/BGp.svg";
+import BGdb from "../assets/images/BGdb.svg";
 
 import LOGOapp from "../assets/logos/LOGOnetwork.svg";
 import LOGOappfull from "../assets/logos/LOGOnetwork_.svg";
@@ -77,6 +80,9 @@ export class IC {
   static error = ICerror;
   static usersWhite = ICusersWhite;
   static plus = ICplus;
+
+  static users2 = ICusers2;
+  static servers = ICservers;
 }
 
 export class BG {
@@ -86,6 +92,7 @@ export class BG {
   static g = BGg;
   static o = BGo;
   static p = BGp;
+  static db = BGdb;
 }
 
 export class Logo {

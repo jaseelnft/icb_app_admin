@@ -4,10 +4,11 @@ import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { IC } from "../components/librery";
 import { gatEthBalance, haveKYCNFT, weiToICBX } from "../services/ethers";
 import { Paging } from "../components/paging";
+import { zeroPadBytes } from "ethers";
 
 export default function UsersPage() {
   const [busy, setbusy] = useState(false);
-  const [users, setusers]: any = useState([]);
+  const [datas, setdatas]: any = useState([]);
   const [page, setpage] = useState(1);
   const [total, settotal] = useState(0);
   const [search, setsearch] = useState("");
@@ -19,28 +20,34 @@ export default function UsersPage() {
     setbusy(true);
     getUsers(page_, search_)
       .then(async (res) => {
-        setusers(res.data);
+        setdatas(res.data);
         setpage(res.page);
         settotal(res.total);
-        for (let it of res.data) {
-          it.icbx = await gatEthBalance(it.address);
-          it.haveKYC = await haveKYCNFT(it.address);
-          it.done = true;
-          setusers([...res.data]);
-        }
         setbusy(false);
+        for (let it of res.data) _setEthANDKYC(it.address);
       })
-      .catch((e) => {
-        console.log(e);
-      })
+      .catch(() => {})
       .finally(() => setbusy(false));
+  };
+
+  const _setEthANDKYC = async (ad: string) => {
+    const icbx = await gatEthBalance(ad);
+    const haveKYC = await haveKYCNFT(ad);
+    const tg = datas.find((it: any) => it.address === ad);
+
+    if (tg) {
+      tg.icbx = icbx;
+      tg.haveKYC = haveKYC;
+      tg.done = true;
+      setdatas([...datas]);
+    }
   };
 
   const _search = (e: any) => {
     const value = e.target.value;
     setsearch(value);
     if (value.length > 2) _loadDatas(1, value);
-    else if (value.length === 0) _loadDatas(1, "");
+    else if (value.length === 0) _loadDatas(1, "");zeroPadBytes
   };
 
   const elSt =
@@ -79,7 +86,7 @@ export default function UsersPage() {
         </div>
         {busy && <div className="text-center text-sm p-4">Loading...</div>}
         {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
-        {users.map((_it: any, k: number) => (
+        {datas.map((_it: any, k: number) => (
           <div className="flex odd:bg-[#0a101d] px-2" key={k}>
             <div className="py-4 pl-4 min-w-16 flex justify-center">
               <EthereumBlockie address={_it.address} size={36} />

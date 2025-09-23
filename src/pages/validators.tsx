@@ -50,10 +50,12 @@ export default function ValidatorsPage() {
         <EditValidator done={() => _loadDatas()} />
       </div>
       <div className="flex flex-wrap gap-5 max-w-[1020px] w-full mt-10">
-        {busy && <div className="text-center text-sm p-4">Loading...</div>}
-        {datas.length < 1 && (
-          <div className="text-center text-sm p-4">No Data</div>
-        )}
+        <div className="flex flex-col items-center w-full" >
+          {busy && <div className="text-center text-sm p-4">Loading...</div>}
+          {datas.length < 1 && (
+            <div className="text-center text-sm p-4">No Data</div>
+          )}
+        </div>
         {datas.map((it: any, k) => (
           <div
             key={k}
