@@ -93,7 +93,12 @@ export default function DashboardPage() {
           IC.txn,
           "transactions"
         )}
-        {_each2("Total Users in Chalenge", "24", IC.users2, "reward-logs")}
+        {_each2(
+          "Total Users in Chalenge",
+          statistics.challengeUsers || "0",
+          IC.users2,
+          "reward-logs"
+        )}
         {_each2("Token Validators", "18", IC.servers, "validator")}
       </div>
     </div>
