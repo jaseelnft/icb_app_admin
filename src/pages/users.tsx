@@ -23,23 +23,23 @@ export default function UsersPage() {
         setdatas(res.data);
         setpage(res.page);
         settotal(res.total);
+        for (let it of res.data) await _setEthANDKYC(res.data, it.address);
         setbusy(false);
-        for (let it of res.data) _setEthANDKYC(it.address);
       })
       .catch(() => {})
       .finally(() => setbusy(false));
   };
 
-  const _setEthANDKYC = async (ad: string) => {
+  const _setEthANDKYC = async (list: any, ad: string) => {
     const icbx = await gatEthBalance(ad);
     const haveKYC = await haveKYCNFT(ad);
-    const tg = datas.find((it: any) => it.address === ad);
+    const tg = list.find((it: any) => it.address === ad);
 
     if (tg) {
       tg.icbx = icbx;
       tg.haveKYC = haveKYC;
       tg.done = true;
-      setdatas([...datas]);
+      setdatas([...list]);
     }
   };
 
@@ -47,7 +47,8 @@ export default function UsersPage() {
     const value = e.target.value;
     setsearch(value);
     if (value.length > 2) _loadDatas(1, value);
-    else if (value.length === 0) _loadDatas(1, "");zeroPadBytes
+    else if (value.length === 0) _loadDatas(1, "");
+    zeroPadBytes;
   };
 
   const elSt =
