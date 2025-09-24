@@ -99,7 +99,14 @@ export default function DashboardPage() {
           IC.users2,
           "reward-logs"
         )}
-        {_each2("Token Validators", "18", IC.servers, "validator")}
+        {_each2(
+          "Token Validators",
+          statistics.validators,
+          IC.servers,
+          "validator"
+        )}
+        {_each2("Total User Visits", statistics.visits, IC.eye1, "")}
+        <div className="w-[500px]" />
       </div>
     </div>
   );
