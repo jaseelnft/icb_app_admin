@@ -4,6 +4,7 @@ import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { IC } from "../components/librery";
 import { weiToICBX } from "../services/ethers";
 import { Paging } from "../components/paging";
+import { formatDate } from "../services/simple";
 
 export default function RewardLogsPage() {
   const [busy, setbusy] = useState(false);
@@ -19,7 +20,7 @@ export default function RewardLogsPage() {
 
   const _loadDatas = (page_: number, search_: string) => {
     if (busy) return;
-    setbusy(true)
+    setbusy(true);
     getRewardUsers(page_, search_)
       .then((res) => {
         setdatas(res.data);
@@ -77,7 +78,10 @@ export default function RewardLogsPage() {
       {/*  */}
       {/*  */}
       {/*  */}
-      <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-hidden">
+      <div className="font-[600] text-[20px] mt-6">
+        List of users Joined ({total})
+      </div>
+      <div className="bg-[#010513] border-1 border-[#010513] mt-3 rounded-[16px] overflow-hidden">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
           <input
             placeholder="Wallet Address"
@@ -110,36 +114,37 @@ export default function RewardLogsPage() {
         {datas.map((_it: any, k: number) => (
           <div className="flex odd:bg-[#0a101d] px-2" key={k}>
             <div className="py-4 pl-4 min-w-16 flex justify-center">
-              <EthereumBlockie address={_it.userId.address} size={36} />
+              <EthereumBlockie address={_it.user.address} size={36} />
             </div>
             <div className={elSt + "w-[40%]"}>
               <div>
-                <div>{_it.userId.name || "null"}</div>
+                <div>{_it.user.name || "null"}</div>
                 <div className="text-[#256DC9] text-sm">
-                  {_it.userId.email || "null"}
+                  {_it.user.email || "null"}
                 </div>
               </div>
             </div>
 
             <AddressT
-              address={_it.userId.address}
+              address={_it.user.address}
               iconSize={20}
               className={elSt + "w-[34%] text-[#B3BDCB] text-sm"}
             />
 
             <div
               className={
-                elSt + "w-[26%] text-[#A5A7AA] text-sm text-right justify-end"
+                elSt + "w-[26%] text-[#A5A7AA] text-sm items-end flex-col"
               }
             >
               {weiToICBX(_it.balance ?? "0")} ICBX
+              <div>{formatDate(_it.createdAt)}</div>
             </div>
             <div
               className={
                 elSt + "w-[26%] text-[#A5A7AA] text-sm text-right justify-end"
               }
             >
-              ...
+              {weiToICBX(_it.avgBalance ?? "0")} ICBX
               {/* {weiToICBX(_it.balance ?? "0")} ICBX */}
             </div>
 

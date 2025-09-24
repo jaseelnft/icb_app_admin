@@ -18,25 +18,55 @@ export default function DashboardPage() {
   const _each1 = (
     title: string,
     value: string,
-    hike: string,
+    last: number,
+    prev: number,
     bg: string,
     ic: string,
     path: string
   ) => {
+    let hike = 0;
+    let up = true;
+
+    if (last !== prev) {
+      if (last > 0 && prev > 0) {
+        hike = (last / prev) * 100;
+        if (last < prev) {
+          up = false;
+          hike = 100 - hike;
+        } else {
+          hike = hike - 100;
+        }
+      } else if (last > 0) {
+        hike = 100;
+      } else if (prev > 0) {
+        hike = 100;
+        up = false;
+      }
+    }
+
     return (
       <div
-        className="p-7 rounded-[20px] border border-[#0110224D] relative w-[240px] h-[240px] overflow-hidden bg-no-repeat cursor-pointer"
+        className="px-6 py-7 rounded-[20px] border border-[#0110224D] relative w-[240px] h-[240px] overflow-hidden bg-no-repeat cursor-pointer"
         style={{ backgroundImage: `url(${bg})` }}
         onClick={() => navigate(path)}
       >
         <img src={ic} />
         <div className="mt-4">{title}</div>
         <div className="font-[ClashDisplay] text-[26px]">{value}</div>
-        <div className="flex items-center gap-2 mt-3 text-[#C7CCD2] text-[14px]">
-          <div className="px-3 py-[2px] bg-[#00B6761A] text-[#00B676] rounded-[12px] text-[13px]">
-            {hike}%
+        <div className="flex items-center gap-1 mt-3 text-[#C7CCD2] text-[14px]">
+          <div
+            className="px-2 py-[2px] rounded-[12px] text-[13px] flex gap-1"
+            style={
+              up
+                ? { color: "#00B676", background: "#00B6761A" }
+                : { color: "#DF3A45", background: "#DF3A451A" }
+            }
+          >
+            {up && <img src={IC.graphUp} alt="GU" width="15" />}
+            {!up && <img src={IC.graphDown} alt="GD" width="15" />}
+            {hike.toFixed(1)}%
           </div>
-          from yesterday
+          {last}&nbsp;in 24h
         </div>
       </div>
     );
@@ -64,15 +94,17 @@ export default function DashboardPage() {
         {_each1(
           "Total Investments",
           formatICBX(statistics.investment || "0"),
-          "0.00",
+          0,
+          0,
           BG.b,
           IC.doller,
           "users"
         )}
         {_each1(
           "Total Users",
-          statistics.users || "0",
-          "0.00",
+          statistics?.users?.total || "0",
+          statistics?.users?.last24h,
+          statistics?.users?.prev24h,
           BG.g,
           IC.users1,
           "users"
@@ -80,7 +112,8 @@ export default function DashboardPage() {
         {_each1(
           "Pending Approvals",
           statistics.pendingApprovels || "0",
-          "0.00",
+          0,
+          0,
           BG.o,
           IC.pending,
           "withdraw-requests"
@@ -88,7 +121,8 @@ export default function DashboardPage() {
         {_each1(
           "Total Transactions",
           statistics.txns || "0",
-          "0.00",
+          0,
+          0,
           BG.p,
           IC.txn,
           "transactions"

@@ -34,6 +34,8 @@ import ICplus from "../assets/icons/ICplus.svg";
 import ICusers2 from "../assets/icons/ICusers2.svg";
 import ICservers from "../assets/icons/ICservers.svg";
 import ICeye1 from "../assets/icons/ICeye1.svg";
+import ICgraphUp from "../assets/icons/ICgraphUp.svg";
+import ICgraphDown from "../assets/icons/ICgraphDown.svg";
 
 import BGlogin from "../assets/images/BGlogin.webp";
 import BGlogin2 from "../assets/images/BGlogin2.webp";
@@ -84,6 +86,8 @@ export class IC {
   static users2 = ICusers2;
   static servers = ICservers;
   static eye1 = ICeye1;
+  static graphUp = ICgraphUp;
+  static graphDown = ICgraphDown;
 }
 
 export class BG {
