@@ -5,6 +5,7 @@ import { Popup1 } from "./popup";
 import { APP_VERSION } from "../services/axios";
 import { getDetails } from "../services/dashboard";
 import LoadingPage from "../components/loadingPage";
+import { clearAllRedux } from "../redux/store";
 
 export default function HomeLayout() {
   const { pathname } = useLocation();
@@ -123,6 +124,7 @@ function Logout() {
               onClick={() => {
                 navigate("/auth/login");
                 localStorage.setItem("authToken", "");
+                clearAllRedux();
               }}
             >
               Logout

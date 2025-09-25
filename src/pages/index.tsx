@@ -1,29 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BG, IC } from "../components/librery";
 import { getStatistics } from "../services/dashboard";
 import { formatICBX } from "../services/simple";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const [statistics, setstatistics]: any = useState({});
+  const data = useSelector((state: any) => state.data.dashboard);
 
   useEffect(() => {
     getStatistics()
-      .then((res) => setstatistics(res))
-      .catch(() => {})
-      .finally(() => {});
   }, []);
 
-  const _each1 = (
-    title: string,
-    value: string,
-    last: number,
-    prev: number,
-    bg: string,
-    ic: string,
-    path: string
-  ) => {
+  const _getHike = (last: number, prev: number) => {
     let hike = 0;
     let up = true;
 
@@ -43,7 +33,31 @@ export default function DashboardPage() {
         up = false;
       }
     }
+    return (
+      <div
+        className="px-2 py-[2px] rounded-[12px] text-[13px] flex gap-1"
+        style={
+          up
+            ? { color: "#00B676", background: "#00B6761A" }
+            : { color: "#DF3A45", background: "#DF3A451A" }
+        }
+      >
+        {up && <img src={IC.graphUp} alt="GU" width="15" />}
+        {!up && <img src={IC.graphDown} alt="GD" width="15" />}
+        {hike.toFixed(1)}%
+      </div>
+    );
+  };
 
+  const _each1 = (
+    title: string,
+    value: string,
+    last: number,
+    prev: number,
+    bg: string,
+    ic: string,
+    path: string
+  ) => {
     return (
       <div
         className="px-6 py-7 rounded-[20px] border border-[#0110224D] relative w-[240px] h-[240px] overflow-hidden bg-no-repeat cursor-pointer"
@@ -54,25 +68,22 @@ export default function DashboardPage() {
         <div className="mt-4">{title}</div>
         <div className="font-[ClashDisplay] text-[26px]">{value}</div>
         <div className="flex items-center gap-1 mt-3 text-[#C7CCD2] text-[14px]">
-          <div
-            className="px-2 py-[2px] rounded-[12px] text-[13px] flex gap-1"
-            style={
-              up
-                ? { color: "#00B676", background: "#00B6761A" }
-                : { color: "#DF3A45", background: "#DF3A451A" }
-            }
-          >
-            {up && <img src={IC.graphUp} alt="GU" width="15" />}
-            {!up && <img src={IC.graphDown} alt="GD" width="15" />}
-            {hike.toFixed(1)}%
-          </div>
+          {_getHike(last, prev)}
           {last}&nbsp;in 24h
         </div>
       </div>
     );
   };
 
-  const _each2 = (title: string, value: string, ic: string, path: string) => {
+  const _each2 = (
+    title: string,
+    value: string,
+    last: number,
+    prev: number,
+    ic: string,
+    path: string,
+    isGraph: boolean
+  ) => {
     return (
       <div
         className="rounded-[20px] relative w-[500px] h-[120px] overflow-hidden bg-no-repeat p-6 flex gap-4 items-center cursor-pointer"
@@ -80,9 +91,17 @@ export default function DashboardPage() {
         onClick={() => navigate(path)}
       >
         <img src={ic} />
-        <div>
+        <div className="w-full">
           <div className="text-[#4F8FE1] text-[20px]">{title}</div>
-          <div className="text-[#C7CCD2]">{value}</div>
+          <div className="text-[#C7CCD2] flex items-center justify-between mt-2">
+            <b className="text-lg">{value}</b>
+            {isGraph && (
+              <div className="flex items-center gap-2">
+                {_getHike(last, prev)}
+                <span className="text-sm">{last}&nbsp;in 24h</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -93,7 +112,7 @@ export default function DashboardPage() {
       <div className="max-w-[1100px] p-8 flex flex-wrap justify-center gap-5">
         {_each1(
           "Total Investments",
-          formatICBX(statistics.investment || "0"),
+          formatICBX(data.investment || "0"),
           0,
           0,
           BG.b,
@@ -102,16 +121,16 @@ export default function DashboardPage() {
         )}
         {_each1(
           "Total Users",
-          statistics?.users?.total || "0",
-          statistics?.users?.last24h,
-          statistics?.users?.prev24h,
+          data?.users?.total || "0",
+          data?.users?.last24h,
+          data?.users?.prev24h,
           BG.g,
           IC.users1,
           "users"
         )}
         {_each1(
           "Pending Approvals",
-          statistics.pendingApprovels || "0",
+          data?.pendingApprovels || "0",
           0,
           0,
           BG.o,
@@ -120,7 +139,7 @@ export default function DashboardPage() {
         )}
         {_each1(
           "Total Transactions",
-          statistics.txns || "0",
+          data?.txns || "0",
           0,
           0,
           BG.p,
@@ -129,17 +148,31 @@ export default function DashboardPage() {
         )}
         {_each2(
           "Total Users in Chalenge",
-          statistics.challengeUsers || "0",
+          data?.challengeUsers?.total || "0",
+          data?.challengeUsers?.last24h,
+          data?.challengeUsers?.prev24h,
           IC.users2,
-          "reward-logs"
+          "reward-logs",
+          true
         )}
         {_each2(
           "Token Validators",
-          statistics.validators,
+          data?.validators,
+          0,
+          0,
           IC.servers,
-          "validator"
+          "validator",
+          false
         )}
-        {_each2("Total User Visits", statistics.visits, IC.eye1, "")}
+        {_each2(
+          "Total User Visits",
+          data?.visits?.total || "0",
+          data?.visits?.last24h,
+          data?.visits?.prev24h,
+          IC.eye1,
+          "",
+          true
+        )}
         <div className="w-[500px]" />
       </div>
     </div>

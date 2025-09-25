@@ -2,45 +2,29 @@ import { useEffect, useState } from "react";
 import { getUsers } from "../services/dashboard";
 import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { IC } from "../components/librery";
-import { gatEthBalance, haveKYCNFT, weiToICBX } from "../services/ethers";
+import { weiToICBX } from "../services/ethers";
 import { Paging } from "../components/paging";
-import { zeroPadBytes } from "ethers";
+import { useSelector } from "react-redux";
+import { setUsers, store } from "../redux/store";
 
 export default function UsersPage() {
-  const [busy, setbusy] = useState(false);
-  const [datas, setdatas]: any = useState([]);
-  const [page, setpage] = useState(1);
-  const [total, settotal] = useState(0);
   const [search, setsearch] = useState("");
 
-  useEffect(() => _loadDatas(1, ""), []);
+  const { total, page, data, busy } = useSelector(
+    (state: any) => state.data.users
+  );
 
-  const _loadDatas = (page_: number, search_: string) => {
-    if (busy) return;
-    setbusy(true);
-    getUsers(page_, search_)
-      .then(async (res) => {
-        setdatas(res.data);
-        setpage(res.page);
-        settotal(res.total);
-        for (let it of res.data) await _setEthANDKYC(res.data, it.address);
-        setbusy(false);
-      })
-      .catch(() => {})
-      .finally(() => setbusy(false));
+  useEffect(() => {
+    _loadDatas(page, "");
+  }, []);
+
+  const _changePage = (a1: any) => {
+    store.dispatch(setUsers({ total, page: a1, data: [], busy: true }));
+    _loadDatas(a1, search);
   };
 
-  const _setEthANDKYC = async (list: any, ad: string) => {
-    const icbx = await gatEthBalance(ad);
-    const haveKYC = await haveKYCNFT(ad);
-    const tg = list.find((it: any) => it.address === ad);
-
-    if (tg) {
-      tg.icbx = icbx;
-      tg.haveKYC = haveKYC;
-      tg.done = true;
-      setdatas([...list]);
-    }
+  const _loadDatas = async (page_: number, search_: string) => {
+    await getUsers(page_, search_);
   };
 
   const _search = (e: any) => {
@@ -48,7 +32,6 @@ export default function UsersPage() {
     setsearch(value);
     if (value.length > 2) _loadDatas(1, value);
     else if (value.length === 0) _loadDatas(1, "");
-    zeroPadBytes;
   };
 
   const elSt =
@@ -87,7 +70,7 @@ export default function UsersPage() {
         </div>
         {busy && <div className="text-center text-sm p-4">Loading...</div>}
         {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
-        {datas.map((_it: any, k: number) => (
+        {data.map((_it: any, k: number) => (
           <div className="flex odd:bg-[#0a101d] px-2" key={k}>
             <div className="py-4 pl-4 min-w-16 flex justify-center">
               <EthereumBlockie address={_it.address} size={36} />
@@ -143,48 +126,7 @@ export default function UsersPage() {
           </div>
         ))}
       </div>
-      <Paging
-        total={total}
-        page={page}
-        reload={(a1: any) => _loadDatas(a1, search)}
-      />
-      {/* {total > 10 && (
-        <div className="flex justify-center mt-8">
-          <div className="flex border border-[#16263B] rounded-[8px]">
-            <div
-              className="cursor-pointer py-2 px-4 border-r-1 border-[#16263B]"
-              onClick={() => (page > 1 ? _loadDatas(page - 1, search) : null)}
-            >
-              Previous
-            </div>
-            {Array.from({ length: Math.ceil(total / 10) }, (_, i) => i + 1).map(
-              (it, k) => (
-                <div
-                  onClick={() => _loadDatas(it, search)}
-                  className={
-                    "cursor-pointer p-2 min-w-9 border-r-1 border-[#16263B] text-center" +
-                    (page === it ? " bg-[#256DC9] text-white" : "")
-                  }
-                  key={k}
-                >
-                  {it}
-                </div>
-              )
-            )}
-
-            <div
-              className="cursor-pointer py-2 px-4"
-              onClick={() =>
-                page < Math.ceil(total / 10)
-                  ? _loadDatas(page + 1, search)
-                  : null
-              }
-            >
-              Next
-            </div>
-          </div>
-        </div>
-      )} */}
+      <Paging total={total} page={page} reload={_changePage} />
     </div>
   );
 }

@@ -38,3 +38,7 @@ export async function haveKYCNFT(address: string) {
 export const gatEthBalance = async (address: string) => {
   return provider.getBalance(address).then((res) => res);
 };
+
+export const bigToString = (n: number | bigint): string => {
+  return n.toLocaleString("fullwide", { useGrouping: false });
+};
