@@ -84,7 +84,7 @@ export default function RewardLogsPage() {
       <div className="bg-[#010513] border-1 border-[#010513] mt-3 rounded-[16px] overflow-hidden">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
           <input
-            placeholder="Wallet Address"
+            placeholder="Search by name, address or email"
             className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
             style={{ backgroundImage: `url('${IC.lens}')` }}
             onChange={_search}
