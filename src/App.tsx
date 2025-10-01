@@ -13,6 +13,7 @@ import AppSettingsPage from "./pages/app-settings";
 import LoadingPage from "./components/loadingPage";
 import { useEffect, useState } from "react";
 import { setBasicConfig } from "./services/axios";
+import SupportPage from "./pages/support";
 
 function App() {
   const [busy, setbusy] = useState(true);
@@ -35,6 +36,7 @@ function App() {
           <Route path="withdraw-requests" element={<WithdrawalPage />} />
           <Route path="reward-logs" element={<RewardLogsPage />} />
           <Route path="transactions" element={<TransactionsPage />} />
+          <Route path="support" element={<SupportPage />} />
           <Route path="app-settings" element={<AppSettingsPage />} />
           <Route path="*" element={<DashboardPage />} />
         </Route>

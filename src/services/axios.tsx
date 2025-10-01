@@ -1,6 +1,7 @@
 import axios from "axios";
 import { showErrorToast } from "./toast";
 import { ethers } from "ethers";
+import { clearAllRedux } from "../redux/store";
 
 export const APP_VERSION = "0.0.1";
 document.title = "Admin | ICB Network App " + APP_VERSION;
@@ -63,6 +64,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.setItem("authToken", "");
+      clearAllRedux()
       window.location.href = "/auth/login";
     }
     let msg = "";

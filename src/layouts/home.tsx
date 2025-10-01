@@ -6,6 +6,7 @@ import { APP_VERSION } from "../services/axios";
 import { getDetails } from "../services/dashboard";
 import LoadingPage from "../components/loadingPage";
 import { clearAllRedux } from "../redux/store";
+import { connectWs } from "../services/ws";
 
 export default function HomeLayout() {
   const { pathname } = useLocation();
@@ -17,6 +18,7 @@ export default function HomeLayout() {
       .then(() => {})
       .catch(() => {})
       .finally(() => setbusy(false));
+    connectWs();
   }, []);
 
   const _eachSide = (title: string, value: string, i1: string, i2: string) => {
@@ -55,6 +57,7 @@ export default function HomeLayout() {
           )}
           {_eachSide("Reward Logs", "reward-logs", IC.trophy, IC.trophy_)}
           {_eachSide("Transactions", "transactions", IC.card, IC.card_)}
+          {_eachSide("Support", "support", IC.support, IC.support_)}
           <div className="bg-[#16263B] h-[2px] my-6" />
           <div className="text-[11px] text-[#C7CCD2] px-3 font-[600]">
             SETTINGS
@@ -78,6 +81,7 @@ export default function HomeLayout() {
             {pathname === `/withdraw-requests` && "Withdraw Requests"}
             {pathname === `/reward-logs` && "Reward Logs"}
             {pathname === `/transactions` && "Transactions"}
+            {pathname === `/support` && "Support"}
             {pathname === `/app-settings` && "App Settings"}
           </div>
         </div>
