@@ -18,7 +18,13 @@ export async function getSupportChats(
 export async function getSupportMsgs(chat: any): Promise<any> {
   try {
     const res = await api.get(`api/admin/support/chats/${chat._id}/msgs`);
-    const _p = { chats: res.data, _id: chat._id };
+    const _p = {
+      chats: res.data,
+      _id: chat._id,
+      registerd: chat.registerd,
+      userId: chat.userId,
+      accesLogId: chat.accesLogId,
+    };
     store.dispatch(setChat(_p));
   } catch (error) {}
 }

@@ -99,8 +99,13 @@ export const connectWs = () => {
   socket.on("message", (data) => {
     if (data.type === "MSG") {
       const chat: any = store.getState().app.chat;
-      if (chat && !chat.empty && chat._id === data.chatId)
+      const chats: any = store.getState().app.chats;
+      if (chat && !chat.empty && chat._id === data.chatId) {
         getSupportMsgs({ _id: data.chatId });
+      } else {
+        for (let it of chats)
+          if (it._it === data.chatId) getSupportChats(1, false);
+      }
     } else if (data.type === "REG") {
       getSupportChats(1, true);
     }

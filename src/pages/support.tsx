@@ -37,6 +37,7 @@ export default function SupportPage() {
               style={{ color: it.registerd ? "" : "" }}
             >
               {it.registerd ? `U_${it.userId}` : `G_${it.accesLogId}`}
+              <div>{it.activity}</div>
             </div>
           ))}
         </div>
