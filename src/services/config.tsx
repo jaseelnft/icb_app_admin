@@ -95,7 +95,9 @@ const socket = io(BASE_WS, { transports: ["websocket"] });
 
 export const connectWs = () => {
   socket.on("connect", () => {});
+
   socket.emit("message", { type: "REG", from: "ADMIN" });
+
   socket.on("message", (data) => {
     if (data.type === "MSG") {
       const chat: any = store.getState().app.chat;
@@ -107,6 +109,7 @@ export const connectWs = () => {
           if (it._it === data.chatId) getSupportChats(1, false);
       }
     } else if (data.type === "REG") {
+      console.log(data);
       getSupportChats(1, true);
     }
   });

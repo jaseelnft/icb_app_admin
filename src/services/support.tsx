@@ -6,6 +6,8 @@ export async function getSupportChats(
   isUpdate: boolean
 ): Promise<any> {
   try {
+    const chats: any = store.getState().app.chats;
+    if (chats.busy) return;
     const res = await api.get(`api/admin/support/chats?page=${page_}`);
     const total = Number(res.headers["x-total"]);
     const page = Number(res.headers["x-page"]);
