@@ -94,19 +94,19 @@ api.interceptors.response.use(
 const socket = io(BASE_WS, { transports: ["websocket"] });
 
 export const connectWs = () => {
-  socket.on("connect", () => {});
+  // socket.on("connect", () => {});
 
-  socket.emit("message", { type: "REG", from: "ADMIN" });
+  // socket.emit("message", { type: "REG", from: "ADMIN" });
 
-  socket.on("message", (data) => {
-    if (data.type === "MSG") {
-      const chat: any = store.getState().app.chat;
-      if (chat && !chat.empty && chat._id === data.chatId)
-        getSupportMsgs({ _id: data.chatId });
-    } else if (data.type === "REG") {
-      getSupportChats(1, true);
-    }
-  });
+  // socket.on("message", (data) => {
+  //   if (data.type === "MSG") {
+  //     const chat: any = store.getState().app.chat;
+  //     if (chat && !chat.empty && chat._id === data.chatId)
+  //       getSupportMsgs({ _id: data.chatId });
+  //   } else if (data.type === "REG") {
+  //     getSupportChats(1, true);
+  //   }
+  // });
 };
 
 export const sendWSMSG = async (chatId: string, msg: string) => {
