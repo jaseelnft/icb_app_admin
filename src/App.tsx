@@ -19,9 +19,7 @@ function App() {
   const [busy, setbusy] = useState(true);
 
   useEffect(() => {
-    setBasicConfig().then(() => {
-      setbusy(false);
-    });
+    setBasicConfig().then(() => setbusy(false));
   }, []);
 
   if (busy) return <LoadingPage />;

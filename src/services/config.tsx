@@ -1,8 +1,9 @@
 import axios from "axios";
 import { showErrorToast } from "./toast";
 import { ethers } from "ethers";
-import { clearAllRedux } from "../redux/store";
+import { clearAllRedux, store } from "../redux/store";
 import { io } from "socket.io-client";
+import { getSupportChats, getSupportMsgs } from "./support";
 
 export const APP_VERSION = "0.0.1";
 document.title = "Admin | ICB Network App " + APP_VERSION;
@@ -48,7 +49,7 @@ export const setBasicConfig = async () => {
       localStorage.setItem("accesLogId", res.data.id);
       connectWs();
     })
-    .catch((e) => console.log(e));
+    .catch();
 };
 
 export const api = axios.create({
@@ -93,17 +94,17 @@ api.interceptors.response.use(
 const socket = io(BASE_WS, { transports: ["websocket"] });
 
 export const connectWs = () => {
-  // socket.on("connect", () => {});
-  // socket.emit("message", { type: "REG", from: "ADMIN" });
-  // socket.on("message", (data) => {
-  //   if (data.type === "MSG") {
-  //     const chat: any = store.getState().app.chat;
-  //     if (chat && !chat.empty && chat._id === data.chatId)
-  //       getSupportMsgs({ _id: data.chatId });
-  //   } else if (data.type === "REG") {
-  //     getSupportChats(1, true);
-  //   }
-  // });
+  socket.on("connect", () => {});
+  socket.emit("message", { type: "REG", from: "ADMIN" });
+  socket.on("message", (data) => {
+    if (data.type === "MSG") {
+      const chat: any = store.getState().app.chat;
+      if (chat && !chat.empty && chat._id === data.chatId)
+        getSupportMsgs({ _id: data.chatId });
+    } else if (data.type === "REG") {
+      getSupportChats(1, true);
+    }
+  });
 };
 
 export const sendWSMSG = async (chatId: string, msg: string) => {
