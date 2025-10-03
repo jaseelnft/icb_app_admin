@@ -1,9 +1,8 @@
 import axios from "axios";
 import { showErrorToast } from "./toast";
 import { ethers } from "ethers";
-import { clearAllRedux, store } from "../redux/store";
+import { clearAllRedux } from "../redux/store";
 import { io } from "socket.io-client";
-import { getSupportChats, getSupportMsgs } from "./support";
 
 export const APP_VERSION = "0.0.1";
 document.title = "Admin | ICB Network App " + APP_VERSION;
@@ -95,9 +94,7 @@ const socket = io(BASE_WS, { transports: ["websocket"] });
 
 export const connectWs = () => {
   // socket.on("connect", () => {});
-
   // socket.emit("message", { type: "REG", from: "ADMIN" });
-
   // socket.on("message", (data) => {
   //   if (data.type === "MSG") {
   //     const chat: any = store.getState().app.chat;
