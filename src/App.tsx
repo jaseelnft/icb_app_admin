@@ -12,7 +12,7 @@ import TransactionsPage from "./pages/transactions";
 import AppSettingsPage from "./pages/app-settings";
 import LoadingPage from "./components/loadingPage";
 import { useEffect, useState } from "react";
-import { setBasicConfig } from "./services/axios";
+import { setBasicConfig } from "./services/config";
 import SupportPage from "./pages/support";
 
 function App() {

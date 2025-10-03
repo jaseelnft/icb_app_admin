@@ -1,5 +1,5 @@
 
-import { APP_VERSION } from "../services/axios";
+import { APP_VERSION } from "../services/config";
 import { Logo } from "./librery";
 
 export default function LoadingPage() {

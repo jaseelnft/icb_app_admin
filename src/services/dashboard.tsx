@@ -1,5 +1,5 @@
 import { setDashboard, setUsers, store } from "../redux/store";
-import { api } from "./axios";
+import { api } from "./config";
 import { bigToString, gatEthBalance, haveKYCNFT } from "./ethers";
 
 export async function getDetails(): Promise<any> {

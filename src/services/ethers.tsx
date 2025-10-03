@@ -1,4 +1,4 @@
-import { icbKycNFTContract, provider } from "./axios";
+import { icbKycNFTContract, provider } from "./config";
 import { ethers } from "ethers";
 
 export const weiToEth = (value: string): number => {

@@ -1,12 +1,16 @@
 import axios from "axios";
 import { showErrorToast } from "./toast";
 import { ethers } from "ethers";
-import { clearAllRedux } from "../redux/store";
+import { clearAllRedux, store } from "../redux/store";
+import { io } from "socket.io-client";
+import { getSupportChats, getSupportMsgs } from "./support";
 
 export const APP_VERSION = "0.0.1";
 document.title = "Admin | ICB Network App " + APP_VERSION;
 
-var BASE_URL = import.meta.env.VITE_BASE_URL || "https://dapps-api.icb.network";
+const BASE_URL =
+  import.meta.env.VITE_BASE_URL || "https://dapps-api.icb.network";
+const BASE_WS = import.meta.env.VITE_BASE_WS;
 
 export var ICB_SCAN = "";
 
@@ -37,15 +41,18 @@ export const setBasicConfig = async () => {
     icbKycNFTContract = new ethers.Contract(res.data.icbkyc, abi, provider);
   });
 
-  const id = localStorage.getItem("statusId") ?? "";
+  const id = localStorage.getItem("accesLogId") ?? "";
   const host = window.location.hostname ?? "";
   api
     .get(`api/app/users/status?id=${id}&host=${host}`)
-    .then((res) => localStorage.setItem("statusId", res.data.id))
+    .then((res) => {
+      localStorage.setItem("accesLogId", res.data.id);
+      connectWs();
+    })
     .catch((e) => console.log(e));
 };
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
@@ -64,7 +71,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.setItem("authToken", "");
-      clearAllRedux()
+      clearAllRedux();
       window.location.href = "/auth/login";
     }
     let msg = "";
@@ -84,4 +91,25 @@ api.interceptors.response.use(
   }
 );
 
-export { api };
+const socket = io(BASE_WS, { transports: ["websocket"] });
+
+export const connectWs = () => {
+  socket.on("connect", () => {});
+
+  socket.emit("message", { type: "REG", from: "ADMIN" });
+
+  socket.on("message", (data) => {
+    if (data.type === "MSG") {
+      const chat: any = store.getState().app.chat;
+      if (chat && !chat.empty && chat._id === data.chatId)
+        getSupportMsgs({ _id: data.chatId });
+    } else if (data.type === "REG") {
+      getSupportChats(1, true);
+    }
+  });
+};
+
+export const sendWSMSG = async (chatId: string, msg: string) => {
+  const payload = { msg, type: "MSG", from: "ADMIN", chatId };
+  socket.emit("message", payload);
+};

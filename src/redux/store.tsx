@@ -15,21 +15,23 @@ const users = {
 
 const appSlice = createSlice({
   name: "app",
-  initialState: { settings: { ...settings }, chats: {} },
+  initialState: {
+    settings: { ...settings },
+    chats: [],
+    chat: { empty: true },
+  },
   reducers: {
     setSettings: (state, action) => {
       const newValue = action.payload;
       state.settings = newValue;
     },
     setChats: (state, action) => {
-      const newValue: any = { ...state.chats };
-      if (newValue[action.payload.id]) {
-        if (action.payload.msg)
-          newValue[action.payload.id].push(action.payload.msg);
-      } else {
-        newValue[action.payload.id] = [];
-      }
+      const newValue = action.payload;
       state.chats = newValue;
+    },
+    setChat: (state, action) => {
+      const newValue = action.payload;
+      state.chat = newValue;
     },
   },
 });
@@ -56,7 +58,7 @@ export const store = configureStore({
   reducer: { app: appSlice.reducer, data: dataSlice.reducer },
 });
 
-export const { setSettings, setChats } = appSlice.actions;
+export const { setSettings, setChats, setChat } = appSlice.actions;
 
 export const { setDashboard, setUsers } = dataSlice.actions;
 
