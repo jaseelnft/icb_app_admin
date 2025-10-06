@@ -1,9 +1,9 @@
 import axios from "axios";
 import { showErrorToast } from "./toast";
 import { ethers } from "ethers";
-import { clearAllRedux, store } from "../redux/store";
+import { clearAllRedux, setChats, store } from "../redux/store";
 import { io } from "socket.io-client";
-import { getSupportChats, getSupportMsgs } from "./support";
+import { getSupportMsgs } from "./support";
 
 export const APP_VERSION = "0.0.1";
 document.title = "Admin | ICB Network App " + APP_VERSION;
@@ -96,21 +96,17 @@ const socket = io(BASE_WS, { transports: ["websocket"] });
 export const connectWs = () => {
   socket.on("connect", () => {});
 
-  socket.emit("message", { type: "REG", from: "ADMIN" });
+  const token = localStorage.getItem("authToken") || "";
+  socket.emit("message", { type: "REG", from: "ADMIN", token });
 
   socket.on("message", (data) => {
     if (data.type === "MSG") {
+      store.dispatch(setChats(data.chats));
       const chat: any = store.getState().app.chat;
-      const chats: any = store.getState().app.chats;
-      if (chat && !chat.empty && chat._id === data.chatId) {
-        getSupportMsgs({ _id: data.chatId });
-      } else {
-        for (let it of chats)
-          if (it._it === data.chatId) getSupportChats(1, false);
-      }
+      if (chat && !chat.empty && chat._id === data.chatId)
+        getSupportMsgs(data.chatId);
     } else if (data.type === "REG") {
-      console.log(data);
-      getSupportChats(1, true);
+      store.dispatch(setChats(data.chats));
     }
   });
 };

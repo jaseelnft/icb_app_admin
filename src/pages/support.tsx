@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import { getSupportChats, getSupportMsgs } from "../services/support";
+import { closeChatTicket, getSupportMsgs } from "../services/support";
 import { sendWSMSG } from "../services/config";
+import { IC } from "../components/librery";
 
 export default function SupportPage() {
   const [msg, setmsg] = useState("");
@@ -10,75 +11,155 @@ export default function SupportPage() {
 
   const _onSubmit = async (e: any) => {
     e.preventDefault();
+    if (msg === "") return;
     await sendWSMSG(chat._id, msg);
     setmsg("");
   };
 
-  useEffect(() => {
-    getSupportChats(1, false);
-  }, []);
-
   const _onSelectChat = (k: any) => {
-    getSupportMsgs(chats.data[k]);
+    getSupportMsgs(chats[k]._id);
   };
 
-  const inputStyle =
-    "rounded-[8px]  border-[1px] border-[#4f8fe1] bg-[#00000029] p-[10px_12px] text-sm w-full";
+  const _onCloseChat = async () => {
+    await closeChatTicket(chat._id);
+  };
+
+  function formatDateTime(isoString: string) {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+    const now = new Date();
+
+    const options: any = { hour: "numeric", minute: "numeric", hour12: true };
+    const timeString = date.toLocaleString("en-US", options);
+
+    const dateOnly = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    if (dateOnly.getTime() === today.getTime()) {
+      return `${timeString}`;
+    } else if (dateOnly.getTime() === yesterday.getTime()) {
+      return `Yesterday ${timeString}`;
+    } else {
+      const dateOptions: any = {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      };
+      const dateString = date.toLocaleDateString("en-US", dateOptions);
+      return `${dateString} ${timeString}`;
+    }
+  }
 
   return (
-    <div className="p-8 flex justify-center">
-      <div className="max-w-275 w-full flex gap-4">
-        <div className="min-w-75 border border-[#16263B] h-[calc(100vh-151px)] bg-[#010513] rounded-[16px] p-4">
-          {chats?.data?.map((it: any, k: number) => (
+    <div className="p-4 flex justify-center">
+      <div className="max-w-275 w-full flex gap-3">
+        <div className="min-w-75 border border-[#16263B] h-[calc(100vh-121px)] bg-[#010513] rounded-[16px] p-4">
+          {chats.map((it: any, k: number) => (
             <div
               key={k}
               onClick={() => _onSelectChat(k)}
-              className="p-3 border border-[#16263B] rounded my-2 cursor-pointer text-sm"
-              style={{ color: it.registerd ? "" : "" }}
+              className="p-3 rounded my-2 cursor-pointer text-sm"
+              style={
+                it.registerd
+                  ? { background: "#141414" }
+                  : { background: "#011022" }
+              }
             >
-              {it.registerd ? `U_${it.userId}` : `G_${it.accesLogId}`}
-              <div>
-                {it.activity}
+              <div className="flex justify-between">
+                {it.registerd ? "Registerd User" : "Gust User"}
+                <div>{it.activity}</div>
+                {/* <div className="text-xs">
+                {it.registerd ? it.userId : it.accesLogId}
+              </div> */}
+              </div>
+              <div className="text-xs">
                 {it.unattended > 0 && ` New-${it.unattended} `}
-                {it.status}
+                {/* {it.status} */}
               </div>
             </div>
           ))}
         </div>
-        <div className="w-full border border-[#16263B] h-[calc(100vh-151px)] bg-[#010513] rounded-[16px] p-6">
+        {/*  */}
+        {/*  */}
+        {/*  */}
+        <div className="w-full border border-[#16263B] h-[calc(100vh-121px)] bg-[#010513] rounded-[16px] overflow-hidden">
           {!chat.empty && (
-            <form
-              onSubmit={_onSubmit}
-              className="h-[calc(100vh-256px)] flex flex-col justify-between "
-            >
-              <div className="h-full flex flex-col gap-2">
-                <div className="p-3 border border-[#16263B] rounded my-2 cursor-pointer text-sm">
-                  {chat.registerd ? `U_${chat.userId}` : `G_${chat.accesLogId}`}
-                </div>
-                <div className="h-full overflow-auto flex flex-col gap-2 ">
-                  {chat.chats.map((it: any, k: number) => (
-                    <div
-                      className="flex"
-                      style={
-                        it.from === "A" ? { justifyContent: "flex-end" } : {}
-                      }
-                      key={k}
-                    >
-                      <div className="text-xs border border-[#16263B] rounded p-2">
-                        {it?.msg}
+            <form onSubmit={_onSubmit} className="h-full flex flex-col">
+              <div className="flex items-center justify-between py-5 px-6">
+                <div className="flex items-center gap-3">
+                  <img src="/favicon.svg" className="w-10" />
+                  <div>
+                    <div className="font-bold">
+                      {chat.registerd ? "Registerd User" : "Gust User"}
+                    </div>
+                    <div className="text-sm flex items-center gap-2">
+                      {chat.registerd ? chat.userId : chat.accesLogId}
+                      <div className="border border-[#16263B] text-xs font-bold px-1 rounded-full">
+                        {chat.activity}
                       </div>
                     </div>
-                  ))}
+                  </div>
+                </div>
+                <div
+                  className="btn1"
+                  style={{ padding: "11px 24px" }}
+                  onClick={() => _onCloseChat()}
+                >
+                  Close the Ticket
                 </div>
               </div>
-              <div className="flex items-center mt-3 gap-2">
+              <div className="bg-gradient-to-r from-[#010513] via-[#4D91FE] to-[#010513] w-full min-h-[1px]" />
+              <div className="h-full overflow-auto flex flex-col-reverse gap-2 p-6">
+                {chat.msgs.map((it: any, k: number) => (
+                  <div
+                    className="flex flex-col gap-1"
+                    style={it.from === "U" ? { alignItems: "flex-end" } : {}}
+                    key={k}
+                  >
+                    <div className="flex gap-2">
+                      {/* {it.from === "A" && (
+                        <img
+                          src={IC.robo}
+                          className="bg-[#4F8FE19f] w-8 h-8 rounded-full p-2"
+                        />
+                      )} */}
+                      <div
+                        className="text-xs rounded-[6px] py-2 px-3 leading-[1.6]"
+                        style={
+                          it.from === "U"
+                            ? { background: "#141414", marginLeft: 20 }
+                            : { background: "#011022", marginRight: 20 }
+                        }
+                      >
+                        {it.msg}
+                      </div>
+                    </div>
+                    <div className="text-[10px] text-[#FFFFFF66]">
+                      {formatDateTime(it.createdAt)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-[#011022] p-3 flex items-center">
                 <input
                   onChange={(e) => setmsg(e.target.value)}
                   value={msg}
-                  className={inputStyle}
-                  placeholder="Ask me"
+                  className="rounded-[8px] p-2 text-xs w-full outline-0"
+                  placeholder="Type here..."
                 />
-                <div className="btn1">Close_ticket</div>
+                <button
+                  type="submit"
+                  className="min-w-7 w-7 h-7 bg-[#0088FF] mr-2 rounded-full cursor-pointer p-2"
+                >
+                  <img src={IC.send} className="w-full" />
+                </button>
               </div>
             </form>
           )}
