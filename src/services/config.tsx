@@ -107,7 +107,7 @@ export const connectWs = () => {
 
   socket.on("message", (data: any) => {
     if (data.type === "MSG") {
-      showSupportNotification("Hallow", {});
+      showSupportNotification("Message On support", "hallow World");
       store.dispatch(setChats(data.chats));
       const chat: any = store.getState().app.chat;
       if (chat && !chat.empty && chat._id === data.chatId)
@@ -127,17 +127,20 @@ export const sendWSMSG = async (chatId: string, msg: string) => {
   }
 };
 
-function showSupportNotification(title: string, body: any) {
+function showSupportNotification(title: string, body: string) {
   // check if user is NOT on /support page
   if (!window.location.pathname.includes("/support")) {
-    console.log('adsdsdsd');
-    
+    console.log("adsdsdsd");
+
     if (Notification.permission === "granted") {
       new Notification(title, { body });
     } else if (Notification.permission === "default") {
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
           new Notification(title, { body });
+          //           body: "You got a reply from Support. Click to open.",
+          // icon: "https://cdn-icons-png.flaticon.com/512/1827/1827370.png", // optional
+          // badge: "https://cdn-icons-png.flaticon.com/512/833/833472.png" // optional
         }
       });
     }
