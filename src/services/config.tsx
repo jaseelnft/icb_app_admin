@@ -127,7 +127,7 @@ export const sendWSMSG = async (chatId: string, msg: string) => {
   }
 };
 
-function showSupportNotification(title: string, body: string) {
+function showSupportNotification(title: string, _body: string) {
   // check if user is NOT on /support page
   if (!window.location.pathname.includes("/support")) {
     if (Notification.permission === "granted") {
