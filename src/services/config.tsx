@@ -130,17 +130,20 @@ export const sendWSMSG = async (chatId: string, msg: string) => {
 function showSupportNotification(title: string, body: string) {
   // check if user is NOT on /support page
   if (!window.location.pathname.includes("/support")) {
-    console.log("adsdsdsd");
-
     if (Notification.permission === "granted") {
-      new Notification(title, { body });
+      new Notification(title, {
+        body: "You got a reply from Support. Click to open.",
+        icon: "https://cdn-icons-png.flaticon.com/512/1827/1827370.png",
+        badge: "https://cdn-icons-png.flaticon.com/512/833/833472.png",
+      });
     } else if (Notification.permission === "default") {
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          new Notification(title, { body });
-          //           body: "You got a reply from Support. Click to open.",
-          // icon: "https://cdn-icons-png.flaticon.com/512/1827/1827370.png", // optional
-          // badge: "https://cdn-icons-png.flaticon.com/512/833/833472.png" // optional
+          new Notification(title, {
+            body: "You got a reply from Support. Click to open.",
+            icon: "https://cdn-icons-png.flaticon.com/512/1827/1827370.png",
+            badge: "https://cdn-icons-png.flaticon.com/512/833/833472.png",
+          });
         }
       });
     }
