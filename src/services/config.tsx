@@ -2,7 +2,7 @@ import axios from "axios";
 import { showErrorToast } from "./toast";
 import { ethers } from "ethers";
 import { clearAllRedux, setChats, store } from "../redux/store";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { getSupportMsgs } from "./support";
 
 export const APP_VERSION = "0.0.1";
@@ -45,10 +45,7 @@ export const setBasicConfig = async () => {
   const host = window.location.hostname ?? "";
   api
     .get(`api/app/users/status?id=${id}&host=${host}`)
-    .then((res) => {
-      localStorage.setItem("accesLogId", res.data.id);
-      connectWs();
-    })
+    .then((res) => localStorage.setItem("accesLogId", res.data.id))
     .catch();
 };
 
@@ -70,8 +67,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.setItem("authToken", "");
-      clearAllRedux();
+      appLogOut();
       window.location.href = "/auth/login";
     }
     let msg = "";
@@ -91,16 +87,27 @@ api.interceptors.response.use(
   }
 );
 
-const socket = io(BASE_WS, { transports: ["websocket"] });
+let socket: Socket<any>;
+
+export const appLogOut = () => {
+  localStorage.setItem("authToken", "");
+  clearAllRedux();
+  socket.disconnect();
+};
+
+export const appLogIn = (token: string) => {
+  localStorage.setItem("authToken", token);
+};
 
 export const connectWs = () => {
-  socket.on("connect", () => {});
-
   const token = localStorage.getItem("authToken") || "";
-  socket.emit("message", { type: "REG", from: "ADMIN", token });
+  const auth = { from: "ADMIN", token };
+  socket = io(BASE_WS, { transports: ["websocket"], auth });
+  // socket.on("connect", () => {});
 
-  socket.on("message", (data) => {
+  socket.on("message", (data: any) => {
     if (data.type === "MSG") {
+      showSupportNotification("Hallow", {});
       store.dispatch(setChats(data.chats));
       const chat: any = store.getState().app.chat;
       if (chat && !chat.empty && chat._id === data.chatId)
@@ -112,6 +119,29 @@ export const connectWs = () => {
 };
 
 export const sendWSMSG = async (chatId: string, msg: string) => {
-  const payload = { msg, type: "MSG", from: "ADMIN", chatId };
-  socket.emit("message", payload);
+  if (socket && socket.connected) {
+    const payload = { msg, from: "ADMIN", chatId };
+    socket.emit("message", payload);
+  } else {
+    connectWs();
+  }
 };
+
+function showSupportNotification(title: string, body: any) {
+  // check if user is NOT on /support page
+  if (!window.location.pathname.includes("/support")) {
+    console.log('adsdsdsd');
+    
+    if (Notification.permission === "granted") {
+      new Notification(title, { body });
+    } else if (Notification.permission === "default") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          new Notification(title, { body });
+        }
+      });
+    }
+  } else {
+    console.log("User is on support page → no notification");
+  }
+}

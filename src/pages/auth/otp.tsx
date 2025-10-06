@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Logo } from "../../components/librery";
 import { useState } from "react";
 import { loginAdmin } from "../../services/auth";
+import { appLogIn } from "../../services/config";
 
 export default function OTPPage() {
   const [busy, setbusy] = useState(false);
@@ -14,7 +15,7 @@ export default function OTPPage() {
     const token = localStorage.getItem("authToken") || "";
     await loginAdmin({ otp: e.target.otp.value, token })
       .then((res) => {
-        localStorage.setItem("authToken", res.token);
+        appLogIn(res.token);
         navigate("/");
       })
       .catch(() => {})

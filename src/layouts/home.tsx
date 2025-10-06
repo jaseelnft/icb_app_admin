@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { IC, Logo } from "../components/librery";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Popup1 } from "./popup";
-import { APP_VERSION } from "../services/config";
+import { APP_VERSION, appLogOut, connectWs } from "../services/config";
 import { getDetails } from "../services/dashboard";
 import LoadingPage from "../components/loadingPage";
-import { clearAllRedux } from "../redux/store";
 
 export default function HomeLayout() {
   const { pathname } = useLocation();
@@ -17,6 +16,7 @@ export default function HomeLayout() {
       .then(() => {})
       .catch(() => {})
       .finally(() => setbusy(false));
+    connectWs();
   }, []);
 
   const _eachSide = (title: string, value: string, i1: string, i2: string) => {
@@ -125,8 +125,7 @@ function Logout() {
               className="btn1 w-[190px]"
               onClick={() => {
                 navigate("/auth/login");
-                localStorage.setItem("authToken", "");
-                clearAllRedux();
+                appLogOut();
               }}
             >
               Logout
