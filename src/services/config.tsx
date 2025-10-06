@@ -103,11 +103,10 @@ export const connectWs = () => {
   const token = localStorage.getItem("authToken") || "";
   const auth = { from: "ADMIN", token };
   socket = io(BASE_WS, { transports: ["websocket"], auth });
-  // socket.on("connect", () => {});
-
+  
   socket.on("message", (data: any) => {
     if (data.type === "MSG") {
-      showSupportNotification("Message On support", "hallow World");
+      showSupportNotification("You hava a new message");
       store.dispatch(setChats(data.chats));
       const chat: any = store.getState().app.chat;
       if (chat && !chat.empty && chat._id === data.chatId)
@@ -127,27 +126,14 @@ export const sendWSMSG = async (chatId: string, msg: string) => {
   }
 };
 
-function showSupportNotification(title: string, _body: string) {
-  // check if user is NOT on /support page
+function showSupportNotification(title: string) {
   if (!window.location.pathname.includes("/support")) {
     if (Notification.permission === "granted") {
-      new Notification(title, {
-        body: "You got a reply from Support. Click to open.",
-        icon: "https://cdn-icons-png.flaticon.com/512/1827/1827370.png",
-        badge: "https://cdn-icons-png.flaticon.com/512/833/833472.png",
-      });
+      new Notification(title);
     } else if (Notification.permission === "default") {
       Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          new Notification(title, {
-            body: "You got a reply from Support. Click to open.",
-            icon: "https://cdn-icons-png.flaticon.com/512/1827/1827370.png",
-            badge: "https://cdn-icons-png.flaticon.com/512/833/833472.png",
-          });
-        }
+        if (permission === "granted") new Notification(title);
       });
     }
-  } else {
-    console.log("User is on support page → no notification");
   }
 }
