@@ -26,6 +26,7 @@ function VerifiedToken() {
   const [busy, setbusy] = useState(false);
   const [isAdd, setisAdd] = useState(false);
   const [name, setname] = useState("");
+  const [address, setaddress] = useState("");
 
   useEffect(() => {
     _loadData();
@@ -47,9 +48,10 @@ function VerifiedToken() {
     e.preventDefault();
     if (busy || name.trim() === "") return;
     let d = [...datas];
-    d.push({ name: name.trim(), new: true });
+    d.push({ name: name.trim(), address: address.trim(), new: true });
     setdatas(d);
     setname("");
+    setaddress("");
     setisAdd(false);
     return false;
   };
@@ -58,11 +60,12 @@ function VerifiedToken() {
     if (busy) return;
     setbusy(true);
     setisAdd(false);
-    await updateVerifideToken(datas).then(() => {
-      showToast("Verified token updated successfully");
-      _loadData();
-    });
-
+    await updateVerifideToken(datas)
+      .then(() => {
+        showToast("Verified token updated successfully");
+        _loadData();
+      })
+      .catch(() => {});
     setbusy(false);
   };
 
@@ -88,7 +91,10 @@ function VerifiedToken() {
               className="mb-4 border border-[#16263B] rounded-lg p-2 pl-3 text-sm flex gap-2 items-center font-[500] bg-[#1A2A45]"
               style={{ background: it.new ? "transparent" : "" }}
             >
-              {it.name}
+              <div>
+                {it.name}
+                <div className="text-xs opacity-80">{it.address}</div>
+              </div>
               <img
                 src={IC.closeRed}
                 className="cursor-pointer w-5 bg-[#010513] rounded"
@@ -107,26 +113,31 @@ function VerifiedToken() {
         )}
         {isAdd && (
           <form
-            className="border border-[#16263B] rounded-lg p-4 w-150 flex gap-3"
+            className="border border-[#16263B] rounded-lg p-4 w-232 flex gap-3"
             onSubmit={_onAdd}
           >
             <input
               placeholder="Token Name"
-              className="border border-[#16263B] rounded-lg py-2 px-4 w-80 bg-[#0F1626]"
+              className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0F1626] text-sm"
               onChange={(e) => setname(e.target.value)}
               value={name}
             />
-
+            <input
+              placeholder="Token Address"
+              className="border border-[#16263B] rounded-lg py-2 px-4 w-100 bg-[#0F1626] text-sm"
+              onChange={(e) => setaddress(e.target.value)}
+              value={address}
+            />
             <button
-              className="btn1 w-64 text-center"
-              style={{ padding: 11 }}
+              className="btn1 w-42 text-center text-sm"
+              style={{ padding: 11, fontSize: 13 }}
               type="submit"
             >
               Add Token
             </button>
             <div
-              className="btn2 w-64 text-center"
-              style={{ padding: 11 }}
+              className="btn2 w-42 text-center text-sm"
+              style={{ padding: 11, fontSize: 13 }}
               onClick={() => setisAdd(false)}
             >
               Cancel
@@ -135,15 +146,15 @@ function VerifiedToken() {
         )}
         <div className="flex gap-2 mt-5">
           <div
-            className={"btn1 w-52 text-center " + (busy ? "busybtn" : "")}
-            style={{ padding: 11 }}
+            className={"btn1 w-46 text-center " + (busy ? "busybtn" : "")}
+            style={{ padding: 11 , fontSize: 15 }}
             onClick={_onSave}
           >
             Save Changes
           </div>
           <div
-            className={"btn2 w-52 text-center " + (busy ? "busybtn" : "")}
-            style={{ padding: 11 }}
+            className={"btn2 w-46 text-center " + (busy ? "busybtn" : "")}
+            style={{ padding: 11 , fontSize: 15 }}
             onClick={_onCancel}
           >
             Cancel

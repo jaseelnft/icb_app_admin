@@ -10,7 +10,7 @@ export default function DashboardPage() {
   const data = useSelector((state: any) => state.data.dashboard);
 
   useEffect(() => {
-    getStatistics()
+    getStatistics();
   }, []);
 
   const _getHike = (last: number, prev: number) => {
@@ -60,14 +60,14 @@ export default function DashboardPage() {
   ) => {
     return (
       <div
-        className="px-6 py-7 rounded-[20px] border border-[#0110224D] relative w-[240px] h-[240px] overflow-hidden bg-no-repeat cursor-pointer"
+        className="px-6 py-7 rounded-[20px] border border-[#0110224D] relative w-60 h-60 overflow-hidden bg-no-repeat cursor-pointer"
         style={{ backgroundImage: `url(${bg})` }}
         onClick={() => navigate(path)}
       >
         <img src={ic} />
         <div className="mt-4">{title}</div>
         <div className="font-[ClashDisplay] text-[26px]">{value}</div>
-        <div className="flex items-center gap-1 mt-3 text-[#C7CCD2] text-[14px]">
+        <div className="flex items-center gap-1 mt-3 text-[#C7CCD2] text-sm">
           {_getHike(last, prev)}
           {last}&nbsp;in 24h
         </div>
@@ -86,11 +86,11 @@ export default function DashboardPage() {
   ) => {
     return (
       <div
-        className="rounded-[20px] relative w-[500px] h-[120px] overflow-hidden bg-no-repeat p-6 flex gap-4 items-center cursor-pointer"
+        className="rounded-[20px] relative max-w-125 w-[calc(100%-144px)] h-30 overflow-hidden bg-no-repeat p-6 flex gap-4 items-center cursor-pointer"
         style={{ backgroundImage: `url(${BG.db})` }}
         onClick={() => navigate(path)}
       >
-        <img src={ic} />
+        <img src={ic} className="w-18" />
         <div className="w-full">
           <div className="text-[#4F8FE1] text-[20px]">{title}</div>
           <div className="text-[#C7CCD2] flex items-center justify-between mt-2">
@@ -108,8 +108,8 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="p-8 flex justify-center">
-      <div className="max-w-[1100px] p-8 flex flex-wrap justify-center gap-5">
+    <div className="p-8 flex items-center flex-col">
+      <div className="max-w-[1100px] p-8 flex flex-wrap justify-center gap-3 lg:gap-5">
         {_each1(
           "Total Investments",
           formatICBX(data.investment || "0"),
@@ -146,6 +146,8 @@ export default function DashboardPage() {
           IC.txn,
           "transactions"
         )}
+      </div>
+      <div className="max-w-[1100px] p-8 flex flex-wrap justify-center gap-3 lg:gap-5">
         {_each2(
           "Total Users in Chalenge",
           data?.challengeUsers?.total || "0",

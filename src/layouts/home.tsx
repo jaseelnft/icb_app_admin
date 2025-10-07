@@ -38,7 +38,7 @@ export default function HomeLayout() {
   if (busy) return <LoadingPage />;
   return (
     <div className="flex w-full h-[100vh]">
-      <div className="min-w-[260px] bg-[#011022] p-6 border-r border-[#FFFFFF1A] flex flex-col justify-between items-center">
+      <div className="min-w-[260px] bg-[#011022] p-6 border-r border-[#FFFFFF1A] flex flex-col justify-between items-center hidden lg:flex">
         <div className="w-full">
           <img src={Logo.appFull} className="h-15" />
           <div className="bg-gradient-to-r from-[#101B2D] to-[#182842]" />

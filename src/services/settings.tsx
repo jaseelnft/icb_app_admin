@@ -8,7 +8,7 @@ export async function getVerifideToken(): Promise<any> {
 }
 
 export async function updateVerifideToken(body_: any[]): Promise<any> {
-  const body = body_.map(({ name }) => ({ name }));
+  const body = body_.map(({ name, address }) => ({ name, address }));
   let res = await api.put("api/admin/settings/verified-tokens", body);
   return res.data;
 }
