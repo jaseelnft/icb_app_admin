@@ -58,7 +58,7 @@ export default function SupportPage() {
 
   return (
     <div className="p-4 flex justify-center">
-      <div className="max-w-275 w-full flex gap-3">
+      <div className="max-w-275 w-full flex flex-col lg:flex-row gap-3">
         <div className="min-w-75 border border-[#16263B] h-[calc(100vh-121px)] bg-[#010513] rounded-[16px] p-4">
           {chats.map((it: any, k: number) => (
             <div
