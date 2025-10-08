@@ -92,7 +92,7 @@ export default function SupportPage() {
           {!chat.empty && (
             <form onSubmit={_onSubmit} className="h-full flex flex-col">
               <div className="flex items-center justify-between py-5 px-6">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 overflow-hidden">
                   <img src="/favicon.svg" className="w-10" />
                   <div>
                     <div className="font-bold">
@@ -107,11 +107,11 @@ export default function SupportPage() {
                   </div>
                 </div>
                 <div
-                  className="btn1"
-                  style={{ padding: "11px 24px" }}
+                  className="btn1 text-nowrap"
+                  style={{ padding: "11px 24px", fontSize: 14 }}
                   onClick={() => _onCloseChat()}
                 >
-                  Close the Ticket
+                  Close Ticket
                 </div>
               </div>
               <div className="bg-gradient-to-r from-[#010513] via-[#4D91FE] to-[#010513] w-full min-h-[1px]" />
