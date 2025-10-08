@@ -16,7 +16,7 @@ export default function AuthLayout() {
         className="absolute top-0 left-0 w-full h-full object-cover"
         src={BG.login}
       />
-      <div className="border-2 border-[#4F8FE14D] bg-[#010513] rounded-[24px] p-15 relative overflow-hidden max-w-[480px] w-full m-4">
+      <div className="border-2 border-[#4F8FE14D] bg-[#010513] rounded-[24px] p-8 lg:p-15 relative overflow-hidden max-w-[480px] w-full m-4">
         <img
           className="absolute top-0 left-0 w-full h-full object-cover opacity-20"
           src={BG.login2}
