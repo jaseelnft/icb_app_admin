@@ -56,6 +56,10 @@ export default function SupportPage() {
     }
   }
 
+  const _makeActivity = (s: string) => {
+    if (s === "ON") return <div className="w-2 h-2 bg-[#00B676] rounded-full" />;
+  };
+
   return (
     <div className="p-4 flex justify-center">
       <div className="max-w-275 w-full flex flex-col lg:flex-row gap-3">
@@ -73,14 +77,10 @@ export default function SupportPage() {
             >
               <div className="flex justify-between">
                 {it.registerd ? "Registerd User" : "Gust User"}
-                <div>{it.activity}</div>
-                {/* <div className="text-xs">
-                {it.registerd ? it.userId : it.accesLogId}
-              </div> */}
+                {_makeActivity(it.activity)}
               </div>
               <div className="text-xs">
                 {it.unattended > 0 && ` New-${it.unattended} `}
-                {/* {it.status} */}
               </div>
             </div>
           ))}
