@@ -57,7 +57,9 @@ export default function SupportPage() {
   }
 
   const _makeActivity = (s: string) => {
-    if (s === "ON") return <div className="w-2 h-2 bg-[#00B676] rounded-full" />;
+    if (s === "ON")
+      return <div className="w-2 h-2 bg-[#00B676] rounded-full" />;
+    else return <div className="w-2 h-2 bg-[gray] rounded-full" />;
   };
 
   return (
@@ -75,13 +77,20 @@ export default function SupportPage() {
                   : { background: "#011022" }
               }
             >
-              <div className="flex justify-between">
-                {it.registerd ? "Registerd User" : "Gust User"}
-                {_makeActivity(it.activity)}
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  {_makeActivity(it.activity)}
+                  {it.registerd ? "Registerd User" : "Gust User"}
+                </div>
+                {it.unattended > 0 && (
+                  <div className="bg-[red] text-[10px] rounded-full w-4 h-4 text-center  border">
+                    {it.unattended < 10 ? it.unattended : "9+"}
+                  </div>
+                )}
               </div>
-              <div className="text-xs">
+              {/* <div className="text-xs">
                 {it.unattended > 0 && ` New-${it.unattended} `}
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
