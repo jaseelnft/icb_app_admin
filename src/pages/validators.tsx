@@ -50,7 +50,7 @@ export default function ValidatorsPage() {
         <EditValidator done={() => _loadDatas()} />
       </div>
       <div className="flex flex-wrap gap-5 max-w-[1020px] w-full mt-10">
-        <div className="flex flex-col items-center w-full" >
+        <div className="flex flex-col items-center w-full">
           {busy && <div className="text-center text-sm p-4">Loading...</div>}
           {datas.length < 1 && (
             <div className="text-center text-sm p-4">No Data</div>
@@ -80,7 +80,7 @@ export default function ValidatorsPage() {
               <div className="flex justify-between align-center">
                 <div className="text-[18px]">Total Invested</div>
                 <div className="text-[20px] font-[600]">
-                  {/* {formatNumber(formatEther(it.invested))}{" "} */}
+                  {formatNumber(formatEther(it.invested))}{" "}
                   <span className="text-[#4F8FE1]">ICBX</span>
                 </div>
               </div>
@@ -95,11 +95,15 @@ export default function ValidatorsPage() {
               <div className="flex justify-between items-center mt-6">
                 <div className="text-[18px] font-[600] flex gap-2">
                   <img src={IC.usersWhite} /> Investors &nbsp;&nbsp;|
-                  <span className="text-[#4F8FE1]">10</span>
+                  <span className="text-[#4F8FE1]">{it.investors}</span>
                 </div>
                 <div>
-                  {/* {formatNumber(formatEther(getFreeSpace(it) || "0"))} ICBX */}
-                  &nbsp;/&nbsp;
+                  {/* {formatNumber(
+                    formatEther(
+                      String(Number(it.capacity) - Number(it.invested))
+                    )
+                  )}{" "}
+                  ICBX &nbsp;/&nbsp; */}
                   {formatNumber(formatEther(it.capacity))} ICBX
                 </div>
               </div>
