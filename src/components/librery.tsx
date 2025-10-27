@@ -9,6 +9,10 @@ import ICwithdraw from "../assets/icons/ICwithdraw.svg";
 import ICwithdraw_ from "../assets/icons/ICwithdraw_.svg";
 import ICgear from "../assets/icons/ICgear.svg";
 import ICgear_ from "../assets/icons/ICgear_.svg";
+import ICsell from "../assets/icons/ICsell.svg";
+import ICsell_ from "../assets/icons/ICsell_.svg";
+import ICpayments from "../assets/icons/ICpayments.svg";
+import ICpayments_ from "../assets/icons/ICpayments_.svg";
 import ICtrophy from "../assets/icons/ICtrophy.svg";
 import ICtrophy_ from "../assets/icons/ICtrophy_.svg";
 import ICcard from "../assets/icons/ICcard.svg";
@@ -39,6 +43,7 @@ import ICeye1 from "../assets/icons/ICeye1.svg";
 import ICgraphUp from "../assets/icons/ICgraphUp.svg";
 import ICgraphDown from "../assets/icons/ICgraphDown.svg";
 import ICsend from "../assets/icons/ICsend.svg";
+import ICdropArrow from "../assets/icons/ICdropArrow.svg";
 
 import BGlogin from "../assets/images/BGlogin.webp";
 import BGlogin2 from "../assets/images/BGlogin2.webp";
@@ -62,6 +67,10 @@ export class IC {
   static withdraw_ = ICwithdraw_;
   static gear = ICgear;
   static gear_ = ICgear_;
+  static sell = ICsell;
+  static sell_ = ICsell_;
+  static payments = ICpayments;
+  static payments_ = ICpayments_;
   static trophy = ICtrophy;
   static trophy_ = ICtrophy_;
   static card = ICcard;
@@ -94,6 +103,7 @@ export class IC {
   static graphUp = ICgraphUp;
   static graphDown = ICgraphDown;
   static send = ICsend;
+  static dropArrow = ICdropArrow;
 }
 
 export class BG {

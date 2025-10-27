@@ -35,7 +35,12 @@ export default function LoginPage() {
         type="email"
         id="email"
       />
-      <button className={`btn1 w-full mt-16 ${busy ? "busybtn" : ""}`}>
+      <button
+        className={
+          "ShadedBtn flex justify-center items-center rounded-full h-13 font-[600] w-full mt-16" +
+          (busy ? " BusyBtn" : "")
+        }
+      >
         Send OTP
       </button>
     </form>

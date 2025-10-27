@@ -32,8 +32,8 @@ body {
   color: #e8e8e8;
 }
 
-.btn1 {
-  border-radius: 56px;
+.ShadedBtn {
+  color: white;
   background: radial-gradient(107% 86% at 86% 88%, #0000003b 0%, #00000000 86%),
     radial-gradient(
       84% 84% at 26% 20%,
@@ -43,14 +43,10 @@ body {
     ),
     #256dc9;
   box-shadow: -2px -2px 4px 0px #ffffff26 inset, 2px 20px 32px 0px #00000080;
-  color: white;
-  padding: 14px 42px;
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
   cursor: pointer;
 }
-.btn1.red {
+
+.ShadedBtn.Red {
   background: radial-gradient(107% 86% at 86% 88%, #0000003b 0%, #00000000 86%),
     radial-gradient(
       84% 84% at 26% 21%,
@@ -60,8 +56,8 @@ body {
     ),
     #df3a45;
 }
-.btn2 {
-  border-radius: 56px;
+
+.ShadedBtn.Black {
   border: 1px solid #256dc9;
   background: radial-gradient(
       107% 85.59% at 86% 88%,
@@ -75,21 +71,16 @@ body {
       #ffffff00 100%
     ),
     #011022;
-  box-shadow: -2px -2px 4px 0px #ffffff26 inset, 2px 20px 32px 0px #00000080;
-  color: #4f8fe1;
-  padding: 14px 42px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
 }
 
-.busybtn {
+.BusyBtn {
   opacity: 0.2;
   animation: pulse 1.5s infinite ease-in-out;
   transition: all 0.2s ease-in-out;
   cursor: not-allowed;
   filter: grayscale(0.8);
 }
+
 @keyframes pulse {
   0%,
   100% {

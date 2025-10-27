@@ -116,8 +116,7 @@ export default function SupportPage() {
                   </div>
                 </div>
                 <div
-                  className="btn1 text-nowrap"
-                  style={{ padding: "11px 24px", fontSize: 14 }}
+                  className="ShadedBtn flex justify-center items-center rounded-full h-10 font-[600] w-36 text-sm"
                   onClick={() => _onCloseChat()}
                 >
                   Close Ticket

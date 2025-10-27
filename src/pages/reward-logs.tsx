@@ -63,7 +63,10 @@ export default function RewardLogsPage() {
           {/* <div className="text-sm text-[orange]">Pending on 10-10-2025</div> */}
         </div>
         <button
-          className={"btn1" + (busy ? " busybtn" : "")}
+          className={
+            "ShadedBtn flex justify-center items-center rounded-full h-12 font-[600] w-46" +
+            (busy ? " BusyBtn" : "")
+          }
           onClick={_onUpdate}
         >
           Update Balance

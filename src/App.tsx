@@ -14,6 +14,9 @@ import LoadingPage from "./components/loadingPage";
 import { useEffect, useState } from "react";
 import { setBasicConfig } from "./services/config";
 import SupportPage from "./pages/support";
+import OrdersPage from "./pages/orders";
+import PaymentsPage from "./pages/payments";
+import AdminsPage from "./pages/admins";
 
 function App() {
   const [busy, setbusy] = useState(true);
@@ -35,7 +38,10 @@ function App() {
           <Route path="reward-logs" element={<RewardLogsPage />} />
           <Route path="transactions" element={<TransactionsPage />} />
           <Route path="support" element={<SupportPage />} />
+          <Route path="orders" element={<OrdersPage />} />
+          <Route path="payments" element={<PaymentsPage />} />
           <Route path="app-settings" element={<AppSettingsPage />} />
+          <Route path="admins" element={<AdminsPage />} />
           <Route path="*" element={<DashboardPage />} />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>

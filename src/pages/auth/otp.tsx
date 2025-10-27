@@ -36,7 +36,12 @@ export default function OTPPage() {
         autoFocus
         id="otp"
       />
-      <button className={`btn1 w-full mt-16 ${busy ? "busybtn" : ""}`}>
+      <button
+        className={
+          "ShadedBtn flex justify-center items-center rounded-full h-13 font-[600] w-full mt-16" +
+          (busy ? " BusyBtn" : "")
+        }
+      >
         Verify & Continue
       </button>
       <div className="text-center w-full mt-4 lg:mt-6 text-[12px] lg:text-[14px]">

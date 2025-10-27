@@ -226,11 +226,20 @@ function AproveBtn({ it, done }: any) {
           onChange={(e) => sethash(e.target.value)}
         />
         <div className="flex gap-4 mt-12">
-          <button className="btn2 w-full" onClick={() => seton(false)}>
+          <button
+            className={
+              "ShadedBtn Black flex justify-center items-center rounded-full h-12 font-[600] w-full" +
+              (busy ? " BusyBtn" : "")
+            }
+            onClick={() => seton(false)}
+          >
             Cancel
           </button>
           <button
-            className={"btn1 w-full" + (busy ? " busybtn" : "")}
+            className={
+              "ShadedBtn flex justify-center items-center rounded-full h-12 font-[600] w-full" +
+              (busy ? " BusyBtn" : "")
+            }
             onClick={_confirm}
           >
             Confirm & Approve
@@ -285,11 +294,20 @@ function RejectBtn({ it, done }: any) {
           onChange={(e) => setnote(e.target.value)}
         />
         <div className="flex gap-4 mt-12">
-          <button className="btn2 w-full" onClick={() => seton(false)}>
+          <button
+            className={
+              "ShadedBtn Black flex justify-center items-center rounded-full h-12 font-[600] w-full" +
+              (busy ? " BusyBtn" : "")
+            }
+            onClick={() => seton(false)}
+          >
             Cancel
           </button>
           <button
-            className={"btn1 red w-full" + (busy ? " busybtn" : "")}
+            className={
+              "ShadedBtn flex justify-center items-center rounded-full h-12 font-[600] w-full" +
+              (busy ? " BusyBtn" : "")
+            }
             onClick={_rejects}
           >
             Reject Request

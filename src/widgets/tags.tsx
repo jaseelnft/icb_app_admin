@@ -4,16 +4,27 @@ export function StatusTags({ status }: { status: string }) {
   let s2 = "w-2 h-2 bg-[#00B676] rounded-[4px] mt-[1px]";
   if (status === "succes") {
     status = "Aproved";
-  } else if (status === "rejected") {
-    status = "Rejected";
+  } else if (
+    status === "rejected" ||
+    status === "CANCELLED" ||
+    status === "ERROR"
+  ) {
+    if (status === "CANCELLED") status = "Cancelled";
+    else if (status === "ERROR") status = "Error";
+    else status = "Rejected";
     s1 =
       "bg-[#DF3A451A] px-2 py-1 rounded-[4px] text-xs text-[#DF3A45] font-[600] flex items-center gap-1";
     s2 = "w-2 h-2 bg-[#DF3A45] rounded-[4px] mt-[1px]";
-  } else if (status === "pending") {
+  } else if (status === "pending" || status === "PENDING") {
     status = "Pending";
     s1 =
       "bg-[#F17F1B1A] px-2 py-1 rounded-[4px] text-xs text-[#F1941B] font-[600] flex items-center gap-1";
     s2 = "w-2 h-2 bg-[#F1941B] rounded-[4px] mt-[1px]";
+  } else if (status === "INIT") {
+    status = "Initated";
+    s1 =
+      "bg-[#4F8FE11A] px-2 py-1 rounded-[4px] text-xs text-[#4F8FE1] font-[600] flex items-center gap-1";
+    s2 = "w-2 h-2 bg-[#4F8FE1] rounded-[4px] mt-[1px]";
   }
   return (
     <div className={s1}>

@@ -44,9 +44,6 @@ export default function ValidatorsPage() {
         <div className="font-bold font-[ClashDisplay] text-xl">
           Validators Server
         </div>
-        {/* <button className="btn1" style={{ fontSize: 14, fontWeight: 400 }}>
-          + Add New Validator
-        </button> */}
         <EditValidator done={() => _loadDatas()} />
       </div>
       <div className="flex flex-wrap gap-5 max-w-[1020px] w-full mt-10">
@@ -162,7 +159,10 @@ function EditValidator({ it, done }: any) {
 
   return (
     <>
-      <button className="btn1 flex gap-2" onClick={() => seton(true)}>
+      <button
+        className="ShadedBtn flex gap-2 justify-center items-center rounded-full h-12 font-[600] w-46"
+        onClick={() => seton(true)}
+      >
         <img src={isnew ? IC.plus : IC.edit} />
         {isnew ? "Add" : "Edit"} Validator
       </button>
@@ -196,11 +196,20 @@ function EditValidator({ it, done }: any) {
           onChange={(e) => setcapacity(e.target.value)}
         />
         <div className="flex gap-4 mt-12">
-          <button className="btn2 w-full" onClick={() => seton(false)}>
+          <button
+            className={
+              "ShadedBtn Black flex justify-center items-center rounded-full h-14 font-[600] w-full" +
+              (busy ? " BusyBtn" : "")
+            }
+            onClick={() => seton(false)}
+          >
             Cancel
           </button>
           <button
-            className={"btn1 w-full" + (busy ? " busybtn" : "")}
+            className={
+              "ShadedBtn flex justify-center items-center rounded-full h-14 font-[600] w-full" +
+              (busy ? " BusyBtn" : "")
+            }
             onClick={_onSubmit}
           >
             Save

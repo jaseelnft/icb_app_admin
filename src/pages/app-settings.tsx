@@ -11,16 +11,6 @@ import { showToast } from "../services/toast";
 export default function AppSettingsPage() {
   return (
     <div className="h-full text-[#C7CCD2] p-8 flex flex-col gap-4">
-      {/* <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="24px"
-        viewBox="0 -960 960 960"
-        width="24px"
-        fill="#e3e3e3"
-      >
-        <path d="M756-120 537-339l84-84 219 219-84 84Zm-552 0-84-84 276-276-68-68-28 28-51-51v82l-28 28-121-121 28-28h82l-50-50 142-142q20-20 43-29t47-9q24 0 47 9t43 29l-92 92 50 50-28 28 68 68 90-90q-4-11-6.5-23t-2.5-24q0-59 40.5-99.5T701-841q15 0 28.5 3t27.5 9l-99 99 72 72 99-99q7 14 9.5 27.5T841-701q0 59-40.5 99.5T701-561q-12 0-24-2t-23-7L204-120Z" />
-      </svg>
-      &nbsp; App Settings Page Under Development */}
       <VerifiedToken />
       <TwitterSetUp />
     </div>
@@ -90,11 +80,11 @@ function VerifiedToken() {
         </div>
       </div>
       <div className="px-6 py-8">
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-wrap">
           {datas.map((it, k) => (
             <div
               key={k}
-              className="mb-4 border border-[#16263B] rounded-lg p-2 pl-3 text-sm flex gap-2 items-center font-[500] bg-[#1A2A45]"
+              className="border border-[#16263B] rounded-lg p-2 pl-3 text-sm flex gap-2 items-center font-[500] bg-[#1A2A45]"
               style={{ background: it.new ? "transparent" : "" }}
             >
               <div>
@@ -135,15 +125,13 @@ function VerifiedToken() {
               value={address}
             />
             <button
-              className="btn1 w-42 text-center text-sm"
-              style={{ padding: 11, fontSize: 13 }}
+              className="ShadedBtn flex justify-center items-center rounded-full h-11 font-[600] w-46 text-sm"
               type="submit"
             >
               Add Token
             </button>
             <div
-              className="btn2 w-42 text-center text-sm"
-              style={{ padding: 11, fontSize: 13 }}
+              className="ShadedBtn Black flex justify-center items-center rounded-full h-11 font-[600] w-46 text-sm"
               onClick={() => setisAdd(false)}
             >
               Cancel
@@ -152,15 +140,19 @@ function VerifiedToken() {
         )}
         <div className="flex gap-2 mt-5">
           <div
-            className={"btn1 w-46 text-center " + (busy ? "busybtn" : "")}
-            style={{ padding: 11, fontSize: 15 }}
+            className={
+              "ShadedBtn flex justify-center items-center rounded-full h-12 font-[600] w-46" +
+              (busy ? " BusyBtn" : "")
+            }
             onClick={_onSave}
           >
             Save Changes
           </div>
           <div
-            className={"btn2 w-46 text-center " + (busy ? "busybtn" : "")}
-            style={{ padding: 11, fontSize: 15 }}
+            className={
+              "ShadedBtn Black flex justify-center items-center rounded-full h-12 font-[600] w-46" +
+              (busy ? " BusyBtn" : "")
+            }
             onClick={_onCancel}
           >
             Cancel
@@ -234,11 +226,11 @@ function TwitterSetUp() {
         </div>
       </div>
       <div className="px-6 py-8">
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-wrap">
           {datas.map((it, k) => (
             <div
               key={k}
-              className="mb-4 border border-[#16263B] rounded-lg p-2 pl-3 text-sm flex gap-2 items-center font-[500] bg-[#1A2A45]"
+              className="border border-[#16263B] rounded-lg p-2 pl-3 text-sm flex gap-2 items-center font-[500] bg-[#1A2A45]"
               style={{ background: it.new ? "transparent" : "" }}
             >
               <div>
@@ -279,15 +271,13 @@ function TwitterSetUp() {
               value={id}
             />
             <button
-              className="btn1 w-42 text-center text-sm"
-              style={{ padding: 11, fontSize: 13 }}
+              className="ShadedBtn flex justify-center items-center rounded-full h-11 font-[600] w-46 text-sm"
               type="submit"
             >
               Add Post
             </button>
             <div
-              className="btn2 w-42 text-center text-sm"
-              style={{ padding: 11, fontSize: 13 }}
+              className="ShadedBtn Black flex justify-center items-center rounded-full h-11 font-[600] w-46 text-sm"
               onClick={() => setisAdd(false)}
             >
               Cancel
@@ -296,15 +286,19 @@ function TwitterSetUp() {
         )}
         <div className="flex gap-2 mt-5">
           <div
-            className={"btn1 w-46 text-center " + (busy ? "busybtn" : "")}
-            style={{ padding: 11, fontSize: 15 }}
+            className={
+              "ShadedBtn flex justify-center items-center rounded-full h-12 font-[600] w-46" +
+              (busy ? " BusyBtn" : "")
+            }
             onClick={_onSave}
           >
             Save Changes
           </div>
           <div
-            className={"btn2 w-46 text-center " + (busy ? "busybtn" : "")}
-            style={{ padding: 11, fontSize: 15 }}
+            className={
+              "ShadedBtn Black flex justify-center items-center rounded-full h-12 font-[600] w-46" +
+              (busy ? " BusyBtn" : "")
+            }
             onClick={_onCancel}
           >
             Cancel

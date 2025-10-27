@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { IC, Logo } from "../components/librery";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { IC, Logo } from "../components/librery";
 import { Popup1 } from "./popup";
 import { APP_VERSION, appLogOut, connectWs } from "../services/config";
 import { getDetails } from "../services/dashboard";
@@ -9,7 +9,9 @@ import LoadingPage from "../components/loadingPage";
 export default function HomeLayout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
   const [busy, setbusy] = useState(true);
+  const [main, setmain] = useState("MAIN");
 
   useEffect(() => {
     getDetails()
@@ -19,10 +21,11 @@ export default function HomeLayout() {
     connectWs();
   }, []);
 
-  const _eachSide = (title: string, value: string, i1: string, i2: string) => {
+  const eachSide = (title: string, value: string, i1: string, i2: string) => {
     return (
       <div
-        className={`mt-3 px-4 h-12 text-[14px] text-[#A5A7AA] flex items-center cursor-pointer relative w-full ${
+        key={value}
+        className={`mt-2 px-4 h-12 text-[14px] text-[#A5A7AA] flex items-center cursor-pointer relative w-full ${
           pathname === `/${value}` ? "rounded rounded-[8px] bg-[#0E1C2F]" : ""
         }`}
         onClick={() => navigate(value)}
@@ -35,6 +38,33 @@ export default function HomeLayout() {
     );
   };
 
+  const mainSet = (v: string, l: any[]) => {
+    return (
+      <>
+        <div
+          key={v}
+          className="text-[11px] text-[#C7CCD2] px-3 py-3 font-[600] cursor-pointer flex justify-between"
+          onClick={() => setmain(v)}
+        >
+          {v}
+          <img
+            src={IC.dropArrow}
+            className="w-2"
+            style={v === main ? { transform: "rotate(180deg)" } : {}}
+          />
+        </div>
+        <div
+          className="max-h-0 transition-all duration-300 ease-in-out overflow-hidden"
+          style={v === main ? { maxHeight: 800 } : {}}
+        >
+          {l}
+          <div className="my-5" />
+          {/* <div className="bg-[#16263B] h-[2px] my-4" /> */}
+        </div>
+      </>
+    );
+  };
+
   if (busy) return <LoadingPage />;
   return (
     <div className="flex w-full h-[100vh]">
@@ -43,24 +73,28 @@ export default function HomeLayout() {
           <img src={Logo.appFull} className="h-15" />
           <div className="bg-gradient-to-r from-[#101B2D] to-[#182842]" />
           <div className="h-[2px] w-full bg-gradient-to-r from-[#011022] via-[#3D6FAE] to-[#011022] mt-5 mb-8"></div>
-          <div className="text-[11px] text-[#C7CCD2] px-3 font-[600]">MAIN</div>
-          {_eachSide("Dashboard", "", IC.dashboard, IC.dashboard_)}
-          {_eachSide("Users", "users", IC.users, IC.users_)}
-          {_eachSide("Validator", "validator", IC.validator, IC.validator_)}
-          {_eachSide(
-            "Withdraw Request",
-            "withdraw-requests",
-            IC.withdraw,
-            IC.withdraw_
-          )}
-          {_eachSide("Reward Logs", "reward-logs", IC.trophy, IC.trophy_)}
-          {_eachSide("Transactions", "transactions", IC.card, IC.card_)}
-          {_eachSide("Support", "support", IC.support, IC.support_)}
-          <div className="bg-[#16263B] h-[2px] my-6" />
-          <div className="text-[11px] text-[#C7CCD2] px-3 font-[600]">
-            SETTINGS
-          </div>
-          {_eachSide("App Settings", "app-settings", IC.gear, IC.gear_)}
+          {mainSet("MAIN", [
+            eachSide("Dashboard", "", IC.dashboard, IC.dashboard_),
+            eachSide("Users", "users", IC.users, IC.users_),
+            eachSide("Validator", "validator", IC.validator, IC.validator_),
+            eachSide(
+              "Withdraw Request",
+              "withdraw-requests",
+              IC.withdraw,
+              IC.withdraw_
+            ),
+            eachSide("Reward Logs", "reward-logs", IC.trophy, IC.trophy_),
+            eachSide("Transactions", "transactions", IC.card, IC.card_),
+            eachSide("Support", "support", IC.support, IC.support_),
+          ])}
+          {mainSet("SALES", [
+            eachSide("Orders", "orders", IC.sell, IC.sell_),
+            eachSide("Payments", "payments", IC.payments, IC.payments_),
+          ])}
+          {mainSet("SETTINGS", [
+            eachSide("App Settings", "app-settings", IC.gear, IC.gear_),
+            eachSide("Admins", "admins", IC.users, IC.users_),
+          ])}
         </div>
         <div className="w-[80%]">
           <Logout />
@@ -80,7 +114,10 @@ export default function HomeLayout() {
             {pathname === `/reward-logs` && "Reward Logs"}
             {pathname === `/transactions` && "Transactions"}
             {pathname === `/support` && "Support"}
+            {pathname === `/orders` && "Orders"}
+            {pathname === `/payments` && "Payments"}
             {pathname === `/app-settings` && "App Settings"}
+            {pathname === `/admins` && "Admins"}
           </div>
         </div>
         <div className="h-[calc(100vh-88px)] overflow-auto bg-gradient-to-b from-[#101B2D] via-[#142442] to-[#101B2D]">
@@ -116,13 +153,13 @@ function Logout() {
           <br /> <br />
           <div className="flex gap-[22px]">
             <button
-              className="btn2 w-[190px]"
+              className="ShadedBtn Black rounded-full h-13 font-[600] w-48"
               onClick={() => setselected(false)}
             >
               Cancel
             </button>
             <button
-              className="btn1 w-[190px]"
+              className="ShadedBtn rounded-full h-13 font-[600] w-48"
               onClick={() => {
                 navigate("/auth/login");
                 appLogOut();
