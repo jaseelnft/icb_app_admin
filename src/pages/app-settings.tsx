@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { IC } from "../components/librery";
 import {
+  getBuyICBXstatus,
   getTwitterPosts,
   getVerifideToken,
+  updateBuyICBX,
   updateTwitterPosts,
   updateVerifideToken,
 } from "../services/settings";
@@ -10,9 +12,12 @@ import { showToast } from "../services/toast";
 
 export default function AppSettingsPage() {
   return (
-    <div className="h-full text-[#C7CCD2] p-8 flex flex-col gap-4">
-      <VerifiedToken />
-      <TwitterSetUp />
+    <div className="text-[#C7CCD2] p-8 flex justify-center overflow-auto">
+      <div className="flex flex-col gap-4 max-w-6xl w-full h-full">
+        <VerifiedToken />
+        <TwitterSetUp />
+        <BuyICBX />
+      </div>
     </div>
   );
 }
@@ -109,7 +114,7 @@ function VerifiedToken() {
         )}
         {isAdd && (
           <form
-            className="border border-[#16263B] rounded-lg p-4 w-232 flex gap-3"
+            className="border border-[#16263B] rounded-lg p-4 w-232 flex gap-3 mt-4"
             onSubmit={_onAdd}
           >
             <input
@@ -255,7 +260,7 @@ function TwitterSetUp() {
         )}
         {isAdd && (
           <form
-            className="border border-[#16263B] rounded-lg p-4 w-232 flex gap-3"
+            className="border border-[#16263B] rounded-lg p-4 w-232 flex gap-3 mt-4"
             onSubmit={_onAdd}
           >
             <input
@@ -304,6 +309,55 @@ function TwitterSetUp() {
             Cancel
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function BuyICBX() {
+  const [on, seton] = useState(true);
+  const [busy, setbusy] = useState(true);
+
+  useEffect(() => {
+    _loadData();
+  }, []);
+
+  const _loadData = async () => {
+    setbusy(true);
+    await getBuyICBXstatus()
+      .then((res) => seton(res.active))
+      .catch(() => {});
+    setbusy(false);
+  };
+
+  const onchange = async (s: boolean) => {
+    if (busy) return;
+    setbusy(true);
+    seton(s);
+    await updateBuyICBX(s)
+      .then(() => showToast("Buy ICBX status updated successfully"))
+      .catch(() => {});
+    _loadData();
+  };
+
+  return (
+    <div className="border-[1.5px] border-[#16263B] rounded-[24px] overflow-hidden bg-[#010513] px-7 py-6 flex items-center justify-between">
+      <div>
+        <div className="font-[500] text-xl pb-1">Buy ICBX</div>
+        <div className="text-[15px]">
+          Enable or disable buy ICBX option on your app
+        </div>
+      </div>
+      <div
+        className={
+          (on
+            ? "ShadedBtn justify-end"
+            : "border border-[#4F8FE1] justify-start") +
+          " w-16 h-9 rounded-full flex items-center"
+        }
+        onClick={() => onchange(!on)}
+      >
+        <div className={"ShadedBtn Black w-8 h-8 rounded-full m-[1px]"} />
       </div>
     </div>
   );
