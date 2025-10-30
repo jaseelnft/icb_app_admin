@@ -113,7 +113,9 @@ export default function TransactionsPage() {
             </div>
 
             <div className={elSt + "w-[20%] flex-col items-start text-sm"}>
-              <div className="capitalize mb-1 text-sm">{_it.type}</div>
+              <div className="mb-1 text-sm capitalize">
+                {_it?.type?.toLowerCase()}
+              </div>
               <StatusTags status={_it.status} />
             </div>
           </div>
