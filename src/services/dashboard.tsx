@@ -1,6 +1,7 @@
 import { setDashboard, setUsers, store } from "../redux/store";
 import { api } from "./config";
 import { bigToString, gatEthBalance, haveKYCNFT } from "./ethers";
+import { showToast, showWarningToast } from "./toast";
 
 // START - Basic Details
 export async function getDetails(): Promise<any> {
@@ -83,5 +84,14 @@ export async function getRandomWallets(p: number, s: string): Promise<any> {
   const url = `api/admin/txns/random-wallets?page=${p}&status=${s}`;
   const res = await api.get(url);
   return res.data;
+}
+
+export async function updareRandomWallets(): Promise<any> {
+  try {
+    const res = await api.patch("api/admin/txns/random-wallets");
+    const l = res.data.length;
+    if (l === 0) showWarningToast(`No Wallets updated`);
+    else showToast(`Succefully updated ${l} wallets`);
+  } catch (error) {}
 }
 // END - Random Wallets

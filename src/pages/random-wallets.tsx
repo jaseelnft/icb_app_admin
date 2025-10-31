@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRandomWallets } from "../services/dashboard";
+import { getRandomWallets, updareRandomWallets } from "../services/dashboard";
 import { AddressT } from "../widgets/ethers";
 
 export default function RandomWalletsPage() {
@@ -29,6 +29,10 @@ export default function RandomWalletsPage() {
     _loadDatas(1, e.target.value);
   };
 
+  const onClickUpdate = () => {
+    updareRandomWallets();
+  };
+
   const elSt =
     "px-4 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
@@ -41,7 +45,7 @@ export default function RandomWalletsPage() {
         </div>
       </div>
       <div className="bg-[#010513] border-[1.5px] border-[#010513] mt-6 rounded-[16px] shadow-[0_0_8px_0_#4F8FE129] overflow-hidden w-[calc(100vw-330px)]">
-        <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
+        <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm flex justify-between">
           <select
             className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
             onChange={_onFilterStatus}
@@ -51,6 +55,14 @@ export default function RandomWalletsPage() {
             <option value="ASSIGNED">All Assigned</option>
             <option value="ALL">All Wallets</option>
           </select>
+          {status === "VALID" && total > 0 && (
+            <div
+              className="ShadedBtn rounded-full py-3 px-6 font-bold"
+              onClick={onClickUpdate}
+            >
+              Update wallets
+            </div>
+          )}
         </div>
         <div className="flex text-[14px] px-1">
           <div className={elSt + "py-5 w-[45%]"}>User</div>
