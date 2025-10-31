@@ -64,7 +64,7 @@ export default function UsersPage() {
           <div className="min-w-16" />
           <div className={elSt + "py-5 w-[40%]"}>User</div>
           <div className={elSt + "py-5 w-[34%]"}>Wallet Address</div>
-          <div className={elSt + "py-5 w-[26%] justify-end"}>PICBX Balance</div>
+          <div className={elSt + "py-5 w-[26%] justify-end"}>WICBX Balance</div>
           <div className={elSt + "py-5 w-[26%] justify-end"}>ICBX Balance</div>
           <div className={elSt + "py-5 w-[20%]"}>Action</div>
         </div>

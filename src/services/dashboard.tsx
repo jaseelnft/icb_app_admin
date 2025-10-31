@@ -2,6 +2,7 @@ import { setDashboard, setUsers, store } from "../redux/store";
 import { api } from "./config";
 import { bigToString, gatEthBalance, haveKYCNFT } from "./ethers";
 
+// START - Basic Details
 export async function getDetails(): Promise<any> {
   const res = await api.get("api/admin/details");
   return res.data;
@@ -11,22 +12,17 @@ export async function getStatistics(): Promise<any> {
   try {
     const res = await api.get("api/admin/statistics");
     store.dispatch(setDashboard(res.data));
-    return res.data;
-  } catch (error) {
-    return;
-  }
+  } catch (e) {}
 }
+// END - Basic Details
 
+// START - Users
 export async function getUsers(p: number, s: string): Promise<any> {
   try {
     const res = await api.get(`api/admin/users?page=${p}&search=${s}`);
-    const total = Number(res.headers["x-total"]);
-    const page = Number(res.headers["x-page"]);
 
     const runs = [];
-
-    for (let i = 0; i < res.data.length; i++) {
-      const it = res.data[i];
+    for (let it of res.data.data) {
       runs.push(
         gatEthBalance(it.address).then((res) => (it.icbx = bigToString(res)))
       );
@@ -34,25 +30,20 @@ export async function getUsers(p: number, s: string): Promise<any> {
     }
 
     await Promise.all(runs);
+    res.data.data.map((it: any) => (it.done = true));
 
-    res.data.map((it: any) => (it.done = true));
-
-    store.dispatch(setUsers({ total, page, data: res.data, busy: false }));
-  } catch (error) {
-    console.log("Poottti");
+    store.dispatch(setUsers({ ...res.data, busy: false }));
+  } catch (e) {
+    console.log(e);
   }
 }
+// END - Users
 
-export async function getWithdrawal(
-  page_: number,
-  status: string
-): Promise<any> {
-  const res = await api.get(
-    `api/admin/withdrawal?page=${page_}&status=${status}`
-  );
-  const total = Number(res.headers["x-total"]);
-  const page = Number(res.headers["x-page"]);
-  return { total, page, data: res.data };
+// START - Withdrawal fund
+export async function getWithdrawal(p: number, s: string): Promise<any> {
+  const url = `api/admin/withdrawal?page=${p}&status=${s}`;
+  const res = await api.get(url);
+  return res.data;
 }
 
 export async function aproveWithdraw(
@@ -60,25 +51,20 @@ export async function aproveWithdraw(
   hash: string,
   note: string
 ): Promise<any> {
-  const res = await api.patch(`api/admin/withdrawal/${id}/accept`, {
-    hash,
-    note,
-  });
+  const url = `api/admin/withdrawal/${id}/accept`;
+  const res = await api.patch(url, { hash, note });
   return res.data;
 }
 
 export async function rejectWithdraw(id: string, note: string): Promise<any> {
-  const res = await api.patch(`api/admin/withdrawal/${id}/reject`, {
-    note,
-  });
+  const url = `api/admin/withdrawal/${id}/reject`;
+  const res = await api.patch(url, { note });
   return res.data;
 }
 
 export async function getRewardUsers(p: number, s: string): Promise<any> {
   const res = await api.get(`api/admin/rewards?page=${p}&search=${s}`);
-  const total = Number(res.headers["x-total"]);
-  const page = Number(res.headers["x-page"]);
-  return { total, page, data: res.data };
+  return res.data;
 }
 
 export async function updateRewardBalance(): Promise<any> {
@@ -86,9 +72,16 @@ export async function updateRewardBalance(): Promise<any> {
   return res.data;
 }
 
-export async function getTxns(_p: number, _s: string): Promise<any> {
-  const res = await api.get(`api/admin/txns?page=${_p}&search=${_s}`);
-  const total = Number(res.headers["x-total"]);
-  const page = Number(res.headers["x-page"]);
-  return { total, page, data: res.data };
+export async function getTxns(p: number, s: string): Promise<any> {
+  const res = await api.get(`api/admin/txns?page=${p}&search=${s}`);
+  return res.data;
 }
+// END - Withdrawal fund
+
+// START - Random Wallets
+export async function getRandomWallets(p: number, s: string): Promise<any> {
+  const url = `api/admin/txns/random-wallets?page=${p}&status=${s}`;
+  const res = await api.get(url);
+  return res.data;
+}
+// END - Random Wallets

@@ -50,7 +50,7 @@ export default function HomeLayout() {
           <img
             src={IC.dropArrow}
             className="w-2"
-            style={v === main ? { transform: "rotate(180deg)" } : {}}
+            style={v === main ? { display: "none" } : {}}
           />
         </div>
         <div
@@ -77,15 +77,18 @@ export default function HomeLayout() {
             eachSide("Dashboard", "", IC.dashboard, IC.dashboard_),
             eachSide("Users", "users", IC.users, IC.users_),
             eachSide("Validator", "validator", IC.validator, IC.validator_),
+            eachSide("Reward Logs", "reward-logs", IC.trophy, IC.trophy_),
+            eachSide("Support", "support", IC.support, IC.support_),
+          ])}
+          {mainSet("WICBX", [
             eachSide(
               "Withdraw Request",
               "withdraw-requests",
               IC.withdraw,
               IC.withdraw_
             ),
-            eachSide("Reward Logs", "reward-logs", IC.trophy, IC.trophy_),
+            eachSide("Random Wallets", "random-wallets", IC.payments, IC.payments_),
             eachSide("Transactions", "transactions", IC.card, IC.card_),
-            eachSide("Support", "support", IC.support, IC.support_),
           ])}
           {mainSet("SALES", [
             eachSide("Orders", "orders", IC.sell, IC.sell_),
@@ -112,6 +115,7 @@ export default function HomeLayout() {
             {pathname === `/validator` && "Validators"}
             {pathname === `/withdraw-requests` && "Withdraw Requests"}
             {pathname === `/reward-logs` && "Reward Logs"}
+            {pathname === `/random-wallets` && "Random Wallets"}
             {pathname === `/transactions` && "Transactions"}
             {pathname === `/support` && "Support"}
             {pathname === `/orders` && "Orders"}

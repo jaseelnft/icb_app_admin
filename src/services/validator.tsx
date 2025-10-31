@@ -1,9 +1,12 @@
 import { api } from "./config";
+import { parseEther } from "./simple";
 
 interface ValidatorEditBody {
   name: string;
   address: string;
   capacity: string;
+  earned: string;
+  transferred: string;
 }
 
 export async function getValidators(): Promise<any> {
@@ -11,15 +14,27 @@ export async function getValidators(): Promise<any> {
   return res.data;
 }
 
-export async function createValidator(body: ValidatorEditBody): Promise<any> {
+export async function createValidator(_body: ValidatorEditBody): Promise<any> {
+  const body = {
+    ..._body,
+    capacity: parseEther(_body.capacity),
+    earned: parseEther(_body.earned),
+    transferred: parseEther(_body.transferred),
+  };
   const res = await api.post("api/admin/validators", body);
   return res.data;
 }
 
 export async function updateValidator(
   _id: string,
-  body: ValidatorEditBody
+  _body: ValidatorEditBody
 ): Promise<any> {
+  const body = {
+    ..._body,
+    capacity: parseEther(_body.capacity),
+    earned: parseEther(_body.earned),
+    transferred: parseEther(_body.transferred),
+  };
   const res = await api.put("api/admin/validators/" + _id, body);
   return res.data;
 }

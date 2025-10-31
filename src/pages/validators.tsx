@@ -124,7 +124,13 @@ function EditValidator({ it, done }: any) {
   const [busy, setbusy] = useState(false);
   const [name, setname] = useState(it?.name ?? "");
   const [address, setaddress] = useState(it?.address ?? "");
-  const [capacity, setcapacity] = useState(it?.capacity ?? "");
+  const [capacity, setcapacity] = useState(
+    String(formatEther(it?.capacity ?? "0"))
+  );
+  const [earned, setearned] = useState(String(formatEther(it?.earned ?? "0")));
+  const [transferred, settransferred] = useState(
+    String(formatEther(it?.transferred ?? "0"))
+  );
 
   const isnew = it ? false : true;
 
@@ -135,7 +141,7 @@ function EditValidator({ it, done }: any) {
     if (!isAddress(address)) return showErrorToast("Wrong address");
     if (capacity === "") return showErrorToast("Enter capacity");
 
-    const body = { name, address, capacity }; // TODO:
+    const body = { name, address, capacity, earned, transferred };
 
     setbusy(true);
 
@@ -157,6 +163,10 @@ function EditValidator({ it, done }: any) {
         .finally(() => setbusy(false));
   };
 
+  const labelClass = "text-[#C7CCD2] text-sm mt-6 mb-1";
+  const inputClass =
+    "border border-[#16263B] bg-[#0F1626] rounded-[8px] py-3 px-4 w-full text-sm";
+
   return (
     <>
       <button
@@ -168,37 +178,51 @@ function EditValidator({ it, done }: any) {
       </button>
       <Popup1
         selected={on}
-        className="p-8 max-w-[540px] w-full"
+        className="p-8 max-w-[460px] w-full"
         close={() => seton(false)}
       >
-        <div className="text-[24px] mt-5 mb-2 font-[600]">
+        <div className="text-[24px] mt-3 mb-1 font-[600]">
           {isnew ? "Add" : "Edit"} Validator
         </div>
-        <div className="text-[#C7CCD2] mt-8 mb-2">Validator Name</div>
+        <div className={labelClass}>Validator Name</div>
         <input
           placeholder="e.g. validator server 1"
-          className="border border-[#16263B] bg-[#0F1626] rounded-[8px] py-3 px-5 w-full"
+          className={inputClass}
           value={name}
           onChange={(e) => setname(e.target.value)}
         />
-        <div className="text-[#C7CCD2] mt-8 mb-2">Validator Wallet Address</div>
+        <div className={labelClass}>Validator Wallet Address</div>
         <input
           placeholder="0x..."
-          className="border border-[#16263B] bg-[#0F1626] rounded-[8px] py-3 px-5 w-full"
+          className={inputClass}
           value={address}
           onChange={(e) => setaddress(e.target.value)}
         />
-        <div className="text-[#C7CCD2] mt-8 mb-2">Capacity</div>
+        <div className={labelClass}>Capacity</div>
         <input
           placeholder="0.00"
-          className="border border-[#16263B] bg-[#0F1626] rounded-[8px] py-3 px-5 w-full"
+          className={inputClass}
           value={capacity}
           onChange={(e) => setcapacity(e.target.value)}
         />
-        <div className="flex gap-4 mt-12">
+        <div className={labelClass}>Totel Earned</div>
+        <input
+          placeholder="0.00"
+          className={inputClass}
+          value={earned}
+          onChange={(e) => setearned(e.target.value)}
+        />
+        <div className={labelClass}>Totel Transferd</div>
+        <input
+          placeholder="0.00"
+          className={inputClass}
+          value={transferred}
+          onChange={(e) => settransferred(e.target.value)}
+        />
+        <div className="flex gap-4 mt-8">
           <button
             className={
-              "ShadedBtn Black flex justify-center items-center rounded-full h-14 font-[600] w-full" +
+              "ShadedBtn Black flex justify-center items-center rounded-full h-12 font-[600] w-full" +
               (busy ? " BusyBtn" : "")
             }
             onClick={() => seton(false)}
@@ -207,7 +231,7 @@ function EditValidator({ it, done }: any) {
           </button>
           <button
             className={
-              "ShadedBtn flex justify-center items-center rounded-full h-14 font-[600] w-full" +
+              "ShadedBtn flex justify-center items-center rounded-full h-12 font-[600] w-full" +
               (busy ? " BusyBtn" : "")
             }
             onClick={_onSubmit}

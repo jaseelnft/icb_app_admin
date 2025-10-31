@@ -17,6 +17,7 @@ import SupportPage from "./pages/support";
 import OrdersPage from "./pages/orders";
 import PaymentsPage from "./pages/payments";
 import AdminsPage from "./pages/admins";
+import RandomWalletsPage from "./pages/random-wallets";
 
 function App() {
   const [busy, setbusy] = useState(true);
@@ -36,6 +37,7 @@ function App() {
           <Route path="validator" element={<ValidatorsPage />} />
           <Route path="withdraw-requests" element={<WithdrawalPage />} />
           <Route path="reward-logs" element={<RewardLogsPage />} />
+          <Route path="random-wallets" element={<RandomWalletsPage />} />
           <Route path="transactions" element={<TransactionsPage />} />
           <Route path="support" element={<SupportPage />} />
           <Route path="orders" element={<OrdersPage />} />
