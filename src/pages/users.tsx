@@ -103,12 +103,12 @@ export default function UsersPage() {
                 {_it.haveKYC ? (
                   <div className="flex gap-2 items-center text-[green]">
                     <div className="w-2 h-2 rounded-[4px] bg-[green]" />
-                    KYC Verifide
+                    KYC Verified
                   </div>
                 ) : (
                   <div className="flex gap-2 items-center text-[red]">
                     <div className="w-2 h-2 rounded-[4px] bg-[red]" />
-                    KYC Not Verifide
+                    KYC Not Verified
                   </div>
                 )}
               </div>
