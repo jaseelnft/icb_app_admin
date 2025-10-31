@@ -94,4 +94,5 @@ export async function updareRandomWallets(): Promise<any> {
     else showToast(`Succefully updated ${l} wallets`);
   } catch (error) {}
 }
+
 // END - Random Wallets

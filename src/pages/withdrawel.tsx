@@ -10,6 +10,7 @@ import { IC } from "../components/librery";
 import { Popup1 } from "../layouts/popup";
 import { showErrorToast } from "../services/toast";
 import { StatusTags } from "../widgets/tags";
+import { Paging } from "../components/paging";
 
 export default function WithdrawalPage() {
   const [busy, setbusy] = useState(false);
@@ -128,12 +129,12 @@ export default function WithdrawalPage() {
               <StatusTags status={_it.status} />
             </div>
             <div className={elSt + "w-[20%] gap-2"}>
-              {_it.status === "pending" && (
+              {_it.status === "PENDING" && (
                 <div className="bg-[#00B6761A] border border-[#00B6761A] w-8 h-8 rounded cursor-pointer flex">
                   <AproveBtn it={_it} done={() => _loadDatas(page)} />
                 </div>
               )}
-              {_it.status === "pending" && (
+              {_it.status === "PENDING" && (
                 <div className="bg-[#F93C651A] border border-[#F93C654D] w-8 h-8 rounded cursor-pointer flex">
                   <RejectBtn it={_it} done={() => _loadDatas(page)} />
                 </div>
@@ -141,43 +142,11 @@ export default function WithdrawalPage() {
             </div>
           </div>
         ))}
-
-        {total > 10 && (
-          <div className="flex justify-center py-6 bg-[#011022]">
-            <div className="flex border border-[#16263B] rounded-[8px]">
-              <div
-                className="cursor-pointer py-2 px-4 border-r-1 border-[#16263B]"
-                onClick={() => (page > 1 ? _loadDatas(page - 1) : null)}
-              >
-                Previous
-              </div>
-              {Array.from(
-                { length: Math.ceil(total / 10) },
-                (_, i) => i + 1
-              ).map((it, k) => (
-                <div
-                  onClick={() => _loadDatas(it)}
-                  className={
-                    "cursor-pointer p-2 min-w-9 border-r-1 border-[#16263B] text-center" +
-                    (page === it ? " bg-[#256DC9] text-white" : "")
-                  }
-                  key={k}
-                >
-                  {it}
-                </div>
-              ))}
-
-              <div
-                className="cursor-pointer py-2 px-4"
-                onClick={() =>
-                  page < Math.ceil(total / 10) ? _loadDatas(page + 1) : null
-                }
-              >
-                Next
-              </div>
-            </div>
-          </div>
-        )}
+        <Paging
+          total={total}
+          page={page}
+          reload={(a1: any) => _loadDatas(a1)}
+        />
       </div>
     </div>
   );
@@ -212,9 +181,11 @@ function AproveBtn({ it, done }: any) {
         className="p-8 max-w-[540px] w-full"
         close={() => seton(false)}
       >
-        <img src={IC.succes} className="w-25" />
-        <div className="text-[24px] mt-5 mb-7 font-[600]">
-          Approve Withdrawal Request
+        <div className="flex flex-col items-center">
+          <img src={IC.succes} className="w-25" />
+          <div className="text-[24px] mt-5 mb-7 font-[600]">
+            Approve Withdrawal Request
+          </div>
         </div>
         <div className="text-[#C7CCD2] mb-2">
           Transaction Hash <span className="text-[#DF3A45]">*</span>
@@ -278,9 +249,11 @@ function RejectBtn({ it, done }: any) {
         className="p-8 max-w-[540px] w-full"
         close={() => seton(false)}
       >
-        <img src={IC.error} className="w-25" />
-        <div className="text-[24px] mt-5 mb-2 font-[600]">
-          Reject Withdrawal Request
+        <div className="flex flex-col items-center">
+          <img src={IC.error} className="w-25" />
+          <div className="text-[24px] mt-5 mb-2 font-[600]">
+            Reject Withdrawal Request
+          </div>
         </div>
         <div>
           Are you sure you want to reject this withdrawal request? This action

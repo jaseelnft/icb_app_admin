@@ -13,3 +13,19 @@ export async function getSalesHistory(p: number, s: string): Promise<any> {
     return res.data;
   } catch (error) {}
 }
+
+export async function aproveOrder(
+  id: string,
+  hash: string,
+  note: string
+): Promise<any> {
+  const url = `api/admin/sales/${id}/accept`;
+  const res = await api.patch(url, { hash, note });
+  return res.data;
+}
+
+export async function rejectOrder(id: string, note: string): Promise<any> {
+  const url = `api/admin/sales/${id}/reject`;
+  const res = await api.patch(url, { note });
+  return res.data;
+}
