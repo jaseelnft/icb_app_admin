@@ -66,7 +66,7 @@ export default function UsersPage() {
           <div className={elSt + "py-5 w-[34%]"}>Wallet Address</div>
           <div className={elSt + "py-5 w-[26%] justify-end"}>WICBX Balance</div>
           <div className={elSt + "py-5 w-[26%] justify-end"}>ICBX Balance</div>
-          <div className={elSt + "py-5 w-[20%]"}>Action</div>
+          {/* <div className={elSt + "py-5 w-[20%]"}>Action</div> */}
         </div>
         {busy && <div className="text-center text-sm p-4">Loading...</div>}
         {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
@@ -118,11 +118,11 @@ export default function UsersPage() {
               </div>
             )}
 
-            <div className={elSt + "w-[20%]"}>
+            {/* <div className={elSt + "w-[20%]"}>
               <div className="bg-[#4F8FE11A] border border-[#4F8FE14D] w-8 h-8 rounded cursor-pointer flex">
                 <img src={IC.eye} className="min-w-2 min-h-2 p-[5px]" />
               </div>
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
