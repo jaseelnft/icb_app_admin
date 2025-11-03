@@ -63,7 +63,7 @@ export default function WithdrawalPage() {
             onChange={_onFilterStatus}
             value={status}
           >
-            <option value="">All Requiest</option>
+            <option value="">All Request</option>
             <option value="succes">Approved</option>
             <option value="pending">Pending</option>
             <option value="rejected">Rejected</option>
