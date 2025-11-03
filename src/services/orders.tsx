@@ -14,13 +14,9 @@ export async function getSalesHistory(p: number, s: string): Promise<any> {
   } catch (error) {}
 }
 
-export async function aproveOrder(
-  id: string,
-  hash: string,
-  note: string
-): Promise<any> {
+export async function aproveOrder(id: string, hash: string): Promise<any> {
   const url = `api/admin/sales/${id}/accept`;
-  const res = await api.patch(url, { hash, note });
+  const res = await api.patch(url, { hash });
   return res.data;
 }
 

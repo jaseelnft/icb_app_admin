@@ -5,7 +5,7 @@ import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { weiToICBX } from "../services/ethers";
 import { StatusTags } from "../widgets/tags";
 import { Paging } from "../components/paging";
-import { formatDate } from "../services/simple";
+import { formatDate, isValidHash } from "../services/simple";
 import { Popup1 } from "../layouts/popup";
 import { showErrorToast } from "../services/toast";
 
@@ -147,15 +147,15 @@ function AproveBtn({ it, done }: any) {
   const [hash, sethash] = useState("");
 
   const _confirm = async () => {
-    if (hash === "") return showErrorToast("Enter hash");
+    if (!isValidHash(hash)) return showErrorToast("Enter a valid hash");
     setbusy(true);
-    await aproveOrder(it._id, hash, "")
+    await aproveOrder(it._id, hash)
       .then(() => {
         seton(false);
         done();
       })
-      .catch(() => {})
-      .finally(() => setbusy(false));
+      .catch(() => {});
+    setbusy(false);
   };
 
   return (
@@ -222,8 +222,8 @@ function RejectBtn({ it, done }: any) {
         seton(false);
         done();
       })
-      .catch(() => {})
-      .finally(() => setbusy(false));
+      .catch(() => {});
+    setbusy(false);
   };
 
   return (

@@ -5,7 +5,7 @@ import {
   rejectWithdraw,
 } from "../services/dashboard";
 import { AddressT } from "../widgets/ethers";
-import { formatDate, formatEther } from "../services/simple";
+import { formatDate, formatEther, isValidHash } from "../services/simple";
 import { IC } from "../components/librery";
 import { Popup1 } from "../layouts/popup";
 import { showErrorToast } from "../services/toast";
@@ -158,7 +158,7 @@ function AproveBtn({ it, done }: any) {
   const [hash, sethash] = useState("");
 
   const _confirm = async () => {
-    if (hash === "") return showErrorToast("Enter hash");
+    if (!isValidHash(hash)) return showErrorToast("Enter a valid hash");
     setbusy(true);
     await aproveWithdraw(it._id, hash, "")
       .then(() => {

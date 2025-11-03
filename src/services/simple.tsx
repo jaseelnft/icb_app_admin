@@ -45,3 +45,7 @@ export const formatEther = (value: string): number => {
 export const parseEther = (value: string): string => {
   return String(ethers.parseEther(value));
 };
+
+export const isValidHash = (hash: string) => {
+  return /^0x([A-Fa-f0-9]{64})$/.test(hash);
+};
