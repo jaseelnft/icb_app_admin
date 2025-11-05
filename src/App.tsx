@@ -18,6 +18,7 @@ import OrdersPage from "./pages/orders";
 import PaymentsPage from "./pages/payments";
 import AdminsPage from "./pages/admins";
 import RandomWalletsPage from "./pages/random-wallets";
+import SingleValidator from "./pages/validators/validator";
 
 function App() {
   const [busy, setbusy] = useState(true);
@@ -35,6 +36,7 @@ function App() {
           <Route path="" element={<DashboardPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="validator" element={<ValidatorsPage />} />
+          <Route path="validator/:id" element={<SingleValidator />} />
           <Route path="withdraw-requests" element={<WithdrawalPage />} />
           <Route path="reward-logs" element={<RewardLogsPage />} />
           <Route path="random-wallets" element={<RandomWalletsPage />} />

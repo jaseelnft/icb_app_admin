@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { AddressT } from "../widgets/ethers";
-import { IC } from "../components/librery";
-import { formatEther } from "../services/simple";
-import { Popup1 } from "../layouts/popup";
+import { AddressT } from "../../widgets/ethers";
+import { IC } from "../../components/librery";
+import { formatEther } from "../../services/simple";
+import { Popup1 } from "../../layouts/popup";
 import {
   createValidator,
   getValidators,
   updateValidator,
-} from "../services/validator";
+} from "../../services/validator";
 import { isAddress } from "ethers";
-import { showErrorToast } from "../services/toast";
+import { showErrorToast } from "../../services/toast";
+import { useNavigate } from "react-router-dom";
 
 export default function ValidatorsPage() {
+  const navigate = useNavigate();
   const [busy, setbusy] = useState(true);
   const [datas, setdatas] = useState([]);
 
@@ -69,7 +71,10 @@ export default function ValidatorsPage() {
                   className="text-white text-[20px]"
                 />
               </div>
-              <div className="min-w-13 h-13 cursor-pointer bg-gradient-to-r from-[#4F8FE1] to-[#256DC9] rounded-[50%] flex items-center justify-center">
+              <div
+                className="min-w-13 h-13 cursor-pointer bg-gradient-to-r from-[#4F8FE1] to-[#256DC9] rounded-[50%] flex items-center justify-center"
+                onClick={() => navigate(it._id)}
+              >
                 <img src={IC.eyeWhite} />
               </div>
             </div>

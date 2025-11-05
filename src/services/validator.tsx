@@ -14,6 +14,29 @@ export async function getValidators(): Promise<any> {
   return res.data;
 }
 
+export async function getValidator(id: string): Promise<any> {
+  const res = await api.get("api/admin/validators/" + id);
+  return res.data;
+}
+
+export async function getServerStat(id: string): Promise<any> {
+  const url = `api/admin/validators/${id}/stat`;
+  const res = await api.get(url);
+  return res.data;
+}
+
+export async function getServerUsers(id: string): Promise<any> {
+  const url = `api/admin/validators/${id}/users`;
+  const res = await api.get(url);
+  return res.data;
+}
+
+export async function getServerInvests(id: string): Promise<any> {
+  const url = `api/admin/validators/${id}/invests`;
+  const res = await api.get(url);
+  return res.data;
+}
+
 export async function createValidator(_body: ValidatorEditBody): Promise<any> {
   const body = {
     ..._body,
