@@ -1,7 +1,7 @@
 import { AddressT, EthereumBlockie } from "../../widgets/ethers";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { formatDate, formatICBX, parseEther } from "../../services/simple";
+import { formatDate, formatICBX } from "../../services/simple";
 import { formatEther } from "ethers";
 
 import {
