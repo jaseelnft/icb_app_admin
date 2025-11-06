@@ -6,10 +6,12 @@ export function StatusTags({ status }: { status: string }) {
     status = "Aproved";
   } else if (
     status === "REJECTED" ||
+    status === "FAILED" ||
     status === "CANCELLED" ||
     status === "ERROR"
   ) {
     if (status === "CANCELLED") status = "Cancelled";
+    else if (status === "FAILED") status = "Failed";
     else if (status === "ERROR") status = "Error";
     else status = "Rejected";
     s1 =
