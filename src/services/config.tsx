@@ -5,7 +5,7 @@ import { clearAllRedux, setChats, store } from "../redux/store";
 import { io, Socket } from "socket.io-client";
 import { getSupportMsgs } from "./support";
 
-export const APP_VERSION = "0.0.1";
+export const APP_VERSION = "1.0.0";
 document.title = "Admin | ICB Network App " + APP_VERSION;
 
 const BASE_URL =
