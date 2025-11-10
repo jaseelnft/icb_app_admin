@@ -95,7 +95,7 @@ export default function UsersPage() {
                 elSt + "w-[26%] text-[#A5A7AA] text-sm text-right justify-end"
               }
             >
-              {weiToICBX(_it.totalBalance ?? "0")} ICBX
+              {weiToICBX(_it.wicbx ?? "0")} ICBX
             </div>
             {_it.done ? (
               <div className={elSt + "w-[26%] text-sm items-end flex-col"}>
