@@ -35,7 +35,7 @@ export default function DashboardPage() {
     }
     return (
       <div
-        className="px-2 py-[2px] rounded-[12px] text-[13px] flex gap-1"
+        className="px-2 py-[2px] rounded-[12px] text-[10px] lg:text-[13px] flex gap-1"
         style={
           up
             ? { color: "#00B676", background: "#00B6761A" }
@@ -60,14 +60,16 @@ export default function DashboardPage() {
   ) => {
     return (
       <div
-        className="px-6 py-7 rounded-[20px] border border-[#0110224D] relative w-60 h-60 overflow-hidden bg-no-repeat cursor-pointer"
+        className="px-4 py-4 lg:px-6 lg:py-7 rounded-[12px] lg:rounded-[20px] border border-[#0110224D] relative w-40 h-40 lg:w-60 lg:h-60 overflow-hidden bg-no-repeat cursor-pointer"
         style={{ backgroundImage: `url(${bg})` }}
         onClick={() => navigate(path)}
       >
-        <img src={ic} />
-        <div className="mt-4">{title}</div>
-        <div className="font-[ClashDisplay] text-[26px]">{value}</div>
-        <div className="flex items-center gap-1 mt-3 text-[#C7CCD2] text-sm">
+        <img src={ic} className="w-12 h-12 lg:w-16 lg:h-16" />
+        <div className="mt-2 lg:mt-4 text-sm lg:text-base">{title}</div>
+        <div className="font-[ClashDisplay] text-[20px] lg:text-[26px]">
+          {value}
+        </div>
+        <div className="flex items-center gap-1 mt-1 lg:mt-3 text-[#C7CCD2] text-xs lg:text-sm">
           {_getHike(last, prev)}
           {last}&nbsp;in 24h
         </div>
@@ -86,19 +88,19 @@ export default function DashboardPage() {
   ) => {
     return (
       <div
-        className="rounded-[20px] relative max-w-125 w-[calc(100%-144px)] h-30 overflow-hidden bg-no-repeat p-6 flex gap-4 items-center cursor-pointer"
+        className="rounded-[14px] lg:rounded-[20px] relative  max-w-125 w-full lg:w-[calc(100%-144px)] overflow-hidden bg-no-repeat p-4 lg:p-6 flex gap-4 items-center cursor-pointer"
         style={{ backgroundImage: `url(${BG.db})` }}
         onClick={() => navigate(path)}
       >
-        <img src={ic} className="w-18" />
+        <img src={ic} className="w-12 lg:w-18" />
         <div className="w-full">
-          <div className="text-[#4F8FE1] text-[20px]">{title}</div>
-          <div className="text-[#C7CCD2] flex items-center justify-between mt-2">
-            <b className="text-lg">{value}</b>
+          <div className="text-[#4F8FE1] text-sm lg:text-[20px]">{title}</div>
+          <div className="text-[#C7CCD2] flex items-center justify-between mt-1 lg:mt-2">
+            <b className="text-base lg:text-lg">{value}</b>
             {isGraph && (
               <div className="flex items-center gap-2">
                 {_getHike(last, prev)}
-                <span className="text-sm">{last}&nbsp;in 24h</span>
+                <span className="text-xs lg:text-sm">{last}&nbsp;in 24h</span>
               </div>
             )}
           </div>
@@ -108,13 +110,13 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="p-8 flex items-center flex-col">
-      <div className="max-w-[1100px] p-8 flex flex-wrap justify-center gap-3 lg:gap-5">
+    <div className="px-1 py-3 lg:px-8 lg:py-8 flex items-center flex-col">
+      <div className="max-w-[1100px] px-0 py-3 lg:px-8 lg:py-8 flex flex-wrap justify-center gap-2 lg:gap-5">
         {_each1(
           "Total Investments",
-          formatICBX(data.investment || "0"),
-          0,
-          0,
+          formatICBX(data?.investment?.total || "0"),
+          Math.floor(data?.investment?.last24h|| 0),
+          Math.floor(data?.investment?.prev24h|| 0),
           BG.b,
           IC.doller,
           "users"
@@ -147,7 +149,7 @@ export default function DashboardPage() {
           "transactions"
         )}
       </div>
-      <div className="max-w-[1100px] p-8 flex flex-wrap justify-center gap-3 lg:gap-5">
+      <div className="w-full max-w-[1100px] py-3 px-5 lg:py-8 lg:px-8 flex flex-wrap justify-center gap-3 lg:gap-5">
         {_each2(
           "Total Users in Chalenge",
           data?.challengeUsers?.total || "0",
@@ -175,7 +177,7 @@ export default function DashboardPage() {
           "",
           true
         )}
-        <div className="w-[500px]" />
+        <div className="hidden lg:block w-[500px]" />
       </div>
     </div>
   );

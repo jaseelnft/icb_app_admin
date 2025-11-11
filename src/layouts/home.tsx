@@ -76,18 +76,23 @@ export default function HomeLayout() {
           {mainSet("MAIN", [
             eachSide("Dashboard", "", IC.dashboard, IC.dashboard_),
             eachSide("Users", "users", IC.users, IC.users_),
-            eachSide("Validator", "validator", IC.validator, IC.validator_),
             eachSide("Reward Logs", "reward-logs", IC.trophy, IC.trophy_),
             eachSide("Support", "support", IC.support, IC.support_),
           ])}
           {mainSet("WICBX", [
+            eachSide("Validator", "validator", IC.validator, IC.validator_),
             eachSide(
               "Withdraw Request",
               "withdraw-requests",
               IC.withdraw,
               IC.withdraw_
             ),
-            eachSide("Random Wallets", "random-wallets", IC.payments, IC.payments_),
+            eachSide(
+              "Random Wallets",
+              "random-wallets",
+              IC.payments,
+              IC.payments_
+            ),
             eachSide("Transactions", "transactions", IC.card, IC.card_),
           ])}
           {mainSet("SALES", [
