@@ -63,8 +63,8 @@ export default function UsersPage() {
         <div className="flex text-[14px] px-2">
           <div className="min-w-16" />
           <div className={elSt + "py-5 w-[40%]"}>User</div>
-          <div className={elSt + "py-5 w-[34%]"}>Wallet Address</div>
-          <div className={elSt + "py-5 w-[26%] justify-end"}>WICBX Balance</div>
+          <div className={elSt + "py-5 w-[34%]"}>Wallet Address / WICBX</div>
+          <div className={elSt + "py-5 w-[26%] justify-end"}>Validator</div>
           <div className={elSt + "py-5 w-[26%] justify-end"}>ICBX Balance</div>
           {/* <div className={elSt + "py-5 w-[20%]"}>Action</div> */}
         </div>
@@ -84,30 +84,43 @@ export default function UsersPage() {
               </div>
             </div>
 
-            <AddressT
-              address={_it.address}
-              iconSize={20}
-              className={elSt + "w-[34%] text-[#B3BDCB] text-sm"}
-            />
+            <div
+              className={
+                elSt + "w-[34%] text-[#B3BDCB] text-sm flex-col items-start"
+              }
+            >
+              <AddressT address={_it.address} iconSize={20} />
+              <b>{weiToICBX(_it.wicbx ?? "0")} ICBX</b>
+            </div>
 
             <div
               className={
-                elSt + "w-[26%] text-[#A5A7AA] text-sm text-right justify-end"
+                elSt +
+                "w-[26%] text-[#A5A7AA] text-sm flex-col items-end justify-center"
               }
             >
-              {weiToICBX(_it.wicbx ?? "0")} ICBX
+              {(_it?.validator?.countAll || 0) === 0 ? (
+                <span className="text-[#DF3A45]">Not Invested</span>
+              ) : (
+                <>
+                  {weiToICBX(_it.validator.total ?? "0")} ICBX
+                  <div>
+                    <b>{_it.validator.count}</b>/{_it.validator.countAll}
+                  </div>
+                </>
+              )}
             </div>
             {_it.done ? (
               <div className={elSt + "w-[26%] text-sm items-end flex-col"}>
                 {weiToICBX(_it.icbx ?? "0")} ICBX
                 {_it.haveKYC ? (
-                  <div className="flex gap-2 items-center text-[green]">
-                    <div className="w-2 h-2 rounded-[4px] bg-[green]" />
+                  <div className="flex gap-2 items-center text-[#00B676]">
+                    <div className="w-2 h-2 rounded-[4px] bg-[#00B676]" />
                     KYC Verified
                   </div>
                 ) : (
-                  <div className="flex gap-2 items-center text-[red]">
-                    <div className="w-2 h-2 rounded-[4px] bg-[red]" />
+                  <div className="flex gap-2 items-center text-[#DF3A45]">
+                    <div className="w-2 h-2 rounded-[4px] bg-[#DF3A45]" />
                     KYC Not Verified
                   </div>
                 )}

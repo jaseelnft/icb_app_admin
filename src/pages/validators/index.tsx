@@ -5,6 +5,7 @@ import { formatEther } from "../../services/simple";
 import { Popup1 } from "../../layouts/popup";
 import {
   createValidator,
+  exportValidatorInvests,
   getValidators,
   updateValidator,
 } from "../../services/validator";
@@ -16,6 +17,7 @@ export default function ValidatorsPage() {
   const navigate = useNavigate();
   const [busy, setbusy] = useState(true);
   const [datas, setdatas] = useState([]);
+  const [exportBusy, setexportBusy] = useState(false);
 
   useEffect(() => _loadDatas(), []);
 
@@ -40,13 +42,31 @@ export default function ValidatorsPage() {
     }
   };
 
+  const onClickExport = async () => {
+    if (exportBusy) return;
+    setexportBusy(true);
+    await exportValidatorInvests();
+    setexportBusy(false);
+  };
+
   return (
     <div className="p-8 flex flex-col items-center">
       <div className="flex justify-between items-center max-w-[1020px] w-full">
         <div className="font-bold font-[ClashDisplay] text-xl">
           Validators Server
         </div>
-        <EditValidator done={() => _loadDatas()} />
+        <div className="flex gap-2">
+          <div
+            className={
+              "ShadedBtn Black rounded-full py-2 px-6 font-bold" +
+              (exportBusy ? " BusyBtn" : "")
+            }
+            onClick={onClickExport}
+          >
+            Export Valid address
+          </div>
+          <EditValidator done={() => _loadDatas()} />
+        </div>
       </div>
       <div className="flex flex-wrap gap-5 max-w-[1020px] w-full mt-10">
         <div className="flex flex-col items-center w-full">
@@ -175,7 +195,7 @@ function EditValidator({ it, done }: any) {
   return (
     <>
       <button
-        className="ShadedBtn flex gap-2 justify-center items-center rounded-full h-12 font-[600] w-46"
+        className="ShadedBtn flex gap-2 justify-center items-center rounded-full py-2 font-[600] w-46"
         onClick={() => seton(true)}
       >
         <img src={isnew ? IC.plus : IC.edit} />

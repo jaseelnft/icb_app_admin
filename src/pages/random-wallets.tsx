@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
-import { getRandomWallets, updareRandomWallets } from "../services/dashboard";
+import {
+  exportValidRandomWallet,
+  getRandomWallets,
+  updareRandomWallets,
+} from "../services/dashboard";
 import { AddressT } from "../widgets/ethers";
 import { Paging } from "../components/paging";
 
 export default function RandomWalletsPage() {
   const [busy, setbusy] = useState(false);
+  const [updateBusy, setupdateBusy] = useState(false);
+  const [exportBusy, setexportBusy] = useState(false);
   const [datas, setdatas] = useState([]);
   const [page, setpage] = useState(1);
   const [total, settotal] = useState(0);
@@ -30,8 +36,18 @@ export default function RandomWalletsPage() {
     _loadDatas(1, e.target.value);
   };
 
-  const onClickUpdate = () => {
-    updareRandomWallets();
+  const onClickUpdate = async () => {
+    if (updateBusy) return;
+    setupdateBusy(true);
+    await updareRandomWallets();
+    setupdateBusy(false);
+  };
+
+  const onClickExport = async () => {
+    if (exportBusy) return;
+    setexportBusy(true);
+    await exportValidRandomWallet();
+    setexportBusy(false);
   };
 
   const elSt =
@@ -56,14 +72,30 @@ export default function RandomWalletsPage() {
             <option value="ASSIGNED">All Assigned</option>
             <option value="ALL">All Wallets</option>
           </select>
-          {status === "VALID" && total > 0 && (
-            <div
-              className="ShadedBtn rounded-full py-3 px-6 font-bold"
-              onClick={onClickUpdate}
-            >
-              Update wallets
-            </div>
-          )}
+          <div className="flex gap-2">
+            {status === "VALID" && total > 0 && (
+              <div
+                className={
+                  "ShadedBtn Black rounded-full py-2 px-6 font-bold" +
+                  (exportBusy ? " BusyBtn" : "")
+                }
+                onClick={onClickExport}
+              >
+                Export Valid address
+              </div>
+            )}
+            {status === "VALID" && total > 0 && (
+              <div
+                className={
+                  "ShadedBtn rounded-full py-2 px-6 font-bold" +
+                  (updateBusy ? " BusyBtn" : "")
+                }
+                onClick={onClickUpdate}
+              >
+                Update wallets
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex text-[14px] px-1">
           <div className={elSt + "py-5 w-[45%]"}>User</div>

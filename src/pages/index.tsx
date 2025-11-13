@@ -115,8 +115,8 @@ export default function DashboardPage() {
         {_each1(
           "Total Investments",
           formatICBX(data?.investment?.total || "0"),
-          Math.floor(data?.investment?.last24h|| 0),
-          Math.floor(data?.investment?.prev24h|| 0),
+          Math.floor(data?.investment?.last24h || 0),
+          Math.floor(data?.investment?.prev24h || 0),
           BG.b,
           IC.doller,
           "users"
@@ -148,6 +148,42 @@ export default function DashboardPage() {
           IC.txn,
           "transactions"
         )}
+        {/* {_each1(
+          "Total Investments",
+          formatICBX(data?.investment?.total || "0"),
+          Math.floor(data?.investment?.last24h || 0),
+          Math.floor(data?.investment?.prev24h || 0),
+          BG.r,
+          IC.doller,
+          "users"
+        )}
+        {_each1(
+          "Total Users",
+          data?.users?.total || "0",
+          data?.users?.last24h,
+          data?.users?.prev24h,
+          BG.dg,
+          IC.users1,
+          "users"
+        )}
+        {_each1(
+          "Pending Approvals",
+          data?.pendingApprovels || "0",
+          0,
+          0,
+          BG.y,
+          IC.pending,
+          "withdraw-requests"
+        )}
+        {_each1(
+          "Total Transactions",
+          data?.txns || "0",
+          0,
+          0,
+          BG.lg,
+          IC.txn,
+          "transactions"
+        )} */}
       </div>
       <div className="w-full max-w-[1100px] py-3 px-5 lg:py-8 lg:px-8 flex flex-wrap justify-center gap-3 lg:gap-5">
         {_each2(
@@ -168,6 +204,24 @@ export default function DashboardPage() {
           "validator",
           false
         )}
+        {/* {_each2(
+          "Validators Invests",
+          data?.validators,
+          0,
+          0,
+          IC.servers,
+          "validator",
+          false
+        )}
+        {_each2(
+          "Validators investment",
+          data?.validators,
+          0,
+          0,
+          IC.servers,
+          "validator",
+          false
+        )} */}
         {_each2(
           "Total User Visits",
           data?.visits?.total || "0",

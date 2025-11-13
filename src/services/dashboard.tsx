@@ -95,4 +95,26 @@ export async function updareRandomWallets(): Promise<any> {
   } catch (error) {}
 }
 
+export async function exportValidRandomWallet(): Promise<any> {
+  try {
+    const res = await api.get("api/admin/txns/export-valid-random-wallet", {
+      responseType: "blob",
+    });
+
+    const blob = new Blob([res.data], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ValidRandomWallets.csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    window.URL.revokeObjectURL(url);
+    
+    showToast("✅ Successfully downloaded");
+  } catch (error) {}
+}
+
 // END - Random Wallets

@@ -1,5 +1,6 @@
 import { api } from "./config";
 import { parseEther } from "./simple";
+import { showToast } from "./toast";
 
 interface ValidatorEditBody {
   name: string;
@@ -60,4 +61,26 @@ export async function updateValidator(
   };
   const res = await api.put("api/admin/validators/" + _id, body);
   return res.data;
+}
+
+export async function exportValidatorInvests(): Promise<any> {
+  try {
+    const res = await api.get("api/admin/validators/export", {
+      responseType: "blob",
+    });
+
+    const blob = new Blob([res.data], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ValidatorInvests.csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    window.URL.revokeObjectURL(url);
+
+    showToast("✅ Successfully downloaded");
+  } catch (error) {}
 }

@@ -51,6 +51,10 @@ import BGb from "../assets/images/BGb.svg";
 import BGg from "../assets/images/BGg.svg";
 import BGo from "../assets/images/BGo.svg";
 import BGp from "../assets/images/BGp.svg";
+import BGr from "../assets/images/BGr.svg";
+import BGdg from "../assets/images/BGdg.svg";
+import BGy from "../assets/images/BGy.svg";
+import BGlg from "../assets/images/BGlg.svg";
 import BGdb from "../assets/images/BGdb.svg";
 
 import LOGOapp from "../assets/logos/LOGOnetwork.svg";
@@ -113,6 +117,10 @@ export class BG {
   static g = BGg;
   static o = BGo;
   static p = BGp;
+  static r = BGr;
+  static dg = BGdg;
+  static y = BGy;
+  static lg = BGlg;
   static db = BGdb;
 }
 
