@@ -73,8 +73,15 @@ export async function updateRewardBalance(): Promise<any> {
   return res.data;
 }
 
-export async function getTxns(p: number, s: string): Promise<any> {
-  const res = await api.get(`api/admin/txns?page=${p}&search=${s}`);
+export async function getTxns(
+  p: number,
+  f: string,
+  s: string,
+  t: string
+): Promise<any> {
+  const res = await api.get(
+    `api/admin/txns?page=${p}&search=${f}&status=${s}&type=${t}`
+  );
   return res.data;
 }
 // END - Withdrawal fund
@@ -112,7 +119,7 @@ export async function exportValidRandomWallet(): Promise<any> {
     a.remove();
 
     window.URL.revokeObjectURL(url);
-    
+
     showToast("✅ Successfully downloaded");
   } catch (error) {}
 }

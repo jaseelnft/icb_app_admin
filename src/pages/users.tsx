@@ -7,6 +7,7 @@ import { Paging } from "../components/paging";
 import { useSelector } from "react-redux";
 import { setUsers, store } from "../redux/store";
 import { Drower1 } from "../layouts/popup";
+import { AppSearch } from "../components/input";
 
 export default function UsersPage() {
   const [selcted, setselcted]: any = useState(null);
@@ -31,13 +32,19 @@ export default function UsersPage() {
     setlocalBusy(false);
   };
 
-  const _search = (e: any) => {
-    const value = e.target.value;
+  const _search = (value: string) => {
     setsearch(value);
     setlocalBusy(true);
     if (value.length > 2) _loadDatas(1, value);
     else if (value.length === 0) _loadDatas(1, "");
   };
+
+  // const onFilter = (value: string) => {
+  //   if (value === "") _loadDatas(1, "");
+  //   else {
+
+  //   }
+  // };
 
   const elSt =
     "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
@@ -52,18 +59,17 @@ export default function UsersPage() {
       </div>
       <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-hidden">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          <input
-            placeholder="Search by User, Email, or Wallet Address"
-            className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
-            style={{ backgroundImage: `url('${IC.lens}')` }}
+          <AppSearch
             onChange={_search}
+            hint="Search by User, Email, or Wallet Address"
           />
-          {/* <select
-            className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
-            id="search"
-          >
-            <option>All Status</option>
-          </select> */}
+          {/* <AppFilter
+            onChange={onFilter}
+            list={[
+              { name: "All", value: "" },
+              { name: "Investors", value: "investors" },
+            ]}
+          /> */}
         </div>
         <div className="flex text-[14px] px-2">
           <div className="min-w-16" />

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { getTxns } from "../services/dashboard";
 import { AddressT, EthereumBlockie } from "../widgets/ethers";
-import { IC } from "../components/librery";
 import { weiToICBX } from "../services/ethers";
 import { StatusTags } from "../widgets/tags";
 import { Paging } from "../components/paging";
+import { AppFilter, AppSearch } from "../components/input";
+import { formatDate } from "../services/simple";
 
 export default function TransactionsPage() {
   const [busy, setbusy] = useState(false);
@@ -12,13 +13,20 @@ export default function TransactionsPage() {
   const [page, setpage] = useState(1);
   const [total, settotal] = useState(0);
   const [search, setsearch] = useState("");
+  const [status, setstatus] = useState("");
+  const [type, settype] = useState("DEPOSIT,WITHDRAWAL");
 
-  useEffect(() => _loadDatas(1, ""), []);
+  useEffect(() => _loadDatas(1, "", "", type), []);
 
-  const _loadDatas = (page_: number, search_: string) => {
+  const _loadDatas = (
+    page_: number,
+    search_: string,
+    status_: string,
+    type_: string
+  ) => {
     if (busy) return;
     setbusy(true);
-    getTxns(page_, search_)
+    getTxns(page_, search_, status_, type_)
       .then(async (res) => {
         setdatas(res.data);
         setpage(res.page);
@@ -28,11 +36,20 @@ export default function TransactionsPage() {
       .finally(() => setbusy(false));
   };
 
-  const _search = (e: any) => {
-    const value = e.target.value;
+  const _search = (value: string) => {
     setsearch(value);
-    if (value.length > 2) _loadDatas(1, value);
-    else if (value.length === 0) _loadDatas(1, "");
+    if (value.length > 2) _loadDatas(1, value, status, type);
+    else if (value.length === 0) _loadDatas(1, "", status, type);
+  };
+
+  const onStatusFilter = (value: string) => {
+    setstatus(value);
+    _loadDatas(1, search, value, type);
+  };
+
+  const onTypeFilter = (value: string) => {
+    settype(value);
+    _loadDatas(1, search, status, value);
   };
 
   const elSt =
@@ -50,24 +67,41 @@ export default function TransactionsPage() {
       </div>
       <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-hidden">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          <input
-            placeholder="Search by Hash"
+          {/* <input
+            placeholder=""
             className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
             style={{ backgroundImage: `url('${IC.lens}')` }}
             onChange={_search}
+          /> */}
+          <AppSearch onChange={_search} hint="Search by Hash" />
+          <AppFilter
+            onChange={onStatusFilter}
+            list={[
+              { name: "All", value: "" },
+              { name: "Pending", value: "PENDING" },
+              { name: "Failed", value: "FAILED" },
+              { name: "Success", value: "SUCCESS" },
+              { name: "Rejected", value: "REJECTED" },
+            ]}
           />
-          {/* <select
-              className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
-              id="search"
-            >
-              <option>All Status</option>
-            </select> */}
+          <AppFilter
+            onChange={onTypeFilter}
+            list={[
+              { name: "Deposit & Withdrawal", value: "DEPOSIT,WITHDRAWAL" },
+              { name: "Deposit", value: "DEPOSIT" },
+              { name: "Withdrawal", value: "WITHDRAWAL" },
+              { name: "Out", value: "OUT" },
+              { name: "In", value: "IN" },
+              { name: "In & Out", value: "IN,OUT" },
+              { name: "Profit", value: "PROFIT" },
+            ]}
+          />
         </div>
         <div className="flex text-[14px] px-2">
           <div className="min-w-16" />
           <div className={elSt + "py-5 w-[30%]"}>User</div>
           <div className={elSt + "py-5 w-[34%]"}>From/to</div>
-          <div className={elSt + "py-5 w-[26%] justify-end"}>Amount</div>
+          <div className={elSt + "py-5 w-[26%] justify-end"}>Amount/Time</div>
           <div className={elSt + "py-5 w-[26%]"}>H1/H2</div>
           <div className={elSt + "py-5 w-[20%]"}>Type/Status</div>
         </div>
@@ -102,10 +136,12 @@ export default function TransactionsPage() {
 
             <div
               className={
-                elSt + "w-[26%] text-[#A5A7AA] text-sm text-right justify-end"
+                elSt +
+                "w-[26%] text-[#A5A7AA] text-sm text-right items-end flex-col"
               }
             >
               {weiToICBX(_it.amount ?? "0")} ICBX
+              <div>{formatDate(_it.createdAt)}</div>
             </div>
             <div className={elSt + "w-[26%] text-sm items-start flex-col"}>
               <AddressT showEmpty address={_it.txnHash1} iconSize={20} />
@@ -124,7 +160,7 @@ export default function TransactionsPage() {
       <Paging
         total={total}
         page={page}
-        reload={(a1: any) => _loadDatas(a1, search)}
+        reload={(a1: any) => _loadDatas(a1, search, status, type)}
       />
       {/* {total > 10 && (
         <div className="flex justify-center mt-8">

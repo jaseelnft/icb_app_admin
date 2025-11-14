@@ -13,7 +13,91 @@ export default function HomeLayout() {
   const [busy, setbusy] = useState(true);
   const [main, setmain] = useState("MAIN");
 
+  const menus = [
+    {
+      title: "MAIN",
+      list: [
+        {
+          title: "Dashboard",
+          path: "",
+          icOff: IC.dashboard,
+          icOn: IC.dashboard_,
+        },
+        { title: "Users", path: "users", icOff: IC.users, icOn: IC.users_ },
+        {
+          title: "Reward Logs",
+          path: "reward-logs",
+          icOff: IC.trophy,
+          icOn: IC.trophy_,
+        },
+        {
+          title: "Support",
+          path: "support",
+          icOff: IC.support,
+          icOn: IC.support_,
+        },
+      ],
+    },
+    {
+      title: "WICBX",
+      list: [
+        {
+          title: "Validator",
+          path: "validator",
+          icOff: IC.validator,
+          icOn: IC.validator_,
+        },
+        {
+          title: "Withdraw Request",
+          path: "withdraw-requests",
+          icOff: IC.withdraw,
+          icOn: IC.withdraw_,
+        },
+        {
+          title: "Random Wallets",
+          path: "random-wallets",
+          icOff: IC.payments,
+          icOn: IC.payments_,
+        },
+        {
+          title: "Transactions",
+          path: "transactions",
+          icOff: IC.card,
+          icOn: IC.card_,
+        },
+      ],
+    },
+    {
+      title: "SALES",
+      list: [
+        { title: "Orders", path: "orders", icOff: IC.sell, icOn: IC.sell_ },
+        {
+          title: "Payments",
+          path: "payments",
+          icOff: IC.payments,
+          icOn: IC.payments_,
+        },
+      ],
+    },
+    {
+      title: "SETTINGS",
+      list: [
+        {
+          title: "App Settings",
+          path: "app-settings",
+          icOff: IC.gear,
+          icOn: IC.gear_,
+        },
+        { title: "Admins", path: "admins", icOff: IC.users, icOn: IC.users_ },
+      ],
+    },
+  ];
+
   useEffect(() => {
+    for (const it of menus)
+      if (it.list.some((it1) => it1.path === pathname.toLowerCase()))
+        setmain(it.title);
+
     getDetails()
       .then(() => {})
       .catch(() => {})
@@ -66,6 +150,7 @@ export default function HomeLayout() {
   };
 
   if (busy) return <LoadingPage />;
+
   return (
     <div className="flex w-full h-[100vh]">
       <div className="min-w-[260px] bg-[#011022] p-6 border-r border-[#FFFFFF1A] flex flex-col justify-between items-center hidden lg:flex">
@@ -73,36 +158,14 @@ export default function HomeLayout() {
           <img src={Logo.appFull} className="h-15" />
           <div className="bg-gradient-to-r from-[#101B2D] to-[#182842]" />
           <div className="h-[2px] w-full bg-gradient-to-r from-[#011022] via-[#3D6FAE] to-[#011022] mt-5 mb-8"></div>
-          {mainSet("MAIN", [
-            eachSide("Dashboard", "", IC.dashboard, IC.dashboard_),
-            eachSide("Users", "users", IC.users, IC.users_),
-            eachSide("Reward Logs", "reward-logs", IC.trophy, IC.trophy_),
-            eachSide("Support", "support", IC.support, IC.support_),
-          ])}
-          {mainSet("WICBX", [
-            eachSide("Validator", "validator", IC.validator, IC.validator_),
-            eachSide(
-              "Withdraw Request",
-              "withdraw-requests",
-              IC.withdraw,
-              IC.withdraw_
-            ),
-            eachSide(
-              "Random Wallets",
-              "random-wallets",
-              IC.payments,
-              IC.payments_
-            ),
-            eachSide("Transactions", "transactions", IC.card, IC.card_),
-          ])}
-          {mainSet("SALES", [
-            eachSide("Orders", "orders", IC.sell, IC.sell_),
-            eachSide("Payments", "payments", IC.payments, IC.payments_),
-          ])}
-          {mainSet("SETTINGS", [
-            eachSide("App Settings", "app-settings", IC.gear, IC.gear_),
-            eachSide("Admins", "admins", IC.users, IC.users_),
-          ])}
+          {menus.map((it) =>
+            mainSet(
+              it.title,
+              it.list.map((it1) =>
+                eachSide(it1.title, it1.path, it1.icOff, it1.icOn)
+              )
+            )
+          )}
         </div>
         <div className="w-[80%]">
           <Logout />

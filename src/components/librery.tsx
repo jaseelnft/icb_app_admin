@@ -44,6 +44,7 @@ import ICgraphUp from "../assets/icons/ICgraphUp.svg";
 import ICgraphDown from "../assets/icons/ICgraphDown.svg";
 import ICsend from "../assets/icons/ICsend.svg";
 import ICdropArrow from "../assets/icons/ICdropArrow.svg";
+import ICfilter from "../assets/icons/ICfilter.svg";
 
 import BGlogin from "../assets/images/BGlogin.webp";
 import BGlogin2 from "../assets/images/BGlogin2.webp";
@@ -108,6 +109,7 @@ export class IC {
   static graphDown = ICgraphDown;
   static send = ICsend;
   static dropArrow = ICdropArrow;
+  static filter = ICfilter;
 }
 
 export class BG {
