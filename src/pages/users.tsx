@@ -97,7 +97,9 @@ export default function UsersPage() {
               }
             >
               <AddressT address={_it.address} iconSize={20} />
-              <b>{weiToICBX(_it.wicbx ?? "0")} ICBX</b>
+              <b style={(_it.wicbx ?? "0") > 0 ? { color: "orange" } : {}}>
+                {weiToICBX(_it.wicbx ?? "0")} ICBX
+              </b>
             </div>
 
             <div
