@@ -128,7 +128,6 @@ export default function RandomWalletsPage() {
             <div className={elSt + "w-[15%] gap-2"}>{_it.status}</div>
           </div>
         ))}
-
         <Paging
           total={total}
           page={page}

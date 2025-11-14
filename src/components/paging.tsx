@@ -18,7 +18,7 @@ export function Paging({ total, page, reload }: any) {
   };
 
   return (
-    <div className="flex justify-center mt-8">
+    <div className="flex justify-center my-8">
       <div className="flex border border-[#16263B] rounded-[8px]">
         <div
           className="cursor-pointer py-2 px-4 border-r-1 border-[#16263B]"
