@@ -201,15 +201,18 @@ export default function SingleValidator() {
                 </div>
               </div>
 
-              <div className="w-[32%] px-[24px] text-right">
+              <div className="w-[32%] px-[24px] text-right text-sm text-[white]">
                 {formatICBX(Number(formatEther(it?.invested ?? "0")))}
-                &nbsp; ICBX
+                &nbsp; ICBX{" "}
+                <span className="text-[#4F8FE1]">
+                  ({((it?.invested / server?.capacity) * 100).toFixed(4)} %)
+                </span>
               </div>
-              <div className="w-[32%] px-[24px] text-right">
+              <div className="w-[32%] px-[24px] text-right text-sm">
                 {formatICBX(Number(formatEther(it?.earned ?? "0")))}
                 &nbsp; ICBX
               </div>
-              <div className="w-[24%] px-[24px] text-center">
+              <div className="w-[24%] px-[24px] text-center text-sm">
                 {it?.invests || 0}
               </div>
             </div>
@@ -251,15 +254,18 @@ export default function SingleValidator() {
                 </div>
               </div>
 
-              <div className="w-[32%] px-[24px] text-right">
+              <div className="w-[32%] px-[24px] text-right text-sm text-white">
                 {formatICBX(Number(formatEther(it?.amount ?? "0")))}
-                &nbsp; ICBX
+                &nbsp; ICBX{" "}
+                <span className="text-[#4F8FE1]">
+                  ({((it?.amount / server?.capacity) * 100).toFixed(4)} %)
+                </span>
               </div>
-              <div className="w-[32%] px-[24px] text-right">
+              <div className="w-[32%] px-[24px] text-right text-sm">
                 {formatICBX(Number(formatEther(it?.earned ?? "0")))}
                 &nbsp; ICBX
               </div>
-              <div className="w-[32%] px-[24px]">
+              <div className="w-[32%] px-[24px] text-sm">
                 {formatDate(it.createdAt)}
               </div>
             </div>
