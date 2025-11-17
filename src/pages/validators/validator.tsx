@@ -205,7 +205,7 @@ export default function SingleValidator() {
                 {formatICBX(Number(formatEther(it?.invested ?? "0")))}
                 &nbsp; ICBX{" "}
                 <span className="text-[#4F8FE1]">
-                  ({((it?.invested / server?.capacity) * 100).toFixed(4)} %)
+                  ({((it?.invested / server?.capacity) * 100).toFixed(3)} %)
                 </span>
               </div>
               <div className="w-[32%] px-[24px] text-right text-sm">
@@ -258,7 +258,7 @@ export default function SingleValidator() {
                 {formatICBX(Number(formatEther(it?.amount ?? "0")))}
                 &nbsp; ICBX{" "}
                 <span className="text-[#4F8FE1]">
-                  ({((it?.amount / server?.capacity) * 100).toFixed(4)} %)
+                  ({((it?.amount / server?.capacity) * 100).toFixed(3)} %)
                 </span>
               </div>
               <div className="w-[32%] px-[24px] text-right text-sm">
