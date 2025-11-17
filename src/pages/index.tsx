@@ -113,10 +113,10 @@ export default function DashboardPage() {
     <div className="px-1 py-3 lg:px-8 lg:py-8 flex items-center flex-col">
       <div className="max-w-[1100px] px-0 py-3 lg:px-8 lg:py-8 flex flex-wrap justify-center gap-2 lg:gap-5">
         {_each1(
-          "Total Investments",
-          formatICBX(data?.investment?.total || "0"),
-          Math.floor(data?.investment?.last24h || 0),
-          Math.floor(data?.investment?.prev24h || 0),
+          "Total WICBX",
+          formatICBX(data?.wicbx?.total || "0"),
+          Math.floor(data?.wicbx?.last24h || 0),
+          Math.floor(data?.wicbx?.prev24h || 0),
           BG.b,
           IC.doller,
           "users"
@@ -148,42 +148,42 @@ export default function DashboardPage() {
           IC.txn,
           "transactions"
         )}
-        {/* {_each1(
-          "Total Investments",
+        {_each1(
+          "Investments",
           formatICBX(data?.investment?.total || "0"),
           Math.floor(data?.investment?.last24h || 0),
           Math.floor(data?.investment?.prev24h || 0),
           BG.r,
-          IC.doller,
+          IC.investments,
           "users"
         )}
         {_each1(
-          "Total Users",
-          data?.users?.total || "0",
-          data?.users?.last24h,
-          data?.users?.prev24h,
+          "Invested Count",
+          data?.investCount?.total || "0",
+          data?.investCount?.last24h,
+          data?.investCount?.prev24h,
           BG.dg,
-          IC.users1,
+          IC.invested,
           "users"
         )}
         {_each1(
-          "Pending Approvals",
-          data?.pendingApprovels || "0",
-          0,
-          0,
+          "Pending Wallets",
+          data?.validWallets?.total || "0",
+          data?.validWallets?.last24h,
+          data?.validWallets?.prev24h,
           BG.y,
-          IC.pending,
+          IC.wallets,
           "withdraw-requests"
         )}
         {_each1(
-          "Total Transactions",
-          data?.txns || "0",
-          0,
-          0,
+          "Orders",
+          data?.order?.total || "0",
+          data?.order?.last24h,
+          data?.order?.prev24h,
           BG.lg,
-          IC.txn,
+          IC.orders,
           "transactions"
-        )} */}
+        )}
       </div>
       <div className="w-full max-w-[1100px] py-3 px-5 lg:py-8 lg:px-8 flex flex-wrap justify-center gap-3 lg:gap-5">
         {_each2(
