@@ -95,9 +95,15 @@ export default function HomeLayout() {
 
   useEffect(() => {
     for (const it of menus)
-      if (it.list.some((it1) => it1.path === pathname.toLowerCase()))
+      if (
+        it.list.some(
+          (it1) => it1.path === pathname?.toLowerCase()?.split("/")?.[1]
+        )
+      )
         setmain(it.title);
+  }, [pathname]);
 
+  useEffect(() => {
     getDetails()
       .then(() => {})
       .catch(() => {})
@@ -128,6 +134,7 @@ export default function HomeLayout() {
         <div
           key={v}
           className="text-[11px] text-[#C7CCD2] px-3 py-3 font-[600] cursor-pointer flex justify-between"
+          style={v === main ? { color: "#4F8FE1" } : {}}
           onClick={() => setmain(v)}
         >
           {v}

@@ -158,7 +158,7 @@ export default function DashboardPage() {
           Math.floor(data?.investment?.prev24h || 0),
           BG.r,
           IC.investments,
-          "users",
+          "validator",
           { isICBX: true }
         )}
         {_each1(
@@ -168,7 +168,7 @@ export default function DashboardPage() {
           data?.investCount?.prev24h,
           BG.dg,
           IC.invested,
-          "users"
+          "validator"
         )}
         {_each1(
           "Pending Wallets",
@@ -177,7 +177,7 @@ export default function DashboardPage() {
           data?.validWallets?.prev24h,
           BG.y,
           IC.wallets,
-          "withdraw-requests"
+          "random-wallets"
         )}
         {_each1(
           "Pending Orders",
@@ -186,7 +186,7 @@ export default function DashboardPage() {
           data?.order?.prev24h,
           BG.lg,
           IC.orders,
-          "transactions"
+          "orders"
         )}
       </div>
       <div className="w-full max-w-[1100px] py-3 px-5 lg:py-8 lg:px-8 flex flex-wrap justify-center gap-3 lg:gap-5">

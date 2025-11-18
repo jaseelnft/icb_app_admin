@@ -84,9 +84,9 @@ export default function TransactionsPage() {
               { name: "Deposit & Withdrawal", value: "DEPOSIT,WITHDRAWAL" },
               { name: "Deposit", value: "DEPOSIT" },
               { name: "Withdrawal", value: "WITHDRAWAL" },
-              { name: "Out", value: "OUT" },
-              { name: "In", value: "IN" },
-              { name: "In & Out", value: "IN,OUT" },
+              { name: "To Validator", value: "OUT" },
+              { name: "From Validator", value: "IN" },
+              { name: "To & From Validator", value: "IN,OUT" },
               { name: "Profit", value: "PROFIT" },
             ]}
           />
