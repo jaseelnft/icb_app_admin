@@ -11,6 +11,7 @@ import { Popup1 } from "../layouts/popup";
 import { showErrorToast } from "../services/toast";
 import { StatusTags } from "../widgets/tags";
 import { Paging } from "../components/paging";
+import { AppFilter } from "../components/input";
 
 export default function WithdrawalPage() {
   const [busy, setbusy] = useState(false);
@@ -34,9 +35,9 @@ export default function WithdrawalPage() {
       .finally(() => setbusy(false));
   };
 
-  const _onFilterStatus = (e: any) => {
-    setstatus(e.target.value);
-    _loadDatas(1, e.target.value);
+  const _onFilterStatus = (value: string) => {
+    setstatus(value);
+    _loadDatas(1, value);
   };
 
   const elSt =
@@ -52,25 +53,15 @@ export default function WithdrawalPage() {
       </div>
       <div className="bg-[#010513] border-[1.5px] border-[#010513] mt-6 rounded-[16px] shadow-[0_0_8px_0_#4F8FE129] overflow-hidden">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          {/* <input
-            placeholder="Search by Name, Email, or Wallet Address"
-            className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
-            style={{ backgroundImage: `url('${IC.lens}')` }}
-            onChange={_search}
-          /> */}
-          <select
-            className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
+          <AppFilter
             onChange={_onFilterStatus}
-            value={status}
-          >
-            <option value="">All Request</option>
-            <option value="succes">Approved</option>
-            <option value="pending">Pending</option>
-            <option value="rejected">Rejected</option>
-          </select>
-          {/* <select
-            className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
-          ></select> */}
+            list={[
+              { name: "All Request", value: "" },
+              { name: "Approved", value: "succes" },
+              { name: "Pending", value: "pending" },
+              { name: "Rejected", value: "rejected" },
+            ]}
+          />
         </div>
         <div className="flex text-[14px] px-1">
           <div className={elSt + "py-5 w-[30%]"}>User</div>

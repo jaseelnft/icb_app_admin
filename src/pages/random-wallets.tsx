@@ -6,6 +6,7 @@ import {
 } from "../services/dashboard";
 import { AddressT } from "../widgets/ethers";
 import { Paging } from "../components/paging";
+import { AppFilter } from "../components/input";
 
 export default function RandomWalletsPage() {
   const [busy, setbusy] = useState(false);
@@ -31,9 +32,9 @@ export default function RandomWalletsPage() {
       .finally(() => setbusy(false));
   };
 
-  const _onFilterStatus = (e: any) => {
-    setstatus(e.target.value);
-    _loadDatas(1, e.target.value);
+  const _onFilterStatus = (value: string) => {
+    setstatus(value);
+    _loadDatas(1, value);
   };
 
   const onClickUpdate = async () => {
@@ -63,15 +64,14 @@ export default function RandomWalletsPage() {
       </div>
       <div className="bg-[#010513] border-[1.5px] border-[#010513] mt-6 rounded-[16px] shadow-[0_0_8px_0_#4F8FE129] overflow-hidden w-[calc(100vw-330px)]">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm flex justify-between">
-          <select
-            className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
+          <AppFilter
             onChange={_onFilterStatus}
-            value={status}
-          >
-            <option value="VALID">Valid</option>
-            <option value="ASSIGNED">All Assigned</option>
-            <option value="ALL">All Wallets</option>
-          </select>
+            list={[
+              { name: "Valid", value: "VALID" },
+              { name: "All Assigned", value: "ASSIGNED" },
+              { name: "All Wallets", value: "ALL" },
+            ]}
+          />
           <div className="flex gap-2">
             {status === "VALID" && total > 0 && (
               <div

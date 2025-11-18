@@ -32,8 +32,8 @@ export async function getServerUsers(id: string): Promise<any> {
   return res.data;
 }
 
-export async function getServerInvests(id: string): Promise<any> {
-  const url = `api/admin/validators/${id}/invests`;
+export async function getServerInvests(id: string, p: any): Promise<any> {
+  const url = `api/admin/validators/${id}/invests?page=${p}`;
   const res = await api.get(url);
   return res.data;
 }

@@ -52,15 +52,15 @@ import ICorders from "../assets/icons/ICorders.svg";
 
 import BGlogin from "../assets/images/BGlogin.webp";
 import BGlogin2 from "../assets/images/BGlogin2.webp";
-import BGb from "../assets/images/BGb.svg";
-import BGg from "../assets/images/BGg.svg";
-import BGo from "../assets/images/BGo.svg";
-import BGp from "../assets/images/BGp.svg";
-import BGr from "../assets/images/BGr.svg";
-import BGdg from "../assets/images/BGdg.svg";
-import BGy from "../assets/images/BGy.svg";
-import BGlg from "../assets/images/BGlg.svg";
-import BGdb from "../assets/images/BGdb.svg";
+import BGb from "../assets/images/BGb.webp";
+import BGg from "../assets/images/BGg.webp";
+import BGo from "../assets/images/BGo.webp";
+import BGp from "../assets/images/BGp.webp";
+import BGr from "../assets/images/BGr.webp";
+import BGdg from "../assets/images/BGdg.webp";
+import BGy from "../assets/images/BGy.webp";
+import BGlg from "../assets/images/BGlg.webp";
+import BGdb from "../assets/images/BGdb.webp";
 
 import LOGOapp from "../assets/logos/LOGOnetwork.svg";
 import LOGOappfull from "../assets/logos/LOGOnetwork_.svg";

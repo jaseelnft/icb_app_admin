@@ -6,6 +6,7 @@ import { weiToICBX } from "../services/ethers";
 import { StatusTags } from "../widgets/tags";
 import { Paging } from "../components/paging";
 import { formatDate } from "../services/simple";
+import { AppSearch } from "../components/input";
 
 export default function PaymentsPage() {
   const [busy, setbusy] = useState(false);
@@ -29,8 +30,7 @@ export default function PaymentsPage() {
     setbusy(false);
   };
 
-  const _search = (e: any) => {
-    const value = e.target.value;
+  const _search = (value: string) => {
     setsearch(value);
     if (value.length > 2) loadDatas(1, value);
     else if (value.length === 0) loadDatas(1, "");
@@ -43,26 +43,13 @@ export default function PaymentsPage() {
     <div className="p-8">
       <div className="flex justify-between">
         <div className="text-xl">
-          <span className="text-[#4F8FE1] font-bold ">
-            User Order Payments
-          </span>
+          <span className="text-[#4F8FE1] font-bold ">User Order Payments</span>
           &nbsp; ({total})
         </div>
       </div>
       <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-hidden">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          <input
-            placeholder="Search by Hash"
-            className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
-            style={{ backgroundImage: `url('${IC.lens}')` }}
-            onChange={_search}
-          />
-          {/* <select
-                className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
-                id="search"
-              >
-                <option>All Status</option>
-              </select> */}
+          <AppSearch onChange={_search} hint="Search by Hash" />
         </div>
         <div className="flex text-[14px] px-2">
           <div className="min-w-16" />

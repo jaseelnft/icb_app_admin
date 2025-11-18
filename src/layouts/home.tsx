@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { IC, Logo } from "../components/librery";
 import { Popup1 } from "./popup";
@@ -124,7 +124,7 @@ export default function HomeLayout() {
 
   const mainSet = (v: string, l: any[]) => {
     return (
-      <>
+      <StrictMode key={v}>
         <div
           key={v}
           className="text-[11px] text-[#C7CCD2] px-3 py-3 font-[600] cursor-pointer flex justify-between"
@@ -145,7 +145,7 @@ export default function HomeLayout() {
           <div className="my-5" />
           {/* <div className="bg-[#16263B] h-[2px] my-4" /> */}
         </div>
-      </>
+      </StrictMode>
     );
   };
 

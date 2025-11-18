@@ -11,14 +11,19 @@ import {
   getServerInvests,
 } from "../../services/validator";
 import { MyLineGraph } from "../../components/graph";
+import { Paging } from "../../components/paging";
 
 export default function SingleValidator() {
   const { id } = useParams();
 
   const [busy, setbusy] = useState(true);
   const [server, setserver]: any = useState({});
-  const [users, setusers]: any[] = useState([]);
-  const [invests, setinvests]: any[] = useState([]);
+  const [users, setusers]: any[] = useState({ total: 0, data: [] });
+  const [invests, setinvests]: any[] = useState({
+    total: 0,
+    data: [],
+    page: 1,
+  });
   const [profits, setprofits]: any[] = useState([]);
 
   const [max, setmax] = useState(0);
@@ -38,15 +43,20 @@ export default function SingleValidator() {
       const _max = Math.max(...res.map((item: any) => Number(item.earned)));
       setmax(_max < 1e21 ? 1e21 : _max);
     });
+    _loadInvests(1);
     getServerUsers(id || "").then((res: any) => {
       setusers(res);
     });
-    getServerInvests(id || "").then((res: any) => {
+  };
+
+  const _loadInvests = (page: any) => {
+    getServerInvests(id || "", page).then((res: any) => {
       setinvests(res);
     });
   };
 
-  if (busy) return "Loading...";
+  if (busy)
+    return <div className="flex justify-center p-8 text-sm">Loading...</div>;
 
   const _toICBX = (v: number) => {
     return formatICBX(
@@ -166,61 +176,7 @@ export default function SingleValidator() {
         </div>
         <div className="border-2 border-[#ffffff0d] rounded-[24px] mt-[32px] bg-[#010513]">
           <div className="font-[ClashDisplay] text-[22px] text-[#4F8FE1] rounded-[22px] p-6">
-            Users
-          </div>
-          <div className="flex justify-between">
-            <div className="min-w-16" />
-            <div className="w-[32%] py-[20px] px-[24px]">User</div>
-            <div className="w-[32%] py-[20px] px-[24px] text-right">Amount</div>
-            <div className="w-[32%] py-[20px] px-[24px] text-right">Earned</div>
-            <div className="w-[24%] py-[20px] px-[24px] text-center">
-              Totel Invests
-            </div>
-          </div>
-          {users.length === 0 && (
-            <div className="p-4 text-center text-[14px]">
-              {busy ? "Loading..." : "No user found in this server."}
-            </div>
-          )}
-          {users.map((it: any, k: number) => (
-            <div
-              key={k}
-              className="flex justify-between items-center text-[#A5A7AA] border-t border-[#111F31] py-3"
-            >
-              <div className="pl-8 min-w-18 flex justify-center">
-                <EthereumBlockie address={it?.address} size={36} />
-              </div>
-              <div className="w-[32%] px-[24px]">
-                <div>
-                  <div>{it?.name || "null"}</div>
-                  <AddressT
-                    address={it?.address}
-                    iconSize={20}
-                    className="text-[#256DC9] text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="w-[32%] px-[24px] text-right text-sm text-[white]">
-                {formatICBX(Number(formatEther(it?.invested ?? "0")))}
-                &nbsp; ICBX{" "}
-                <span className="text-[#4F8FE1]">
-                  ({((it?.invested / server?.capacity) * 100).toFixed(3)} %)
-                </span>
-              </div>
-              <div className="w-[32%] px-[24px] text-right text-sm">
-                {formatICBX(Number(formatEther(it?.earned ?? "0")))}
-                &nbsp; ICBX
-              </div>
-              <div className="w-[24%] px-[24px] text-center text-sm">
-                {it?.invests || 0}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="border-2 border-[#ffffff0d] rounded-[24px] mt-[32px] bg-[#010513]">
-          <div className="font-[ClashDisplay] text-[22px] text-[#4F8FE1] rounded-[22px] p-6">
-            Invests
+            Invests <span className="text-[white]">({invests.total})</span>
           </div>
           <div className="flex justify-between">
             <div className="min-w-16" />
@@ -229,12 +185,12 @@ export default function SingleValidator() {
             <div className="w-[32%] py-[20px] px-[24px] text-right">Earned</div>
             <div className="w-[32%] py-[20px] px-[24px]">Date & Time</div>
           </div>
-          {invests.length === 0 && (
+          {invests.data.length === 0 && (
             <div className="p-4 text-center text-[14px]">
               {busy ? "Loading..." : "No invests found in this server."}
             </div>
           )}
-          {invests.map((it: any, k: number) => (
+          {invests.data.map((it: any, k: number) => (
             <div
               key={k}
               className="flex justify-between items-center text-[#A5A7AA] border-t border-[#111F31] py-3"
@@ -267,6 +223,65 @@ export default function SingleValidator() {
               </div>
               <div className="w-[32%] px-[24px] text-sm">
                 {formatDate(it.createdAt)}
+              </div>
+            </div>
+          ))}
+          <Paging
+            total={invests.total}
+            page={invests.page}
+            reload={(p: any) => _loadInvests(p)}
+          />
+        </div>
+        <div className="border-2 border-[#ffffff0d] rounded-[24px] mt-[32px] bg-[#010513]">
+          <div className="font-[ClashDisplay] text-[22px] text-[#4F8FE1] rounded-[22px] p-6">
+            Last Few Users <span className="text-[white]">({users.total})</span>
+          </div>
+          <div className="flex justify-between">
+            <div className="min-w-16" />
+            <div className="w-[32%] py-[20px] px-[24px]">User</div>
+            <div className="w-[32%] py-[20px] px-[24px] text-right">Amount</div>
+            <div className="w-[32%] py-[20px] px-[24px] text-right">Earned</div>
+            <div className="w-[24%] py-[20px] px-[24px] text-center">
+              Totel Invests
+            </div>
+          </div>
+          {users.data.length === 0 && (
+            <div className="p-4 text-center text-[14px]">
+              {busy ? "Loading..." : "No user found in this server."}
+            </div>
+          )}
+          {users.data.map((it: any, k: number) => (
+            <div
+              key={k}
+              className="flex justify-between items-center text-[#A5A7AA] border-t border-[#111F31] py-3"
+            >
+              <div className="pl-8 min-w-18 flex justify-center">
+                <EthereumBlockie address={it?.address} size={36} />
+              </div>
+              <div className="w-[32%] px-[24px]">
+                <div>
+                  <div>{it?.name || "null"}</div>
+                  <AddressT
+                    address={it?.address}
+                    iconSize={20}
+                    className="text-[#256DC9] text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="w-[32%] px-[24px] text-right text-sm text-[white]">
+                {formatICBX(Number(formatEther(it?.invested ?? "0")))}
+                &nbsp; ICBX{" "}
+                <span className="text-[#4F8FE1]">
+                  ({((it?.invested / server?.capacity) * 100).toFixed(3)} %)
+                </span>
+              </div>
+              <div className="w-[32%] px-[24px] text-right text-sm">
+                {formatICBX(Number(formatEther(it?.earned ?? "0")))}
+                &nbsp; ICBX
+              </div>
+              <div className="w-[24%] px-[24px] text-center text-sm">
+                {it?.invests || 0}
               </div>
             </div>
           ))}

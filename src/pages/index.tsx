@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { BG, IC } from "../components/librery";
 import { getStatistics } from "../services/dashboard";
-import { formatICBX } from "../services/simple";
+import { formatEther, formatICBX } from "../services/simple";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -51,27 +51,29 @@ export default function DashboardPage() {
 
   const _each1 = (
     title: string,
-    value: string,
+    value: string | number,
     last: number,
     prev: number,
     bg: string,
     ic: string,
-    path: string
+    path: string,
+    options?: { isICBX?: boolean }
   ) => {
+    options = { isICBX: false, ...options };
     return (
       <div
-        className="px-4 py-4 lg:px-6 lg:py-7 rounded-[12px] lg:rounded-[20px] border border-[#0110224D] relative w-40 h-40 lg:w-60 lg:h-60 overflow-hidden bg-no-repeat cursor-pointer"
+        className="px-4 py-4 lg:px-6 lg:py-7 rounded-[12px] lg:rounded-[20px] border border-[#0110224D] relative w-40 h-39 lg:w-60 lg:h-58 overflow-hidden bg-no-repeat bg-cover bg-center cursor-pointer"
         style={{ backgroundImage: `url(${bg})` }}
         onClick={() => navigate(path)}
       >
         <img src={ic} className="w-12 h-12 lg:w-16 lg:h-16" />
-        <div className="mt-2 lg:mt-4 text-sm lg:text-base">{title}</div>
-        <div className="font-[ClashDisplay] text-[20px] lg:text-[26px]">
-          {value}
+        <div className="mt-2 lg:mt-4 text-xs lg:text-base">{title}</div>
+        <div className="font-[ClashDisplay] text-[19px] lg:text-[26px]">
+          {options.isICBX ? formatICBX(Number(value)) : value}
         </div>
         <div className="flex items-center gap-1 mt-1 lg:mt-3 text-[#C7CCD2] text-xs lg:text-sm">
           {_getHike(last, prev)}
-          {last}&nbsp;in 24h
+          {options.isICBX ? formatICBX(Number(last)) : last}&nbsp;in 24h
         </div>
       </div>
     );
@@ -88,7 +90,7 @@ export default function DashboardPage() {
   ) => {
     return (
       <div
-        className="rounded-[14px] lg:rounded-[20px] relative  max-w-125 w-full lg:w-[calc(100%-144px)] overflow-hidden bg-no-repeat p-4 lg:p-6 flex gap-4 items-center cursor-pointer"
+        className="rounded-[14px] lg:rounded-[20px] relative max-w-125 w-full lg:w-[calc(100%-144px)] overflow-hidden bg-no-repeat p-4 lg:p-6 flex gap-4 items-center cursor-pointer"
         style={{ backgroundImage: `url(${BG.db})` }}
         onClick={() => navigate(path)}
       >
@@ -114,12 +116,13 @@ export default function DashboardPage() {
       <div className="max-w-[1100px] px-0 py-3 lg:px-8 lg:py-8 flex flex-wrap justify-center gap-2 lg:gap-5">
         {_each1(
           "Total WICBX",
-          formatICBX(data?.wicbx?.total || "0"),
+          formatEther(data?.wicbx?.total || "0"),
           Math.floor(data?.wicbx?.last24h || 0),
           Math.floor(data?.wicbx?.prev24h || 0),
           BG.b,
           IC.doller,
-          "users"
+          "users",
+          { isICBX: true }
         )}
         {_each1(
           "Total Users",
@@ -150,12 +153,13 @@ export default function DashboardPage() {
         )}
         {_each1(
           "Investments",
-          formatICBX(data?.investment?.total || "0"),
+          formatEther(data?.investment?.total || "0"),
           Math.floor(data?.investment?.last24h || 0),
           Math.floor(data?.investment?.prev24h || 0),
           BG.r,
           IC.investments,
-          "users"
+          "users",
+          { isICBX: true }
         )}
         {_each1(
           "Invested Count",
@@ -176,7 +180,7 @@ export default function DashboardPage() {
           "withdraw-requests"
         )}
         {_each1(
-          "Orders",
+          "Pending Orders",
           data?.order?.total || "0",
           data?.order?.last24h,
           data?.order?.prev24h,

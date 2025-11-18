@@ -67,12 +67,6 @@ export default function TransactionsPage() {
       </div>
       <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-hidden">
         <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          {/* <input
-            placeholder=""
-            className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
-            style={{ backgroundImage: `url('${IC.lens}')` }}
-            onChange={_search}
-          /> */}
           <AppSearch onChange={_search} hint="Search by Hash" />
           <AppFilter
             onChange={onStatusFilter}
@@ -162,43 +156,6 @@ export default function TransactionsPage() {
         page={page}
         reload={(a1: any) => _loadDatas(a1, search, status, type)}
       />
-      {/* {total > 10 && (
-        <div className="flex justify-center mt-8">
-          <div className="flex border border-[#16263B] rounded-[8px]">
-            <div
-              className="cursor-pointer py-2 px-4 border-r-1 border-[#16263B]"
-              onClick={() => (page > 1 ? _loadDatas(page - 1, search) : null)}
-            >
-              Previous
-            </div>
-            {Array.from({ length: Math.ceil(total / 10) }, (_, i) => i + 1).map(
-              (it, k) => (
-                <div
-                  onClick={() => _loadDatas(it, search)}
-                  className={
-                    "cursor-pointer p-2 min-w-9 border-r-1 border-[#16263B] text-center" +
-                    (page === it ? " bg-[#256DC9] text-white" : "")
-                  }
-                  key={k}
-                >
-                  {it}
-                </div>
-              )
-            )}
-
-            <div
-              className="cursor-pointer py-2 px-4"
-              onClick={() =>
-                page < Math.ceil(total / 10)
-                  ? _loadDatas(page + 1, search)
-                  : null
-              }
-            >
-              Next
-            </div>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 }
