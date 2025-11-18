@@ -135,18 +135,18 @@ export default function DashboardPage() {
         )}
         {_each1(
           "Pending Approvals",
-          data?.pendingApprovels || "0",
-          0,
-          0,
+          data?.pendingApprovels?.total || "0",
+          data?.pendingApprovels?.last24h,
+          data?.pendingApprovels?.prev24h,
           BG.o,
           IC.pending,
           "withdraw-requests"
         )}
         {_each1(
           "Total Transactions",
-          data?.txns || "0",
-          0,
-          0,
+          data?.txns?.total || "0",
+          data?.txns?.last24h,
+          data?.txns?.prev24h,
           BG.p,
           IC.txn,
           "transactions"
