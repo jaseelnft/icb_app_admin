@@ -121,7 +121,7 @@ export default function DashboardPage() {
           Math.floor(formatEther(data?.wicbx?.prev24h || 0)),
           BG.b,
           IC.doller,
-          "users",
+          "transactions",
           { isICBX: true }
         )}
         {_each1(
