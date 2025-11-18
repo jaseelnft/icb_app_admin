@@ -47,7 +47,9 @@ export function AppFilter(props: {
         className="w-full border-none outline-none"
       >
         {list.map((it) => (
-          <option value={it.value}>{it.name}</option>
+          <option value={it.value} key={it.value}>
+            {it.name}
+          </option>
         ))}
       </select>
     </div>
