@@ -117,8 +117,8 @@ export default function DashboardPage() {
         {_each1(
           "Total WICBX",
           formatEther(data?.wicbx?.total || "0"),
-          Math.floor(data?.wicbx?.last24h || 0),
-          Math.floor(data?.wicbx?.prev24h || 0),
+          Math.floor(formatEther(data?.wicbx?.last24h || 0)),
+          Math.floor(formatEther(data?.wicbx?.prev24h || 0)),
           BG.b,
           IC.doller,
           "users",
@@ -154,8 +154,8 @@ export default function DashboardPage() {
         {_each1(
           "Investments",
           formatEther(data?.investment?.total || "0"),
-          Math.floor(data?.investment?.last24h || 0),
-          Math.floor(data?.investment?.prev24h || 0),
+          Math.floor(formatEther(data?.investment?.last24h || 0)),
+          Math.floor(formatEther(data?.investment?.prev24h || 0)),
           BG.r,
           IC.investments,
           "validator",
