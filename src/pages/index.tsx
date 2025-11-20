@@ -135,9 +135,9 @@ export default function DashboardPage() {
         )}
         {_each1(
           "Pending Approvals",
-          data?.pendingApprovels?.total || "0",
-          data?.pendingApprovels?.last24h,
-          data?.pendingApprovels?.prev24h,
+          data?.pendingApplovels?.total || "0",
+          data?.pendingApplovels?.last24h,
+          data?.pendingApplovels?.prev24h,
           BG.o,
           IC.pending,
           "withdraw-requests"
