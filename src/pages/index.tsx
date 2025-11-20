@@ -115,6 +115,15 @@ export default function DashboardPage() {
     <div className="px-1 py-3 lg:px-8 lg:py-8 flex items-center flex-col">
       <div className="max-w-[1100px] px-0 py-3 lg:px-8 lg:py-8 flex flex-wrap justify-center gap-2 lg:gap-5">
         {_each1(
+          "Total Users",
+          data?.users?.total || "0",
+          data?.users?.last24h,
+          data?.users?.prev24h,
+          BG.g,
+          IC.users1,
+          "users"
+        )}
+        {_each1(
           "Total WICBX",
           formatEther(data?.wicbx?.total || "0"),
           Math.floor(formatEther(data?.wicbx?.last24h || 0)),
@@ -125,31 +134,13 @@ export default function DashboardPage() {
           { isICBX: true }
         )}
         {_each1(
-          "Total Users",
-          data?.users?.total || "0",
-          data?.users?.last24h,
-          data?.users?.prev24h,
-          BG.g,
-          IC.users1,
-          "users"
-        )}
-        {_each1(
-          "Pending Approvals",
-          data?.pendingApplovels?.total || "0",
-          data?.pendingApplovels?.last24h,
-          data?.pendingApplovels?.prev24h,
-          BG.o,
-          IC.pending,
-          "withdraw-requests"
-        )}
-        {_each1(
-          "Total Transactions",
-          data?.txns?.total || "0",
-          data?.txns?.last24h,
-          data?.txns?.prev24h,
-          BG.p,
-          IC.txn,
-          "transactions"
+          "Invested Count",
+          data?.investCount?.total || "0",
+          data?.investCount?.last24h,
+          data?.investCount?.prev24h,
+          BG.dg,
+          IC.invested,
+          "validator"
         )}
         {_each1(
           "Investments",
@@ -162,13 +153,22 @@ export default function DashboardPage() {
           { isICBX: true }
         )}
         {_each1(
-          "Invested Count",
-          data?.investCount?.total || "0",
-          data?.investCount?.last24h,
-          data?.investCount?.prev24h,
-          BG.dg,
-          IC.invested,
-          "validator"
+          "Total Transactions",
+          data?.txns?.total || "0",
+          data?.txns?.last24h,
+          data?.txns?.prev24h,
+          BG.p,
+          IC.txn,
+          "transactions"
+        )}
+        {_each1(
+          "Pending Approvals",
+          data?.pendingApplovels?.total || "0",
+          data?.pendingApplovels?.last24h,
+          data?.pendingApplovels?.prev24h,
+          BG.o,
+          IC.pending,
+          "withdraw-requests"
         )}
         {_each1(
           "Pending Wallets",
