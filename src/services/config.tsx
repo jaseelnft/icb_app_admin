@@ -1,16 +1,16 @@
 import axios from "axios";
 import { showErrorToast } from "./toast";
 import { ethers } from "ethers";
-import { clearAllRedux, setChats, store } from "../redux/store";
-import { io, Socket } from "socket.io-client";
-import { getSupportMsgs } from "./support";
+import { clearAllRedux } from "../redux/store";
+// import { io, Socket } from "socket.io-client";
+// import { getSupportMsgs } from "./support";
 
 export const APP_VERSION = "1.0.0";
 document.title = "Admin | ICB Network App " + APP_VERSION;
 
 const BASE_URL =
   import.meta.env.VITE_BASE_URL || "https://dapps-api.icb.network";
-const BASE_WS = import.meta.env.VITE_BASE_WS;
+// const BASE_WS = import.meta.env.VITE_BASE_WS;
 
 export var ICB_SCAN = "";
 
@@ -87,12 +87,12 @@ api.interceptors.response.use(
   }
 );
 
-let socket: Socket<any>;
+// let socket: Socket<any>;
 
 export const appLogOut = () => {
   localStorage.setItem("authToken", "");
   clearAllRedux();
-  socket.disconnect();
+  // socket.disconnect();
 };
 
 export const appLogIn = (token: string) => {
@@ -100,40 +100,40 @@ export const appLogIn = (token: string) => {
 };
 
 export const connectWs = () => {
-  const token = localStorage.getItem("authToken") || "";
-  const auth = { from: "ADMIN", token };
-  socket = io(BASE_WS, { transports: ["websocket"], auth });
+  // const token = localStorage.getItem("authToken") || "";
+  // const auth = { from: "ADMIN", token };
+  // socket = io(BASE_WS, { transports: ["websocket"], auth });
   
-  socket.on("message", (data: any) => {
-    if (data.type === "MSG") {
-      showSupportNotification("You hava a new message");
-      store.dispatch(setChats(data.chats));
-      const chat: any = store.getState().app.chat;
-      if (chat && !chat.empty && chat._id === data.chatId)
-        getSupportMsgs(data.chatId);
-    } else if (data.type === "REG") {
-      store.dispatch(setChats(data.chats));
-    }
-  });
+  // socket.on("message", (data: any) => {
+  //   if (data.type === "MSG") {
+  //     showSupportNotification("You hava a new message");
+  //     store.dispatch(setChats(data.chats));
+  //     const chat: any = store.getState().app.chat;
+  //     if (chat && !chat.empty && chat._id === data.chatId)
+  //       getSupportMsgs(data.chatId);
+  //   } else if (data.type === "REG") {
+  //     store.dispatch(setChats(data.chats));
+  //   }
+  // });
 };
 
-export const sendWSMSG = async (chatId: string, msg: string) => {
-  if (socket && socket.connected) {
-    const payload = { msg, from: "ADMIN", chatId };
-    socket.emit("message", payload);
-  } else {
-    connectWs();
-  }
+export const sendWSMSG = async (_chatId: string, _msg: string) => {
+  // if (socket && socket.connected) {
+  //   const payload = { msg, from: "ADMIN", chatId };
+  //   socket.emit("message", payload);
+  // } else {
+  //   connectWs();
+  // }
 };
 
-function showSupportNotification(title: string) {
-  if (!window.location.pathname.includes("/support")) {
-    if (Notification.permission === "granted") {
-      new Notification(title);
-    } else if (Notification.permission === "default") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") new Notification(title);
-      });
-    }
-  }
-}
+// function showSupportNotification(title: string) {
+//   if (!window.location.pathname.includes("/support")) {
+//     if (Notification.permission === "granted") {
+//       new Notification(title);
+//     } else if (Notification.permission === "default") {
+//       Notification.requestPermission().then((permission) => {
+//         if (permission === "granted") new Notification(title);
+//       });
+//     }
+//   }
+// }
