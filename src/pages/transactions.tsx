@@ -52,6 +52,47 @@ export default function TransactionsPage() {
     _loadDatas(1, search, status, value);
   };
 
+  const makeType = (it?: any) => {
+    let c = "text-[#256DC9] bg-[#256DC91a]";
+    let t = "";
+    switch (it?.type) {
+      case "DEPOSIT":
+        t = "Deposit";
+        c = "text-[#00B676] bg-[#00B6761a]";
+        break;
+      case "WITHDRAWAL":
+        t = "Withdrawal";
+        c = "text-[#DF3A45] bg-[#DF3A451a]";
+        break;
+      case "OUT":
+        t = "To Validator";
+        break;
+      case "IN":
+        t = "From Validator";
+        break;
+      case "PROFIT":
+        t = "Profit";
+        c = "text-[#F1941B] bg-[#F1941B1a]";
+        break;
+      case "STAKE_UP":
+        t = "From Stake";
+        break;
+      case "STAKE_DOWN":
+        t = "To Stake";
+        break;
+    }
+    return (
+      <div
+        className={
+          "py-1 px-2 text-xs font-bold rounded flex items-center gap-1 mb-1 " +
+          c
+        }
+      >
+        {t}
+      </div>
+    );
+  };
+
   const elSt =
     "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
@@ -88,6 +129,9 @@ export default function TransactionsPage() {
               { name: "From Validator", value: "IN" },
               { name: "To & From Validator", value: "IN,OUT" },
               { name: "Profit", value: "PROFIT" },
+              { name: "To & From Staking", value: "STAKE_UP,STAKE_DOWN" },
+              { name: "To Staking", value: "STAKE_DOWN" },
+              { name: "From Staking", value: "STAKE_UP" },
             ]}
           />
         </div>
@@ -143,9 +187,7 @@ export default function TransactionsPage() {
             </div>
 
             <div className={elSt + "w-[20%] flex-col items-start text-sm"}>
-              <div className="mb-1 text-sm capitalize">
-                {_it?.type?.toLowerCase()}
-              </div>
+              {makeType(_it)}
               <StatusTags status={_it.status} />
             </div>
           </div>
