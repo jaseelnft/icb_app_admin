@@ -202,7 +202,7 @@ export default function HomeLayout() {
         <div className="h-[calc(100vh-168px)] md:h-[calc(100vh-88px)] overflow-auto bg-gradient-to-b from-[#101B2D] via-[#142442] to-[#101B2D]">
           <Outlet />
         </div>
-        <div className="h-20 bg-[#010513] md:hidden flex justify-evenly items-center">
+        <div className="fixed left-0 bottom-0 right-0 h-20 bg-[#010513] md:hidden flex justify-evenly items-center">
           <img
             className="p-3 w-12 h-12"
             alt="dashboard"

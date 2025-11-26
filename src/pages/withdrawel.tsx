@@ -44,100 +44,103 @@ export default function WithdrawalPage() {
     "px-4 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
   return (
-    <div className="p-8">
+    <div className="p-5 lg:p-8">
       <div className="flex justify-between">
         <div className="text-xl">
           <span className="text-[#4F8FE1] font-bold">Withdrawal Request</span> (
           {total})
         </div>
       </div>
-      <div className="bg-[#010513] border-[1.5px] border-[#010513] mt-6 rounded-[16px] shadow-[0_0_8px_0_#4F8FE129] overflow-hidden">
-        <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          <AppFilter
-            onChange={_onFilterStatus}
-            list={[
-              { name: "All Request", value: "" },
-              { name: "Approved", value: "succes" },
-              { name: "Pending", value: "pending" },
-              { name: "Rejected", value: "rejected" },
-            ]}
+      <div className="bg-[#010513] border-[1.5px] border-[#010513] mt-6 rounded-[16px] shadow-[0_0_8px_0_#4F8FE129] overflow-x-scroll">
+        <div className="w-full min-w-260">
+          <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
+            <AppFilter
+              onChange={_onFilterStatus}
+              list={[
+                { name: "All Request", value: "" },
+                { name: "Approved", value: "SUCESS" },
+                { name: "Pending", value: "PENDING" },
+                { name: "Rejected", value: "REJECTED" },
+              ]}
+            />
+          </div>
+          <div className="flex text-[14px] px-1">
+            <div className={elSt + "py-5 w-[30%]"}>User</div>
+            <div className={elSt + "py-5 w-[30%]"}>To Address</div>
+            <div className={elSt + "py-5 w-[26%] text-right"}>Amount</div>
+            <div className={elSt + "py-5 w-[26%] text-center"}>
+              Requested On/Hash
+            </div>
+            <div className={elSt + "py-5 w-[18%] text-center"}>Status</div>
+            <div className={elSt + "py-5 w-[20%] text-center"}>Action</div>
+          </div>
+          {busy && <div className="text-center text-sm p-4">Loading...</div>}
+          {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
+          {datas.map((_it: any, k) => (
+            <div className="flex odd:bg-[#0a101d] px-1" key={k}>
+              <div className={elSt + "flex-col gap-1 items-start w-[30%]"}>
+                <div>{_it?.userId?.name || "null"}</div>
+                <AddressT
+                  address={_it?.userId?.address}
+                  iconSize={20}
+                  className="text-[#256DC9] text-sm"
+                />
+              </div>
+              <div className={elSt + "w-[30%]"}>
+                <AddressT
+                  address={_it?.to || "0xnullnull"}
+                  iconSize={20}
+                  className="text-[#B3BDCB] text-sm"
+                />
+              </div>
+
+              <div
+                className={
+                  elSt +
+                  "w-[26%] min-h-[100%] text-[#A5A7AA] text-right text-sm"
+                }
+              >
+                {formatEther(_it.amount)} ICBX
+              </div>
+              <div
+                className={
+                  elSt +
+                  "flex-col gap-1 items-start justify-center w-[26%] text-[#A5A7AA] text-sm"
+                }
+              >
+                <div className="flex gap-1">
+                  <img src={IC.calender} className="w-[14px]" />
+                  {formatDate(_it.createdAt)}
+                </div>
+                <AddressT
+                  address={_it?.txnHash1}
+                  iconSize={20}
+                  className="text-[#B3BDCB] text-sm"
+                />
+              </div>
+              <div className={elSt + "w-[18%]"}>
+                <StatusTags status={_it.status} />
+              </div>
+              <div className={elSt + "w-[20%] gap-2"}>
+                {_it.status === "PENDING" && (
+                  <div className="bg-[#00B6761A] border border-[#00B6761A] w-8 h-8 rounded cursor-pointer flex">
+                    <AproveBtn it={_it} done={() => _loadDatas(page)} />
+                  </div>
+                )}
+                {_it.status === "PENDING" && (
+                  <div className="bg-[#F93C651A] border border-[#F93C654D] w-8 h-8 rounded cursor-pointer flex">
+                    <RejectBtn it={_it} done={() => _loadDatas(page)} />
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+          <Paging
+            total={total}
+            page={page}
+            reload={(a1: any) => _loadDatas(a1)}
           />
         </div>
-        <div className="flex text-[14px] px-1">
-          <div className={elSt + "py-5 w-[30%]"}>User</div>
-          <div className={elSt + "py-5 w-[30%]"}>To Address</div>
-          <div className={elSt + "py-5 w-[26%] text-right"}>Amount</div>
-          <div className={elSt + "py-5 w-[26%] text-center"}>
-            Requested On/Hash
-          </div>
-          <div className={elSt + "py-5 w-[18%] text-center"}>Status</div>
-          <div className={elSt + "py-5 w-[20%] text-center"}>Action</div>
-        </div>
-        {busy && <div className="text-center text-sm p-4">Loading...</div>}
-        {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
-        {datas.map((_it: any, k) => (
-          <div className="flex odd:bg-[#0a101d] px-1" key={k}>
-            <div className={elSt + "flex-col gap-1 items-start w-[30%]"}>
-              <div>{_it?.userId?.name || "null"}</div>
-              <AddressT
-                address={_it?.userId?.address}
-                iconSize={20}
-                className="text-[#256DC9] text-sm"
-              />
-            </div>
-            <div className={elSt + "w-[30%]"}>
-              <AddressT
-                address={_it?.to || "0xnullnull"}
-                iconSize={20}
-                className="text-[#B3BDCB] text-sm"
-              />
-            </div>
-
-            <div
-              className={
-                elSt + "w-[26%] min-h-[100%] text-[#A5A7AA] text-right text-sm"
-              }
-            >
-              {formatEther(_it.amount)} ICBX
-            </div>
-            <div
-              className={
-                elSt +
-                "flex-col gap-1 items-start justify-center w-[26%] text-[#A5A7AA] text-sm"
-              }
-            >
-              <div className="flex gap-1">
-                <img src={IC.calender} className="w-[14px]" />
-                {formatDate(_it.createdAt)}
-              </div>
-              <AddressT
-                address={_it?.txnHash1}
-                iconSize={20}
-                className="text-[#B3BDCB] text-sm"
-              />
-            </div>
-            <div className={elSt + "w-[18%]"}>
-              <StatusTags status={_it.status} />
-            </div>
-            <div className={elSt + "w-[20%] gap-2"}>
-              {_it.status === "PENDING" && (
-                <div className="bg-[#00B6761A] border border-[#00B6761A] w-8 h-8 rounded cursor-pointer flex">
-                  <AproveBtn it={_it} done={() => _loadDatas(page)} />
-                </div>
-              )}
-              {_it.status === "PENDING" && (
-                <div className="bg-[#F93C651A] border border-[#F93C654D] w-8 h-8 rounded cursor-pointer flex">
-                  <RejectBtn it={_it} done={() => _loadDatas(page)} />
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-        <Paging
-          total={total}
-          page={page}
-          reload={(a1: any) => _loadDatas(a1)}
-        />
       </div>
     </div>
   );
@@ -169,7 +172,7 @@ function AproveBtn({ it, done }: any) {
       />
       <Popup1
         selected={on}
-        className="p-8 max-w-[540px] w-full"
+        className="p-5 lg:p-8 max-w-[540px] w-full"
         close={() => seton(false)}
       >
         <div className="flex flex-col items-center">
@@ -237,7 +240,7 @@ function RejectBtn({ it, done }: any) {
       />
       <Popup1
         selected={on}
-        className="p-8 max-w-[540px] w-full"
+        className="p-5 lg:p-8 max-w-[540px] w-full"
         close={() => seton(false)}
       >
         <div className="flex flex-col items-center">

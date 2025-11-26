@@ -21,7 +21,7 @@ export function Paging({ total, page, reload }: any) {
     <div className="flex justify-center my-8">
       <div className="flex border border-[#16263B] rounded-[8px]">
         <div
-          className="cursor-pointer py-2 px-4 border-r-1 border-[#16263B]"
+          className="cursor-pointer py-1 lg:py-2 px-4 border-r-1 border-[#16263B]"
           onClick={() => (page > 1 ? reload(page - 1) : null)}
         >
           Previous
@@ -31,7 +31,7 @@ export function Paging({ total, page, reload }: any) {
             <div
               onClick={() => reload(it)}
               className={
-                "cursor-pointer p-2 min-w-9 border-r-1 border-[#16263B] text-center" +
+                "cursor-pointer p-1 lg:p-2 min-w-7 lg:min-w-9 border-r-1 border-[#16263B] text-center" +
                 (page === it ? " bg-[#256DC9] text-white" : "")
               }
               key={k}
@@ -42,7 +42,7 @@ export function Paging({ total, page, reload }: any) {
             _isVisible(list[k - 1]) && (
               <div
                 className={
-                  "p-2 min-w-9 border-r-1 border-[#16263B] text-center"
+                  "p-1 lg:p-2 min-w-7 lg:min-w-9 border-r-1 border-[#16263B] text-center"
                 }
                 key={k}
               >
@@ -53,7 +53,7 @@ export function Paging({ total, page, reload }: any) {
         )}
 
         <div
-          className="cursor-pointer py-2 px-4"
+          className="cursor-pointer py-1 lg:py-2 px-4"
           onClick={() => (page < end ? reload(page + 1) : null)}
         >
           Next

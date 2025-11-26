@@ -97,7 +97,7 @@ export default function TransactionsPage() {
     "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
   return (
-    <div className="p-8">
+    <div className="p-5 lg:p-8">
       <div className="flex justify-between">
         <div className="text-xl">
           <span className="text-[#4F8FE1] font-bold ">
@@ -106,92 +106,94 @@ export default function TransactionsPage() {
           &nbsp; ({total})
         </div>
       </div>
-      <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-hidden">
-        <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          <AppSearch onChange={_search} hint="Search by Hash" />
-          <AppFilter
-            onChange={onStatusFilter}
-            list={[
-              { name: "All", value: "" },
-              { name: "Pending", value: "PENDING" },
-              { name: "Failed", value: "FAILED" },
-              { name: "Success", value: "SUCCESS" },
-              { name: "Rejected", value: "REJECTED" },
-            ]}
-          />
-          <AppFilter
-            onChange={onTypeFilter}
-            list={[
-              { name: "Deposit & Withdrawal", value: "DEPOSIT,WITHDRAWAL" },
-              { name: "Deposit", value: "DEPOSIT" },
-              { name: "Withdrawal", value: "WITHDRAWAL" },
-              { name: "To Validator", value: "OUT" },
-              { name: "From Validator", value: "IN" },
-              { name: "To & From Validator", value: "IN,OUT" },
-              { name: "Profit", value: "PROFIT" },
-              { name: "To & From Staking", value: "STAKE_UP,STAKE_DOWN" },
-              { name: "To Staking", value: "STAKE_DOWN" },
-              { name: "From Staking", value: "STAKE_UP" },
-            ]}
-          />
-        </div>
-        <div className="flex text-[14px] px-2">
-          <div className="min-w-16" />
-          <div className={elSt + "py-5 w-[30%]"}>User</div>
-          <div className={elSt + "py-5 w-[34%]"}>From/to</div>
-          <div className={elSt + "py-5 w-[26%] justify-end"}>Amount/Time</div>
-          <div className={elSt + "py-5 w-[26%]"}>H1/H2</div>
-          <div className={elSt + "py-5 w-[20%]"}>Type/Status</div>
-        </div>
-        {busy && <div className="text-center text-sm p-4">Loading...</div>}
-        {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
-        {datas.map((_it: any, k) => (
-          <div className="flex odd:bg-[#0a101d] px-2" key={k}>
-            <div className="py-4 pl-4 min-w-16 flex justify-center">
-              <EthereumBlockie address={_it.userId?.address} size={36} />
-            </div>
-            <div className={elSt + "w-[30%]"}>
-              <div>
-                <div>{_it.userId?.name || "null"}</div>
-                <div className="text-[#256DC9] text-sm">
-                  <AddressT
-                    showEmpty
-                    address={_it.userId?.address}
-                    iconSize={20}
-                  />
+      <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-x-scroll">
+        <div className="w-full min-w-260">
+          <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
+            <AppSearch onChange={_search} hint="Search by Hash" />
+            <AppFilter
+              onChange={onStatusFilter}
+              list={[
+                { name: "All", value: "" },
+                { name: "Pending", value: "PENDING" },
+                { name: "Failed", value: "FAILED" },
+                { name: "Success", value: "SUCCESS" },
+                { name: "Rejected", value: "REJECTED" },
+              ]}
+            />
+            <AppFilter
+              onChange={onTypeFilter}
+              list={[
+                { name: "Deposit & Withdrawal", value: "DEPOSIT,WITHDRAWAL" },
+                { name: "Deposit", value: "DEPOSIT" },
+                { name: "Withdrawal", value: "WITHDRAWAL" },
+                { name: "To Validator", value: "OUT" },
+                { name: "From Validator", value: "IN" },
+                { name: "To & From Validator", value: "IN,OUT" },
+                { name: "Profit", value: "PROFIT" },
+                { name: "To & From Staking", value: "STAKE_UP,STAKE_DOWN" },
+                { name: "To Staking", value: "STAKE_DOWN" },
+                { name: "From Staking", value: "STAKE_UP" },
+              ]}
+            />
+          </div>
+          <div className="flex text-[14px] px-2">
+            <div className="min-w-16" />
+            <div className={elSt + "py-5 w-[30%]"}>User</div>
+            <div className={elSt + "py-5 w-[34%]"}>From/to</div>
+            <div className={elSt + "py-5 w-[26%] justify-end"}>Amount/Time</div>
+            <div className={elSt + "py-5 w-[26%]"}>H1/H2</div>
+            <div className={elSt + "py-5 w-[20%]"}>Type/Status</div>
+          </div>
+          {busy && <div className="text-center text-sm p-4">Loading...</div>}
+          {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
+          {datas.map((_it: any, k) => (
+            <div className="flex odd:bg-[#0a101d] px-2" key={k}>
+              <div className="py-4 pl-4 min-w-16 flex justify-center">
+                <EthereumBlockie address={_it.userId?.address} size={36} />
+              </div>
+              <div className={elSt + "w-[30%]"}>
+                <div>
+                  <div>{_it.userId?.name || "null"}</div>
+                  <div className="text-[#256DC9] text-sm">
+                    <AddressT
+                      showEmpty
+                      address={_it.userId?.address}
+                      iconSize={20}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              className={
-                elSt + "w-[34%] text-[#B3BDCB] text-sm flex-col items-start"
-              }
-            >
-              <AddressT showEmpty address={_it.from} iconSize={20} />
-              <AddressT showEmpty address={_it.to} iconSize={20} />
-            </div>
+              <div
+                className={
+                  elSt + "w-[34%] text-[#B3BDCB] text-sm flex-col items-start"
+                }
+              >
+                <AddressT showEmpty address={_it.from} iconSize={20} />
+                <AddressT showEmpty address={_it.to} iconSize={20} />
+              </div>
 
-            <div
-              className={
-                elSt +
-                "w-[26%] text-[#A5A7AA] text-sm text-right items-end flex-col"
-              }
-            >
-              {weiToICBX(_it.amount ?? "0")} ICBX
-              <div>{formatDate(_it.createdAt)}</div>
-            </div>
-            <div className={elSt + "w-[26%] text-sm items-start flex-col"}>
-              <AddressT showEmpty address={_it.txnHash1} iconSize={20} />
-              <AddressT showEmpty address={_it.txnHash2} iconSize={20} />
-            </div>
+              <div
+                className={
+                  elSt +
+                  "w-[26%] text-[#A5A7AA] text-sm text-right items-end flex-col"
+                }
+              >
+                {weiToICBX(_it.amount ?? "0")} ICBX
+                <div>{formatDate(_it.createdAt)}</div>
+              </div>
+              <div className={elSt + "w-[26%] text-sm items-start flex-col"}>
+                <AddressT showEmpty address={_it.txnHash1} iconSize={20} />
+                <AddressT showEmpty address={_it.txnHash2} iconSize={20} />
+              </div>
 
-            <div className={elSt + "w-[20%] flex-col items-start text-sm"}>
-              {makeType(_it)}
-              <StatusTags status={_it.status} />
+              <div className={elSt + "w-[20%] flex-col items-start text-sm"}>
+                {makeType(_it)}
+                <StatusTags status={_it.status} />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <Paging
         total={total}

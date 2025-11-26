@@ -50,115 +50,119 @@ export default function UsersPage() {
     "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
   return (
-    <div className="p-8">
+    <div className="p-4 lg:p-8">
       <div className="flex justify-between">
         <div className="text-xl">
           <span className="text-[#4F8FE1] font-bold ">Platform Users</span> (
           {total})
         </div>
       </div>
-      <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-hidden min-w-160">
-        <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          <AppSearch
-            onChange={_search}
-            hint="Search by User, Email, or Wallet Address"
-          />
-          {/* <AppFilter
+      <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-x-scroll">
+        <div className="w-full min-w-260">
+          <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
+            <AppSearch
+              onChange={_search}
+              hint="Search by User, Email, or Wallet Address"
+            />
+            {/* <AppFilter
             onChange={onFilter}
             list={[
               { name: "All", value: "" },
               { name: "Investors", value: "investors" },
             ]}
           /> */}
-        </div>
-        <div className="flex text-[14px] px-2">
-          <div className="min-w-16" />
-          <div className={elSt + "py-5 w-[40%]"}>User</div>
-          <div className={elSt + "py-5 w-[34%]"}>Wallet Address / WICBX</div>
-          <div className={elSt + "py-5 w-[26%] justify-end"}>Validator</div>
-          <div className={elSt + "py-5 w-[26%] justify-end"}>ICBX Balance</div>
-          <div className={elSt + "py-5 w-40 justify-center"}>Action</div>
-        </div>
-        {(busy || localBusy) && (
-          <div className="text-center text-sm p-4">Loading...</div>
-        )}
-        {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
-        {data.map((_it: any, k: number) => (
-          <div className="flex odd:bg-[#0a101d] px-2" key={k}>
-            <div className="py-4 pl-4 min-w-16 flex justify-center">
-              <EthereumBlockie address={_it.address} size={36} />
+          </div>
+          <div className="flex text-[14px] px-2">
+            <div className="min-w-16" />
+            <div className={elSt + "py-5 w-[40%]"}>User</div>
+            <div className={elSt + "py-5 w-[34%]"}>Wallet Address / WICBX</div>
+            <div className={elSt + "py-5 w-[26%] justify-end"}>Validator</div>
+            <div className={elSt + "py-5 w-[26%] justify-end"}>
+              ICBX Balance
             </div>
-            <div className={elSt + "w-[40%]"}>
-              <div>
-                <div>{_it.name || "null"}</div>
-                <div className="text-[#256DC9] text-sm">
-                  {_it.email || "null"}
+            <div className={elSt + "py-5 w-40 justify-center"}>Action</div>
+          </div>
+          {(busy || localBusy) && (
+            <div className="text-center text-sm p-4">Loading...</div>
+          )}
+          {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
+          {data.map((_it: any, k: number) => (
+            <div className="flex odd:bg-[#0a101d] px-2" key={k}>
+              <div className="py-4 pl-4 min-w-16 flex justify-center">
+                <EthereumBlockie address={_it.address} size={36} />
+              </div>
+              <div className={elSt + "w-[40%]"}>
+                <div>
+                  <div>{_it.name || "null"}</div>
+                  <div className="text-[#256DC9] text-sm">
+                    {_it.email || "null"}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              className={
-                elSt + "w-[34%] text-[#B3BDCB] text-sm flex-col items-start"
-              }
-            >
-              <AddressT address={_it.address} iconSize={20} />
-              <b style={(_it.wicbx ?? "0") > 0 ? { color: "orange" } : {}}>
-                {weiToICBX(_it.wicbx ?? "0")} ICBX
-              </b>
-            </div>
+              <div
+                className={
+                  elSt + "w-[34%] text-[#B3BDCB] text-sm flex-col items-start"
+                }
+              >
+                <AddressT address={_it.address} iconSize={20} />
+                <b style={(_it.wicbx ?? "0") > 0 ? { color: "orange" } : {}}>
+                  {weiToICBX(_it.wicbx ?? "0")} ICBX
+                </b>
+              </div>
 
-            <div
-              className={
-                elSt +
-                "w-[26%] text-[#A5A7AA] text-sm flex-col items-end justify-center"
-              }
-            >
-              {(_it?.validator?.countAll || 0) === 0 ? (
-                <span className="text-[#DF3A45]">Not Invested</span>
-              ) : (
-                <>
-                  {weiToICBX(_it.validator.total ?? "0")} ICBX
-                  <div>
-                    <b>{_it.validator.count}</b>/{_it.validator.countAll}
-                  </div>
-                </>
-              )}
-            </div>
-            {_it.done ? (
-              <div className={elSt + "w-[26%] text-sm items-end flex-col"}>
-                {weiToICBX(_it.icbx ?? "0")} ICBX
-                {_it.haveKYC ? (
-                  <div className="flex gap-2 items-center text-[#00B676]">
-                    <div className="w-2 h-2 rounded-[4px] bg-[#00B676]" />
-                    KYC Verified
-                  </div>
+              <div
+                className={
+                  elSt +
+                  "w-[26%] text-[#A5A7AA] text-sm flex-col items-end justify-center"
+                }
+              >
+                {(_it?.validator?.countAll || 0) === 0 ? (
+                  <span className="text-[#DF3A45]">Not Invested</span>
                 ) : (
-                  <div className="flex gap-2 items-center text-[#DF3A45]">
-                    <div className="w-2 h-2 rounded-[4px] bg-[#DF3A45]" />
-                    KYC Not Verified
-                  </div>
+                  <>
+                    {weiToICBX(_it.validator.total ?? "0")} ICBX
+                    <div>
+                      <b>{_it.validator.count}</b>/{_it.validator.countAll}
+                    </div>
+                  </>
                 )}
               </div>
-            ) : (
-              <div className={elSt + "w-[26%] text-sm justify-end"}>
-                Loading..
-              </div>
-            )}
+              {_it.done ? (
+                <div className={elSt + "w-[26%] text-sm items-end flex-col"}>
+                  {weiToICBX(_it.icbx ?? "0")} ICBX
+                  {_it.haveKYC ? (
+                    <div className="flex gap-2 items-center text-[#00B676]">
+                      <div className="w-2 h-2 rounded-[4px] bg-[#00B676]" />
+                      KYC Verified
+                    </div>
+                  ) : (
+                    <div className="flex gap-2 items-center text-[#DF3A45]">
+                      <div className="w-2 h-2 rounded-[4px] bg-[#DF3A45]" />
+                      KYC Not Verified
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className={elSt + "w-[26%] text-sm justify-end"}>
+                  Loading..
+                </div>
+              )}
 
-            <div className={elSt + "w-40 justify-center gap-1"}>
-              {/* <img
+              <div className={elSt + "w-40 justify-center gap-1"}>
+                {/* <img
                 src={IC.close}
                 className="bg-[#FFFFFF1A] border border-[#FFFFFF4D] w-8 h-8 min-w-2 min-h-2 p-[5px] rounded cursor-pointer filter invert-[0.45] sepia-[0.9] hue-rotate-[-5deg] saturate-[4]"
               /> */}
-              <img
-                src={IC.eye}
-                onClick={() => setselcted(_it)}
-                className="bg-[#4F8FE11A] border border-[#4F8FE14D] w-8 h-8 min-w-2 min-h-2 p-[5px] rounded cursor-pointer"
-              />
+                <img
+                  src={IC.eye}
+                  onClick={() => setselcted(_it)}
+                  className="bg-[#4F8FE11A] border border-[#4F8FE14D] w-8 h-8 min-w-2 min-h-2 p-[5px] rounded cursor-pointer"
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <Paging total={total} page={page} reload={_changePage} />
       <Drower1
