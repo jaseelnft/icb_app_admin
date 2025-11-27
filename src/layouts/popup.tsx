@@ -29,7 +29,7 @@ export function Drower1({
   title: any;
   children: any;
 }) {
-  if (!on) return;  
+  if (!on) return;
   return (
     <div
       className={
@@ -50,7 +50,7 @@ export function Drower1({
             onClick={() => close()}
           />
         </div>
-        {children}
+        {on && children}
       </div>
     </div>
   );

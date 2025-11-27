@@ -4,7 +4,7 @@ import {
   getRandomWallets,
   updareRandomWallets,
 } from "../services/dashboard";
-import { AddressT } from "../widgets/ethers";
+import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { Paging } from "../components/paging";
 import { AppFilter } from "../components/input";
 
@@ -99,6 +99,7 @@ export default function RandomWalletsPage() {
             </div>
           </div>
           <div className="flex text-[14px] px-1">
+            <div className={elSt + "py-5 w-[30%]"}>User</div>
             <div className={elSt + "py-5 w-[45%]"}>User</div>
             <div className={elSt + "py-5 w-[45%]"}>Address</div>
             <div className={elSt + "py-5 w-[15%] text-center"}>Assigned</div>
@@ -108,6 +109,9 @@ export default function RandomWalletsPage() {
           {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
           {datas.map((_it: any, k) => (
             <div className="flex odd:bg-[#0a101d] px-1" key={k}>
+              <div className="py-4 pl-4 min-w-16 flex justify-center">
+                <EthereumBlockie address={_it.userId?.address} size={36} />
+              </div>
               <div className={elSt + "flex-col gap-1 items-start w-[45%]"}>
                 <div>{_it?.userId?.name || "null"}</div>
                 <AddressT

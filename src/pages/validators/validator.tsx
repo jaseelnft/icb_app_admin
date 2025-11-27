@@ -196,7 +196,11 @@ export default function SingleValidator() {
               className="flex justify-between items-center text-[#A5A7AA] border-t border-[#111F31] py-3"
             >
               <div className="pl-8 min-w-18 flex justify-center">
-                <EthereumBlockie address={it?.userId?.address} size={36} />
+                <EthereumBlockie
+                  id={it?.userId?._id}
+                  address={it?.userId?.address}
+                  size={36}
+                />
               </div>
               <div className="w-[32%] px-[24px]">
                 <div>
@@ -256,7 +260,7 @@ export default function SingleValidator() {
               className="flex justify-between items-center text-[#A5A7AA] border-t border-[#111F31] py-3"
             >
               <div className="pl-8 min-w-18 flex justify-center">
-                <EthereumBlockie address={it?.address} size={36} />
+                <EthereumBlockie id={it?._id} address={it?.address} size={36} />
               </div>
               <div className="w-[32%] px-[24px]">
                 <div>

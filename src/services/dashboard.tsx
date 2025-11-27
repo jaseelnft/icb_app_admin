@@ -18,6 +18,11 @@ export async function getStatistics(): Promise<any> {
 // END - Basic Details
 
 // START - Users
+export async function getUserDetails(id: string): Promise<any> {
+  const res = await api.get(`api/admin/users/${id}`);
+  return res.data;
+}
+
 export async function getUsers(p: number, s: string): Promise<any> {
   try {
     const res = await api.get(`api/admin/users?page=${p}&search=${s}`);

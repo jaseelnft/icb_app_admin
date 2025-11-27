@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { showToast } from "../services/toast";
 import getIdenticon from "ethereum-blockies-base64";
 
@@ -37,15 +38,27 @@ export function AddressT({
   );
 }
 
-export function EthereumBlockie({ address, size, className }: any) {
+export function EthereumBlockie({ address, size, className, id }: any) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const onSelectUser = (id: string) => {
+    searchParams.set("user", id);
+    setSearchParams(searchParams);
+  };
+
   if (!address) return "";
   const identicon = getIdenticon(address);
   return (
     <img
       src={identicon}
       alt="Wallet Identicon"
-      style={{ width: size, height: size, borderRadius: "50%" }}
+      style={{
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        cursor: id ? "pointer" : "",
+      }}
       className={className}
+      onClick={() => (id ? onSelectUser(id) : null)}
     />
   );
 }

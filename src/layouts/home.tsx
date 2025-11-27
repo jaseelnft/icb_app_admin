@@ -1,10 +1,22 @@
 import { StrictMode, useEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { IC, Logo } from "../components/librery";
-import { Popup1 } from "./popup";
+import { Drower1, Popup1 } from "./popup";
 import { APP_VERSION, appLogOut, connectWs } from "../services/config";
-import { getDetails } from "../services/dashboard";
+import { getDetails, getUserDetails } from "../services/dashboard";
 import LoadingPage from "../components/loadingPage";
+import { AddressT, EthereumBlockie } from "../widgets/ethers";
+import {
+  bigToString,
+  gatEthBalance,
+  haveKYCNFT,
+  weiToICBX,
+} from "../services/ethers";
 
 export default function HomeLayout() {
   const { pathname } = useLocation();
@@ -240,6 +252,7 @@ export default function HomeLayout() {
           />
         </div>
       </div>
+      <UserDrawer />
     </div>
   );
 }
@@ -287,5 +300,116 @@ function Logout() {
         </div>
       </Popup1>
     </>
+  );
+}
+
+function UserDrawer() {
+  const { search } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [busy, setbusy] = useState(false);
+  const userId = new URLSearchParams(search).get("user") ?? "";
+
+  const [user, setuser]: any = useState({});
+
+  const onClose = () => {
+    searchParams.delete("user");
+    setSearchParams(searchParams);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [userId]);
+
+  const loadData = async () => {
+    if (userId === "" || busy) return;
+    setuser(null);
+    setbusy(true);
+    await getUserDetails(userId)
+      .then(async (res: any) => {
+        let icbx = "0";
+        let haveKYC = false;
+        await gatEthBalance(res.address).then(
+          (res) => (icbx = bigToString(res))
+        );
+        await haveKYCNFT(res.address).then((res) => (haveKYC = res));
+        setuser({ ...res, icbx, haveKYC });
+      })
+      .catch(() => {});
+    setbusy(false);
+  };
+
+  return (
+    <Drower1 on={userId !== ""} close={onClose} title={user?.name || ""}>
+      {busy ? (
+        <div className="text-center p-4" >Loading...</div>
+      ) : (
+        <div className="p-5 py-8">
+          <div className="flex items-center gap-3 mb-6 mx-2">
+            <EthereumBlockie address={user.address} size={86} />
+            <div>
+              <div className="text-lg font-bold">{user.name || "null"}</div>
+              <div className="text-[#256DC9] text-sm">
+                {user.email || "null"}
+              </div>
+              <AddressT address={user.address} iconSize={20} />
+            </div>
+          </div>
+          <div className="bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
+            <div className="flex justify-between py-2">
+              <div>ICBX</div>
+              <div className="font-bold">
+                {weiToICBX(user.icbx ?? "0")} ICBX
+              </div>
+            </div>
+            <div className="flex justify-between py-2">
+              <div>ICB KYC</div>
+              {user.haveKYC ? (
+                <div className="flex gap-2 items-center text-[#00B676]">
+                  <div className="w-2 h-2 rounded-[4px] bg-[#00B676]" />
+                  KYC Verified
+                </div>
+              ) : (
+                <div className="flex gap-2 items-center text-[#DF3A45]">
+                  <div className="w-2 h-2 rounded-[4px] bg-[#DF3A45]" />
+                  KYC Not Verified
+                </div>
+              )}
+            </div>
+            <div className="flex justify-between py-2">
+              <div>WICBX</div>
+              <div className="font-bold">
+                {weiToICBX(user.wicbx ?? "0")} ICBX
+              </div>
+            </div>
+            <div className="flex justify-between py-2">
+              Totel Invested
+              <div className="font-bold">
+                {weiToICBX(user?.validator?.total ?? "0")} ICBX
+              </div>
+            </div>
+            <div className="flex justify-between py-2">
+              Invest Count (Acive/Totel)
+              <div className="font-bold">
+                <div>
+                  <b>{user?.validator?.count}</b>/{user?.validator?.countAll}
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <div>
+              <div className="flex text-[14px] bg-[black]">
+                <div className={elSt + "py-4 w-[60%]"}>Address</div>
+                <div className={elSt + "py-4 w-[40%]"}>Status</div>
+              </div>
+              {(busy || localBusy) && (
+                <div className="text-center text-sm p-4">Loading...</div>
+              )}
+              {total < 1 && (
+                <div className="text-center text-sm p-4">No Data</div>
+              )}
+            </div> */}
+        </div>
+      )}
+    </Drower1>
   );
 }

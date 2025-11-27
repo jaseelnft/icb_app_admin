@@ -57,6 +57,7 @@ function App() {
           {/* <Route path="*" element={<LoginPage />} /> */}
           <Route path="*" element={<Navigate to="/auth/login" />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );
