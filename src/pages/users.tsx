@@ -35,7 +35,8 @@ export default function UsersPage() {
   const _search = (value: string) => {
     setsearch(value);
     setlocalBusy(true);
-    if (value.length > 2) _loadDatas(1, value);
+    store.dispatch(setUsers({ total, page: 1, data: [], busy: true }));
+    if (value.length > 1) _loadDatas(1, value);
     else if (value.length === 0) _loadDatas(1, "");
   };
 
@@ -50,7 +51,7 @@ export default function UsersPage() {
     "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
   return (
-    <div className="p-4 lg:p-8">
+    <div className="p-4 lg:p-8 lg:max-w-[calc(100vw-260px)]">
       <div className="flex justify-between">
         <div className="text-xl">
           <span className="text-[#4F8FE1] font-bold ">Platform Users</span> (
@@ -58,7 +59,7 @@ export default function UsersPage() {
         </div>
       </div>
       <div className="bg-[#010513] border-1 border-[#010513] mt-6 rounded-[16px] overflow-x-scroll">
-        <div className="w-full min-w-260">
+        <div className="max-w-full w-full min-w-260">
           <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
             <AppSearch
               onChange={_search}

@@ -49,6 +49,7 @@ import ICinvestments from "../assets/icons/ICinvestments.svg";
 import ICinvested from "../assets/icons/ICinvested.svg";
 import ICwallets from "../assets/icons/ICwallets.svg";
 import ICorders from "../assets/icons/ICorders.svg";
+import ICreload from "../assets/icons/ICreload.svg";
 
 import BGlogin from "../assets/images/BGlogin.webp";
 import BGlogin2 from "../assets/images/BGlogin2.webp";
@@ -118,6 +119,7 @@ export class IC {
   static invested = ICinvested;
   static wallets = ICwallets;
   static orders = ICorders;
+  static reload = ICreload;
 }
 
 export class BG {

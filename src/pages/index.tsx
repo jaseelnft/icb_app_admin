@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BG, IC } from "../components/librery";
 import { getStatistics } from "../services/dashboard";
 import { formatEther, formatICBX } from "../services/simple";
@@ -8,10 +8,18 @@ import { useSelector } from "react-redux";
 export default function DashboardPage() {
   const navigate = useNavigate();
   const data = useSelector((state: any) => state.data.dashboard);
+  const [busy, setbusy] = useState(false);
 
   useEffect(() => {
-    getStatistics();
+    loadData();
   }, []);
+
+  const loadData = async () => {
+    if (busy) return;
+    setbusy(true);
+    await getStatistics();
+    setbusy(false);
+  };
 
   const _getHike = (last: number, prev: number) => {
     let hike = 0;
@@ -113,7 +121,14 @@ export default function DashboardPage() {
 
   return (
     <div className="px-1 py-3 lg:px-8 lg:py-8 flex items-center flex-col">
-      <div className="max-w-[1100px] px-0 py-3 lg:px-8 lg:py-8 flex flex-wrap justify-center gap-2 lg:gap-5">
+      <div className="w-full flex justify-end">
+        <img
+          src={IC.reload}
+          className={"w-8 p-1 cursor-pointer" + (busy ? " RotateLoadBtn" : "")}
+          onClick={loadData}
+        />
+      </div>
+      <div className="max-w-[1100px] px-0 py-2 lg:px-8 lg:py-3 flex flex-wrap justify-center gap-2 lg:gap-5">
         {_each1(
           "Total Users",
           data?.users?.total || "0",

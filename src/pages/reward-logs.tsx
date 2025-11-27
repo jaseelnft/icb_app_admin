@@ -51,7 +51,7 @@ export default function RewardLogsPage() {
     "px-5 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
   return (
-    <div className="p-8">
+    <div className="p-4 lg:p-8 lg:max-w-[calc(100vw-260px)]">
       <div className="text-[#4F8FE1] font-[600] text-[22px]">
         Daily Reward Logs
       </div>
@@ -84,80 +84,82 @@ export default function RewardLogsPage() {
       <div className="font-[600] text-[20px] mt-6">
         List of users Joined ({total})
       </div>
-      <div className="bg-[#010513] border-1 border-[#010513] mt-3 rounded-[16px] overflow-hidden">
-        <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
-          <input
-            placeholder="Search by name, address or email"
-            className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
-            style={{ backgroundImage: `url('${IC.lens}')` }}
-            onChange={_search}
-          />
-          {/* <select
+      <div className="bg-[#010513] border-1 border-[#010513] mt-3 rounded-[16px] overflow-y-auto">
+        <div className="max-w-full w-full min-w-260">
+          <div className="bg-[#011022] rounded-t-[16px] p-5 flex gap-3 items-center border-b border-[#16263B] text-sm">
+            <input
+              placeholder="Search by name, address or email"
+              className="border border-[#16263B] rounded-lg py-2 px-4 w-92 bg-[#0F1626]"
+              style={{ backgroundImage: `url('${IC.lens}')` }}
+              onChange={_search}
+            />
+            {/* <select
                   className="border border-[#16263B] rounded-lg py-2 px-4 w-50 bg-[#0E1C2F]"
                   id="search"
               >
                 <option>All Status</option>
               </select> 
           */}
-        </div>
-        <div className="flex text-[14px] px-2">
-          <div className="min-w-16" />
-          <div className={elSt + "py-5 w-[40%]"}>User</div>
-          <div className={elSt + "py-5 w-[34%]"}>Wallet Address</div>
-          <div className={elSt + "py-5 w-[26%] justify-end"}>
-            Joining Balance/Date
           </div>
-          <div className={elSt + "py-5 w-[26%] justify-end"}>
-            Avarage Balance
-          </div>
-          <div className={elSt + "py-5 w-[20%]"}>Action</div>
-        </div>
-        {busy && <div className="text-center text-sm p-4">Loading...</div>}
-        {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
-        {datas.map((_it: any, k: number) => (
-          <div className="flex odd:bg-[#0a101d] px-2" key={k}>
-            <div className="py-4 pl-4 min-w-16 flex justify-center">
-              <EthereumBlockie address={_it.user.address} size={36} />
+          <div className="flex text-[14px] px-2">
+            <div className="min-w-16" />
+            <div className={elSt + "py-5 w-[40%]"}>User</div>
+            <div className={elSt + "py-5 w-[34%]"}>Wallet Address</div>
+            <div className={elSt + "py-5 w-[26%] justify-end"}>
+              Joining Balance/Date
             </div>
-            <div className={elSt + "w-[40%]"}>
-              <div>
-                <div>{_it.user.name || "null"}</div>
-                <div className="text-[#256DC9] text-sm">
-                  {_it.user.email || "null"}
+            <div className={elSt + "py-5 w-[26%] justify-end"}>
+              Avarage Balance
+            </div>
+            <div className={elSt + "py-5 w-[20%]"}>Action</div>
+          </div>
+          {busy && <div className="text-center text-sm p-4">Loading...</div>}
+          {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
+          {datas.map((_it: any, k: number) => (
+            <div className="flex odd:bg-[#0a101d] px-2" key={k}>
+              <div className="py-4 pl-4 min-w-16 flex justify-center">
+                <EthereumBlockie address={_it.user.address} size={36} />
+              </div>
+              <div className={elSt + "w-[40%]"}>
+                <div>
+                  <div>{_it.user.name || "null"}</div>
+                  <div className="text-[#256DC9] text-sm">
+                    {_it.user.email || "null"}
+                  </div>
+                </div>
+              </div>
+
+              <AddressT
+                address={_it.user.address}
+                iconSize={20}
+                className={elSt + "w-[34%] text-[#B3BDCB] text-sm"}
+              />
+
+              <div
+                className={
+                  elSt + "w-[26%] text-[#A5A7AA] text-sm items-end flex-col"
+                }
+              >
+                {weiToICBX(_it.balance ?? "0")} ICBX
+                <div>{formatDate(_it.createdAt)}</div>
+              </div>
+              <div
+                className={
+                  elSt + "w-[26%] text-[#A5A7AA] text-sm text-right justify-end"
+                }
+              >
+                {weiToICBX(_it.avgBalance ?? "0")} ICBX
+                {/* {weiToICBX(_it.balance ?? "0")} ICBX */}
+              </div>
+
+              <div className={elSt + "w-[20%]"}>
+                <div className="bg-[#4F8FE11A] border border-[#4F8FE14D] w-8 h-8 rounded cursor-pointer flex">
+                  <img src={IC.eye} className="min-w-2 min-h-2 p-[5px]" />
                 </div>
               </div>
             </div>
-
-            <AddressT
-              address={_it.user.address}
-              iconSize={20}
-              className={elSt + "w-[34%] text-[#B3BDCB] text-sm"}
-            />
-
-            <div
-              className={
-                elSt + "w-[26%] text-[#A5A7AA] text-sm items-end flex-col"
-              }
-            >
-              {weiToICBX(_it.balance ?? "0")} ICBX
-              <div>{formatDate(_it.createdAt)}</div>
-            </div>
-            <div
-              className={
-                elSt + "w-[26%] text-[#A5A7AA] text-sm text-right justify-end"
-              }
-            >
-              {weiToICBX(_it.avgBalance ?? "0")} ICBX
-              {/* {weiToICBX(_it.balance ?? "0")} ICBX */}
-            </div>
-
-            <div className={elSt + "w-[20%]"}>
-              <div className="bg-[#4F8FE11A] border border-[#4F8FE14D] w-8 h-8 rounded cursor-pointer flex">
-                <img src={IC.eye} className="min-w-2 min-h-2 p-[5px]" />
-              </div>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <Paging
         total={total}

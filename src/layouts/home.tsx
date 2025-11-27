@@ -159,8 +159,8 @@ export default function HomeLayout() {
   if (busy) return <LoadingPage />;
 
   return (
-    <div className="flex w-full h-[100vh]">
-      <div className="min-w-[260px] bg-[#011022] p-6 border-r border-[#FFFFFF1A] flex flex-col justify-between items-center hidden lg:flex">
+    <div className="flex w-full h-[100vh] overflow-hidden">
+      <div className="w-65 min-w-65 bg-[#011022] p-6 border-r border-[#FFFFFF1A] flex flex-col justify-between items-center hidden lg:flex">
         <div className="w-full">
           <img src={Logo.appFull} className="h-15" />
           <div className="bg-gradient-to-r from-[#101B2D] to-[#182842]" />
@@ -182,8 +182,8 @@ export default function HomeLayout() {
           </div>
         </div>
       </div>
-      <div className="w-full">
-        <div className="h-22 bg-[#010513] flex justify-between items-center">
+      <div className="w-full flex flex-col items-center bg-gradient-to-b from-[#101B2D] via-[#142442] to-[#101B2D]">
+        <div className="w-full h-22 bg-[#010513] flex justify-between items-center">
           <div className="font-[ClashDisplay] px-6 text-[18px]">
             {pathname === `/` && "Dashboard"}
             {pathname === `/users` && "Users"}
@@ -199,7 +199,7 @@ export default function HomeLayout() {
             {pathname === `/admins` && "Admins"}
           </div>
         </div>
-        <div className="h-[calc(100vh-168px)] md:h-[calc(100vh-88px)] overflow-auto bg-gradient-to-b from-[#101B2D] via-[#142442] to-[#101B2D]">
+        <div className="max-w-300 w-full h-[calc(100vh-168px)] md:h-[calc(100vh-88px)] overflow-y-auto">
           <Outlet />
         </div>
         <div className="fixed left-0 bottom-0 right-0 h-20 bg-[#010513] md:hidden flex justify-evenly items-center">

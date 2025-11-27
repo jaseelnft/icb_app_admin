@@ -55,7 +55,7 @@ export default function RandomWalletsPage() {
     "px-4 py-3 flex items-center border-r border-[#16263B] last:border-0 overflow-hidden ";
 
   return (
-    <div className="p-5 lg:p-8">
+    <div className="p-5 lg:p-8 lg:max-w-[calc(100vw-260px)]">
       <div className="flex justify-between">
         <div className="text-xl">
           <span className="text-[#4F8FE1] font-bold">Random Wallets</span> (

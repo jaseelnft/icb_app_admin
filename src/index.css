@@ -90,3 +90,18 @@ body {
     opacity: 0.8;
   }
 }
+
+.RotateLoadBtn {
+  animation: spin 2s linear infinite;
+  cursor: not-allowed;
+  filter: grayscale(0.8);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
