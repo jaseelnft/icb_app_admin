@@ -133,7 +133,7 @@ export default function StakePage() {
                   "w-[26%] text-[#A5A7AA] text-sm text-right items-end flex-col justify-center"
                 }
               >
-                {weiToICBX(_it.amount ?? "0")} ICBX
+                {weiToICBX(_it.invested ?? "0")} ICBX
                 <div>{formatDate(_it.createdAt)}</div>
               </div>
               <div className={elSt + "w-[26%] text-sm items-start flex-col"}>
