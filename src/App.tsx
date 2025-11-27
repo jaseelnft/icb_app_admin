@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomeLayout from "./layouts/home";
 import AuthLayout from "./layouts/auth";
 import DashboardPage from "./pages";
@@ -19,6 +19,7 @@ import PaymentsPage from "./pages/payments";
 import AdminsPage from "./pages/admins";
 import RandomWalletsPage from "./pages/random-wallets";
 import SingleValidator from "./pages/validators/validator";
+import StakePage from "./pages/staking";
 
 function App() {
   const [busy, setbusy] = useState(true);
@@ -41,17 +42,20 @@ function App() {
           <Route path="reward-logs" element={<RewardLogsPage />} />
           <Route path="random-wallets" element={<RandomWalletsPage />} />
           <Route path="transactions" element={<TransactionsPage />} />
+          <Route path="staking" element={<StakePage />} />
           <Route path="support" element={<SupportPage />} />
           <Route path="orders" element={<OrdersPage />} />
           <Route path="payments" element={<PaymentsPage />} />
           <Route path="app-settings" element={<AppSettingsPage />} />
           <Route path="admins" element={<AdminsPage />} />
-          <Route path="*" element={<DashboardPage />} />
+          {/* <Route path="*" element={<DashboardPage />} /> */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="otp" element={<OTPPage />} />
-          <Route path="*" element={<LoginPage />} />
+          {/* <Route path="*" element={<LoginPage />} /> */}
+          <Route path="*" element={<Navigate to="/auth/login" />} />
         </Route>
       </Routes>
     </BrowserRouter>

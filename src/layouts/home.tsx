@@ -42,12 +42,6 @@ export default function HomeLayout() {
       title: "WICBX",
       list: [
         {
-          title: "Validator",
-          path: "validator",
-          icOff: IC.validator,
-          icOn: IC.validator_,
-        },
-        {
           title: "Withdraw Request",
           path: "withdraw-requests",
           icOff: IC.withdraw,
@@ -64,6 +58,28 @@ export default function HomeLayout() {
           path: "transactions",
           icOff: IC.card,
           icOn: IC.card_,
+        },
+      ],
+    },
+    {
+      title: "VALIDATOR",
+      list: [
+        {
+          title: "Validator",
+          path: "validator",
+          icOff: IC.validator,
+          icOn: IC.validator_,
+        },
+      ],
+    },
+    {
+      title: "STAKING",
+      list: [
+        {
+          title: "Staking",
+          path: "staking",
+          icOff: IC.staking,
+          icOn: IC.staking_,
         },
       ],
     },
@@ -192,6 +208,7 @@ export default function HomeLayout() {
             {pathname === `/reward-logs` && "Reward Logs"}
             {pathname === `/random-wallets` && "Random Wallets"}
             {pathname === `/transactions` && "Transactions"}
+            {pathname === `/staking` && "Staking"}
             {pathname === `/support` && "Support"}
             {pathname === `/orders` && "Orders"}
             {pathname === `/payments` && "Payments"}
@@ -199,7 +216,7 @@ export default function HomeLayout() {
             {pathname === `/admins` && "Admins"}
           </div>
         </div>
-        <div className="max-w-300 w-full h-[calc(100vh-168px)] md:h-[calc(100vh-88px)] overflow-y-auto">
+        <div className=" w-full h-[calc(100vh-168px)] md:h-[calc(100vh-88px)] overflow-y-auto">
           <Outlet />
         </div>
         <div className="fixed left-0 bottom-0 right-0 h-20 bg-[#010513] md:hidden flex justify-evenly items-center">

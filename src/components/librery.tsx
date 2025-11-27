@@ -19,6 +19,8 @@ import ICcard from "../assets/icons/ICcard.svg";
 import ICcard_ from "../assets/icons/ICcard_.svg";
 import ICsupport from "../assets/icons/ICsupport.svg";
 import ICsupport_ from "../assets/icons/ICsupport_.svg";
+import ICstaking from "../assets/icons/ICstaking.svg";
+import ICstaking_ from "../assets/icons/ICstaking_.svg";
 
 import IClogout from "../assets/icons/IClogout.svg";
 import IClogout1 from "../assets/icons/IClogout1.svg";
@@ -87,6 +89,8 @@ export class IC {
   static card_ = ICcard_;
   static support = ICsupport;
   static support_ = ICsupport_;
+  static staking = ICstaking;
+  static staking_ = ICstaking_;
 
   static close = ICclose;
   static logout = IClogout;

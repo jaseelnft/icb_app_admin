@@ -88,7 +88,7 @@ export default function UsersPage() {
           )}
           {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
           {data.map((_it: any, k: number) => (
-            <div className="flex odd:bg-[#0a101d] px-2" key={k}>
+            <div className="flex items-center odd:bg-[#0a101d] px-2" key={k}>
               <div className="py-4 pl-4 min-w-16 flex justify-center">
                 <EthereumBlockie address={_it.address} size={36} />
               </div>
