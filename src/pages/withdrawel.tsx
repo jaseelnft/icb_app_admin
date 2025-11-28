@@ -4,7 +4,7 @@ import {
   getWithdrawal,
   rejectWithdraw,
 } from "../services/dashboard";
-import { AddressT } from "../widgets/ethers";
+import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { formatDate, formatEther, isValidHash } from "../services/simple";
 import { IC } from "../components/librery";
 import { Popup1 } from "../layouts/popup";
@@ -65,6 +65,7 @@ export default function WithdrawalPage() {
             />
           </div>
           <div className="flex text-[14px] px-1">
+            <div className="min-w-16" />
             <div className={elSt + "py-5 w-[30%]"}>User</div>
             <div className={elSt + "py-5 w-[30%]"}>To Address</div>
             <div className={elSt + "py-5 w-[26%] text-right"}>Amount</div>
@@ -78,6 +79,13 @@ export default function WithdrawalPage() {
           {total < 1 && <div className="text-center text-sm p-4">No Data</div>}
           {datas.map((_it: any, k) => (
             <div className="flex odd:bg-[#0a101d] px-1" key={k}>
+              <div className="py-4 pl-4 min-w-16 flex justify-center">
+                <EthereumBlockie
+                  address={_it.userId?.address}
+                  size={36}
+                  id={_it.userId?._id}
+                />
+              </div>
               <div className={elSt + "flex-col gap-1 items-start w-[30%]"}>
                 <div>{_it?.userId?.name || "null"}</div>
                 <AddressT

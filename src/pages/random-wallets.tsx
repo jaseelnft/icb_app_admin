@@ -99,7 +99,7 @@ export default function RandomWalletsPage() {
             </div>
           </div>
           <div className="flex text-[14px] px-1">
-            <div className={elSt + "py-5 w-[30%]"}>User</div>
+            <div className="min-w-16" />
             <div className={elSt + "py-5 w-[45%]"}>User</div>
             <div className={elSt + "py-5 w-[45%]"}>Address</div>
             <div className={elSt + "py-5 w-[15%] text-center"}>Assigned</div>
@@ -110,7 +110,11 @@ export default function RandomWalletsPage() {
           {datas.map((_it: any, k) => (
             <div className="flex odd:bg-[#0a101d] px-1" key={k}>
               <div className="py-4 pl-4 min-w-16 flex justify-center">
-                <EthereumBlockie address={_it.userId?.address} size={36} />
+                <EthereumBlockie
+                  address={_it.userId?.address}
+                  size={36}
+                  id={_it.userId?._id}
+                />
               </div>
               <div className={elSt + "flex-col gap-1 items-start w-[45%]"}>
                 <div>{_it?.userId?.name || "null"}</div>
