@@ -22,6 +22,7 @@ export default function PaymentsPage() {
   const loadDatas = async (page_: number, search_: string) => {
     if (busy) return;
     setbusy(true);
+    setdatas([]);
     await getSalesHistory(page_, search_).then(async (res) => {
       setdatas(res.data);
       setpage(res.page);
@@ -65,7 +66,11 @@ export default function PaymentsPage() {
           {datas.map((_it: any, k) => (
             <div className="flex odd:bg-[#0a101d] px-2" key={k}>
               <div className="py-4 pl-4 min-w-16 flex justify-center">
-                <EthereumBlockie address={_it.userId?.address} size={36} />
+                <EthereumBlockie
+                  address={_it.userId?.address}
+                  size={36}
+                  id={_it.userId?._id}
+                />
               </div>
               <div className={elSt + "w-[30%]"}>
                 <div>

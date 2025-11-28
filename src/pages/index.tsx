@@ -168,6 +168,25 @@ export default function DashboardPage() {
           { isICBX: true }
         )}
         {_each1(
+          "Staked Count",
+          data?.stakeCount?.total || "0",
+          data?.stakeCount?.last24h,
+          data?.stakeCount?.prev24h,
+          BG.dg,
+          IC.stakes1,
+          "staking"
+        )}
+        {_each1(
+          "Totel Stakeed",
+          formatEther(data?.stake?.total || "0"),
+          Math.floor(formatEther(data?.stake?.last24h || 0)),
+          Math.floor(formatEther(data?.stake?.prev24h || 0)),
+          BG.r,
+          IC.stakes,
+          "staking",
+          { isICBX: true }
+        )}
+        {_each1(
           "Total Transactions",
           data?.txns?.total || "0",
           data?.txns?.last24h,

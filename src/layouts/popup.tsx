@@ -50,7 +50,9 @@ export function Drower1({
             onClick={() => close()}
           />
         </div>
-        {on && children}
+        <div className="overflow-y-auto max-h-[calc(100vh-72px)]">
+          {on && children}
+        </div>
       </div>
     </div>
   );

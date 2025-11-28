@@ -49,6 +49,8 @@ import ICdropArrow from "../assets/icons/ICdropArrow.svg";
 import ICfilter from "../assets/icons/ICfilter.svg";
 import ICinvestments from "../assets/icons/ICinvestments.svg";
 import ICinvested from "../assets/icons/ICinvested.svg";
+import ICstakes from "../assets/icons/ICstakes.svg";
+import ICstakes1 from "../assets/icons/ICstakes1.svg";
 import ICwallets from "../assets/icons/ICwallets.svg";
 import ICorders from "../assets/icons/ICorders.svg";
 import ICreload from "../assets/icons/ICreload.svg";
@@ -121,6 +123,8 @@ export class IC {
   static filter = ICfilter;
   static investments = ICinvestments;
   static invested = ICinvested;
+  static stakes = ICstakes;
+  static stakes1 = ICstakes1;
   static wallets = ICwallets;
   static orders = ICorders;
   static reload = ICreload;

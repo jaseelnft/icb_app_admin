@@ -341,9 +341,9 @@ function UserDrawer() {
   return (
     <Drower1 on={userId !== ""} close={onClose} title={user?.name || ""}>
       {busy ? (
-        <div className="text-center p-4" >Loading...</div>
+        <div className="text-center p-4">Loading...</div>
       ) : (
-        <div className="p-5 py-8">
+        <div className="p-4 py-8">
           <div className="flex items-center gap-3 mb-6 mx-2">
             <EthereumBlockie address={user.address} size={86} />
             <div>
@@ -395,19 +395,81 @@ function UserDrawer() {
                 </div>
               </div>
             </div>
-          </div>
-          {/* <div>
-              <div className="flex text-[14px] bg-[black]">
-                <div className={elSt + "py-4 w-[60%]"}>Address</div>
-                <div className={elSt + "py-4 w-[40%]"}>Status</div>
+            <div className="flex justify-between py-2">
+              Staking (Acive/Totel)
+              <div className="font-bold">
+                <div>
+                  <b>{user?.staking?.count}</b>/{user?.staking?.countAll}
+                </div>
               </div>
-              {(busy || localBusy) && (
-                <div className="text-center text-sm p-4">Loading...</div>
-              )}
-              {total < 1 && (
-                <div className="text-center text-sm p-4">No Data</div>
-              )}
-            </div> */}
+            </div>
+          </div>
+
+          {/* <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
+            <div className="flex justify-between item-center">
+              <div className="font-bold">User Wallets</div>
+              <img src={IC.dropArrow} alt="A" />
+            </div>
+            <div className="flex hidden">
+              <div className="py-4 w-[40%]">Name</div>
+              <div className="py-4 w-[60%]">Address</div>
+            </div>
+          </div>
+
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
+            <div className="flex justify-between item-center">
+              <div className="font-bold">Random Wallets</div>
+              <img src={IC.dropArrow} alt="A" />
+            </div>
+            <div className="flex hidden">
+              <div className="py-4 w-[40%]">Name</div>
+              <div className="py-4 w-[60%]">Address</div>
+            </div>
+          </div>
+
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
+            <div className="flex justify-between item-center">
+              <div className="font-bold">Wallet Address</div>
+              <img src={IC.dropArrow} alt="A" />
+            </div>
+            <div className="flex hidden">
+              <div className="py-4 w-[40%]">Name</div>
+              <div className="py-4 w-[60%]">Address</div>
+            </div>
+          </div>
+
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
+            <div className="flex justify-between item-center">
+              <div className="font-bold">Validator Invests</div>
+              <img src={IC.dropArrow} alt="A" />
+            </div>
+            <div className="flex hidden">
+              <div className="py-4 w-[40%]">Name</div>
+              <div className="py-4 w-[60%]">Address</div>
+            </div>
+          </div>
+
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
+            <div className="flex justify-between item-center">
+              <div className="font-bold">Staking Invests</div>
+              <img src={IC.dropArrow} alt="A" />
+            </div>
+            <div className="flex hidden">
+              <div className="py-4 w-[40%]">Name</div>
+              <div className="py-4 w-[60%]">Address</div>
+            </div>
+          </div>
+
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
+            <div className="flex justify-between item-center">
+              <div className="font-bold">WICBX Transactions</div>
+              <img src={IC.dropArrow} alt="A" />
+            </div>
+            <div className="flex hidden">
+              <div className="py-4 w-[40%]">Name</div>
+              <div className="py-4 w-[60%]">Address</div>
+            </div>
+          </div> */}
         </div>
       )}
     </Drower1>

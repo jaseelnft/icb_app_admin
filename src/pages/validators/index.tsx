@@ -63,7 +63,7 @@ export default function ValidatorsPage() {
             }
             onClick={onClickExport}
           >
-            Export Valid address
+            Export Investors
           </div>
           <EditValidator done={() => _loadDatas()} />
         </div>
