@@ -8,7 +8,11 @@ import {
 import { IC, Logo } from "../components/librery";
 import { Drower1, Popup1 } from "./popup";
 import { APP_VERSION, appLogOut, connectWs } from "../services/config";
-import { getDetails, getUserDetails } from "../services/dashboard";
+import {
+  getDetails,
+  getUserDetails,
+  getUserWallets,
+} from "../services/dashboard";
 import LoadingPage from "../components/loadingPage";
 import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import {
@@ -307,6 +311,12 @@ function UserDrawer() {
   const { search } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [busy, setbusy] = useState(false);
+  const [busyBC, setbusyBC] = useState(false);
+  const [wallet, setwallet] = useState({
+    busy: true,
+    loaded: false,
+    data: [],
+  });
   const userId = new URLSearchParams(search).get("user") ?? "";
 
   const [user, setuser]: any = useState({});
@@ -314,6 +324,7 @@ function UserDrawer() {
   const onClose = () => {
     searchParams.delete("user");
     setSearchParams(searchParams);
+    setwallet({ busy: true, loaded: false, data: [] });
   };
 
   useEffect(() => {
@@ -324,18 +335,27 @@ function UserDrawer() {
     if (userId === "" || busy) return;
     setuser(null);
     setbusy(true);
+    setbusyBC(true);
     await getUserDetails(userId)
       .then(async (res: any) => {
         let icbx = "0";
         let haveKYC = false;
+        setuser({ ...res, icbx, haveKYC });
+        setbusy(false);
         await gatEthBalance(res.address).then(
           (res) => (icbx = bigToString(res))
         );
         await haveKYCNFT(res.address).then((res) => (haveKYC = res));
         setuser({ ...res, icbx, haveKYC });
+        setbusyBC(false);
       })
       .catch(() => {});
-    setbusy(false);
+  };
+
+  const loadWallets = () => {
+    getUserWallets(userId)
+      .then((res) => setwallet({ loaded: true, busy: false, data: res }))
+      .catch(() => {});
   };
 
   return (
@@ -358,7 +378,7 @@ function UserDrawer() {
             <div className="flex justify-between py-2">
               <div>ICBX</div>
               <div className="font-bold">
-                {weiToICBX(user.icbx ?? "0")} ICBX
+                {busyBC ? "Loading.." : `${weiToICBX(user.icbx ?? "0")} ICBX`}
               </div>
             </div>
             <div className="flex justify-between py-2">
@@ -371,7 +391,7 @@ function UserDrawer() {
               ) : (
                 <div className="flex gap-2 items-center text-[#DF3A45]">
                   <div className="w-2 h-2 rounded-[4px] bg-[#DF3A45]" />
-                  KYC Not Verified
+                  {busyBC ? "Loading.." : "KYC Not Verified"}
                 </div>
               )}
             </div>
@@ -382,7 +402,7 @@ function UserDrawer() {
               </div>
             </div>
             <div className="flex justify-between py-2">
-              Totel Invested
+              Totel in Validator
               <div className="font-bold">
                 {weiToICBX(user?.validator?.total ?? "0")} ICBX
               </div>
@@ -405,18 +425,33 @@ function UserDrawer() {
             </div>
           </div>
 
-          {/* <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
-            <div className="flex justify-between item-center">
-              <div className="font-bold">User Wallets</div>
-              <img src={IC.dropArrow} alt="A" />
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] text-sm overflow-hidden">
+            <div
+              className="flex justify-between item-center p-4"
+              onClick={loadWallets}
+            >
+              <div className="font-bold text-base">User Wallets</div>
+              {!wallet.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
-            <div className="flex hidden">
-              <div className="py-4 w-[40%]">Name</div>
-              <div className="py-4 w-[60%]">Address</div>
+            <div className={wallet.loaded ? "" : " hidden"}>
+              <div className="flex font-[600] px-4 pb-4">
+                <div className="w-[8%]" />
+                <div className="w-[40%]">Name</div>
+                <div className="w-[60%]">Address</div>
+              </div>
+              {[...wallet.data,...wallet.data,...wallet.data].map((it: any, k) => (
+                <div className="flex even:bg-[#011022] px-4 py-3" key={k}>
+                  <div className="w-[8%]">{k+1}</div>
+                  <div className="w-[40%]">{it.name}</div>
+                  <div className="w-[60%]">
+                    <AddressT address={it.address} iconSize={20} />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
+          {/*<div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
             <div className="flex justify-between item-center">
               <div className="font-bold">Random Wallets</div>
               <img src={IC.dropArrow} alt="A" />

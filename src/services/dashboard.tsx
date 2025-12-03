@@ -23,6 +23,11 @@ export async function getUserDetails(id: string): Promise<any> {
   return res.data;
 }
 
+export async function getUserWallets(id: string): Promise<any> {
+  const res = await api.get(`api/admin/users/${id}/wallets`);
+  return res.data;
+}
+
 export async function getUsers(p: number, s: string): Promise<any> {
   try {
     const res = await api.get(`api/admin/users?page=${p}&search=${s}`);

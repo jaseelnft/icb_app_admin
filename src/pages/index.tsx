@@ -98,19 +98,19 @@ export default function DashboardPage() {
   ) => {
     return (
       <div
-        className="rounded-[14px] lg:rounded-[20px] relative max-w-125 w-full lg:w-[calc(100%-144px)] overflow-hidden bg-no-repeat p-4 lg:p-6 flex gap-4 items-center cursor-pointer"
+        className="rounded-[14px] xl:rounded-[20px] relative w-84 xl:w-124  overflow-hidden bg-no-repeat p-4 xl:p-6 flex gap-4 items-center cursor-pointer"
         style={{ backgroundImage: `url(${BG.db})` }}
         onClick={() => navigate(path)}
       >
-        <img src={ic} className="w-12 lg:w-18" />
+        <img src={ic} className="w-14 xl:w-18" />
         <div className="w-full">
-          <div className="text-[#4F8FE1] text-sm lg:text-[20px]">{title}</div>
-          <div className="text-[#C7CCD2] flex items-center justify-between mt-1 lg:mt-2">
-            <b className="text-base lg:text-lg">{value}</b>
+          <div className="text-[#4F8FE1] text-sm xl:text-[20px]">{title}</div>
+          <div className="text-[#C7CCD2] flex items-center justify-between mt-1 xl:mt-2">
+            <b className="text-base xl:text-lg">{value}</b>
             {isGraph && (
               <div className="flex items-center gap-2">
                 {_getHike(last, prev)}
-                <span className="text-xs lg:text-sm">{last}&nbsp;in 24h</span>
+                <span className="text-xs xl:text-sm">{last}&nbsp;in 24h</span>
               </div>
             )}
           </div>
@@ -120,7 +120,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="px-1 py-3 lg:px-8 lg:py-8 flex items-center flex-col">
+    <div className="px-1 py-3 lg:px-4 lg:py-8 flex flex-col items-center gap-6 w-full">
       <div className="w-full flex justify-end">
         <img
           src={IC.reload}
@@ -128,7 +128,7 @@ export default function DashboardPage() {
           onClick={loadData}
         />
       </div>
-      <div className="max-w-[1100px] px-0 py-2 lg:px-8 lg:py-3 flex flex-wrap justify-center gap-2 lg:gap-5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-y-5 gap-x-4 place-items-center">
         {_each1(
           "Total Users",
           data?.users?.total || "0",
@@ -149,7 +149,7 @@ export default function DashboardPage() {
           { isICBX: true }
         )}
         {_each1(
-          "Invested Count",
+          "Validator Invest Count",
           data?.investCount?.total || "0",
           data?.investCount?.last24h,
           data?.investCount?.prev24h,
@@ -158,7 +158,7 @@ export default function DashboardPage() {
           "validator"
         )}
         {_each1(
-          "Investments",
+          "Validator Investments",
           formatEther(data?.investment?.total || "0"),
           Math.floor(formatEther(data?.investment?.last24h || 0)),
           Math.floor(formatEther(data?.investment?.prev24h || 0)),
@@ -177,7 +177,7 @@ export default function DashboardPage() {
           "staking"
         )}
         {_each1(
-          "Totel Stakeed",
+          "Total Staked",
           formatEther(data?.stake?.total || "0"),
           Math.floor(formatEther(data?.stake?.last24h || 0)),
           Math.floor(formatEther(data?.stake?.prev24h || 0)),
@@ -223,7 +223,7 @@ export default function DashboardPage() {
           "orders"
         )}
       </div>
-      <div className="w-full max-w-[1100px] py-3 px-5 lg:py-8 lg:px-8 flex flex-wrap justify-center gap-3 lg:gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4 place-items-center">
         {_each2(
           "Total Users in Chalenge",
           data?.challengeUsers?.total || "0",
@@ -242,24 +242,6 @@ export default function DashboardPage() {
           "validator",
           false
         )}
-        {/* {_each2(
-          "Validators Invests",
-          data?.validators,
-          0,
-          0,
-          IC.servers,
-          "validator",
-          false
-        )}
-        {_each2(
-          "Validators investment",
-          data?.validators,
-          0,
-          0,
-          IC.servers,
-          "validator",
-          false
-        )} */}
         {_each2(
           "Total User Visits",
           data?.visits?.total || "0",
@@ -269,7 +251,6 @@ export default function DashboardPage() {
           "",
           true
         )}
-        <div className="hidden lg:block w-[500px]" />
       </div>
     </div>
   );
