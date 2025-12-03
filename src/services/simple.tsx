@@ -32,10 +32,12 @@ export const formatDate = (date: string): string => {
 };
 
 export function formatYearMonth(input: string) {
-  const [year, month] = input.split("-").map(Number);
+  if (!input || input === "" || input === null) return "";
+  const [year, month, day] = input.split("-").map(Number);
   const date = new Date(year, month);
   const monthName = date.toLocaleString("en-US", { month: "short" });
-  return `${year} ${monthName}`;
+  // return `${year} ${monthName}`;
+  return `${monthName} ${day}`;
 }
 
 export const formatEther = (value: string): number => {

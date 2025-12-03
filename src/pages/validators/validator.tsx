@@ -1,7 +1,7 @@
 import { AddressT, EthereumBlockie } from "../../widgets/ethers";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { formatDate, formatICBX } from "../../services/simple";
+import { formatDate, formatICBX, formatYearMonth } from "../../services/simple";
 import { formatEther } from "ethers";
 
 import {
@@ -116,9 +116,15 @@ export default function SingleValidator() {
             </div>
             <div className="w-full">
               <div className="h-75 flex justify-between items-end relative px-[4%]">
+                <div className="absolute top-0 bottom-0 left-10 right-10 px-[4%]">
+                  <MyLineGraph
+                    noShade
+                    values={profits.map((it: any) => Number(it.earned) / max)}
+                  />
+                </div>
                 {profits.map((it: any, k: number) => (
                   <div
-                    className="w-[50px] mx-[15px] bg-gradient-to-b from-[#021226] to-[#18365B] relative"
+                    className="w-[50px] mx-[15px] bg-gradient-to-b from-[#021226BB] to-[#18365B] relative rounded-t-lg"
                     style={{ height: `${(Number(it.earned) / max) * 100}%` }}
                     key={k}
                   >
@@ -130,18 +136,11 @@ export default function SingleValidator() {
                     </div>
                   </div>
                 ))}
-                <div className="absolute top-0 bottom-0 left-10 right-10 px-[4%]">
-                  <MyLineGraph
-                    noShade
-                    values={profits.map((it: any) => Number(it.earned) / max)}
-                  />
-                </div>
               </div>
-              <div className="flex border-t w-[100%] justify-between py-6 px-[4%]">
+              <div className="flex border-t w-[100%] justify-between py-5 px-[4%] text-sm font-[600]">
                 {profits.map((it: any, k: number) => (
                   <div className="w-[80px] text-center" key={k}>
-                    {/* {formatYearMonth(it.period.split(":")[1])} */}
-                    {it.period.split(":")[1]}
+                    {formatYearMonth(it.period.split(":")[1] || "")}
                   </div>
                 ))}
               </div>
@@ -179,7 +178,7 @@ export default function SingleValidator() {
             Invests <span className="text-[white]">({invests.total})</span>
           </div>
           <div className="flex justify-between">
-            <div className="min-w-16" />
+            <div className="min-w-18" />
             <div className="w-[32%] py-[20px] px-[24px]">User</div>
             <div className="w-[32%] py-[20px] px-[24px] text-right">Amount</div>
             <div className="w-[32%] py-[20px] px-[24px] text-right">Earned</div>
@@ -241,7 +240,7 @@ export default function SingleValidator() {
             Last Few Users <span className="text-[white]">({users.total})</span>
           </div>
           <div className="flex justify-between">
-            <div className="min-w-16" />
+            <div className="min-w-18" />
             <div className="w-[32%] py-[20px] px-[24px]">User</div>
             <div className="w-[32%] py-[20px] px-[24px] text-right">Amount</div>
             <div className="w-[32%] py-[20px] px-[24px] text-right">Earned</div>
