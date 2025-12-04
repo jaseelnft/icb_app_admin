@@ -481,20 +481,24 @@ function UserDrawer() {
               className="flex justify-between item-center p-4"
               onClick={loadWallets}
             >
-              <div className="font-bold">User Wallets</div>
+              <div className="font-bold">
+                User Wallets
+                {wallet.busy && (
+                  <span className="text-center text-sm text-[#C7CCD299] font-[400]">
+                    &nbsp;Loading...
+                  </span>
+                )}
+              </div>
               {!wallet.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
+
             <div className={wallet.loaded ? "" : " hidden"}>
               <div className="flex font-[500] px-4 pb-4">
                 <div className="w-[8%]" />
                 <div className="w-[40%]">Name</div>
                 <div className="w-[60%]">Address</div>
               </div>
-              {wallet.busy && (
-                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
-                  Loading...
-                </div>
-              )}
+
               {wallet.data.length < 1 && (
                 <div className="text-center text-sm pb-4 text-[#C7CCD299]">
                   No extra wallets added
@@ -516,7 +520,14 @@ function UserDrawer() {
               className="flex justify-between item-center p-4"
               onClick={loadRandomWallets}
             >
-              <div className="font-bold">User Random Wallets</div>
+              <div className="font-bold">
+                User Random Wallets
+                {randomWallet.busy && (
+                  <span className="text-center text-sm text-[#C7CCD299] font-[400]">
+                    &nbsp;Loading...
+                  </span>
+                )}
+              </div>
               {!randomWallet.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
             <div className={randomWallet.loaded ? "" : " hidden"}>
@@ -526,11 +537,6 @@ function UserDrawer() {
                 <div className="w-[60%]">Address</div>
                 <div className="w-[16%]">Scan</div>
               </div>
-              {randomWallet.busy && (
-                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
-                  Loading...
-                </div>
-              )}
               {randomWallet.data.length < 1 && (
                 <div className="text-center text-sm pb-4 text-[#C7CCD299]">
                   Not generated random wallets
@@ -563,6 +569,11 @@ function UserDrawer() {
             >
               <div className="font-bold">
                 User Transactions{txns.loaded && `(${txns.total})`}
+                {txns.busy && (
+                  <span className="text-center text-sm text-[#C7CCD299] font-[400]">
+                    &nbsp;Loading...
+                  </span>
+                )}
               </div>
               {!txns.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
@@ -572,11 +583,6 @@ function UserDrawer() {
                 <div className="w-[32%] text-center">Type</div>
                 <div className="w-[32%] text-center">Status</div>
               </div>
-              {txns.busy && (
-                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
-                  Loading...
-                </div>
-              )}
               {txns.data.length < 1 && (
                 <div className="text-center text-sm pb-4 text-[#C7CCD299]">
                   No transactions found
@@ -609,6 +615,11 @@ function UserDrawer() {
               <div className="font-bold">
                 Validator Invests
                 {vInvests.loaded && `(${vInvests.total})`}
+                {vInvests.busy && (
+                  <span className="text-center text-sm text-[#C7CCD299] font-[400]">
+                    &nbsp;Loading...
+                  </span>
+                )}
               </div>
               {!vInvests.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
@@ -618,11 +629,6 @@ function UserDrawer() {
                 <div className="w-[32%] text-center">Invested On</div>
                 <div className="w-[32%] text-center">Status</div>
               </div>
-              {vInvests.busy && (
-                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
-                  Loading...
-                </div>
-              )}
               {vInvests.data.length < 1 && (
                 <div className="text-center text-sm pb-4 text-[#C7CCD299]">
                   No validator invesment found
@@ -658,6 +664,11 @@ function UserDrawer() {
             >
               <div className="font-bold">
                 Stake Invests{sInvests.loaded && `(${sInvests.total})`}
+                {sInvests.busy && (
+                  <span className="text-center text-sm text-[#C7CCD299] font-[400]">
+                    &nbsp;Loading...
+                  </span>
+                )}
               </div>
               {!sInvests.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
@@ -667,11 +678,6 @@ function UserDrawer() {
                 <div className="w-[32%] text-center">Invested On</div>
                 <div className="w-[32%] text-center">Status</div>
               </div>
-              {sInvests.busy && (
-                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
-                  Loading...
-                </div>
-              )}
               {sInvests.data.length < 1 && (
                 <div className="text-center text-sm pb-4 text-[#C7CCD299]">
                   No staking investment found
