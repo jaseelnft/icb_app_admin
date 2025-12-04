@@ -322,8 +322,8 @@ function UserDrawer() {
   const [busy, setbusy] = useState(false);
   const [busyBC, setbusyBC] = useState(false);
 
-  const initT1 = { busy: true, loaded: false, data: [] };
-  const initT2 = { busy: true, loaded: false, data: [], page: 1, total: 0 };
+  const initT1 = { busy: false, loaded: false, data: [] };
+  const initT2 = { busy: false, loaded: false, data: [], page: 1, total: 0 };
   const [wallet, setwallet] = useState(initT1);
   const [randomWallet, setrandomWallet] = useState(initT1);
   const [txns, settxns] = useState(initT2);
@@ -370,35 +370,40 @@ function UserDrawer() {
   };
 
   const loadWallets = () => {
-    setwallet(initT1);
+    if (wallet.busy) return;
+    setwallet({ ...initT1, busy: true });
     getUserWallets(userId)
       .then((res) => setwallet({ loaded: true, busy: false, data: res }))
       .catch(() => {});
   };
 
   const loadRandomWallets = () => {
-    setrandomWallet(initT1);
+    if (randomWallet.busy) return;
+    setrandomWallet({ ...initT1, busy: true });
     getUserRandomWallets(userId)
       .then((res) => setrandomWallet({ loaded: true, busy: false, data: res }))
       .catch(() => {});
   };
 
   const loadTxns = (page: any) => {
-    settxns(initT2);
+    if (txns.busy) return;
+    settxns({ ...initT2, busy: true });
     getUserTxns(userId, page)
       .then((res) => settxns({ loaded: true, busy: false, ...res }))
       .catch(() => {});
   };
 
   const loadValitatorInvests = (page: any) => {
-    setvInvests(initT2);
+    if (vInvests.busy) return;
+    setvInvests({ ...initT2, busy: true });
     gatUserValitatorInvests(userId, page)
       .then((res) => setvInvests({ loaded: true, busy: false, ...res }))
       .catch(() => {});
   };
 
   const loadStakingInvests = (page: any) => {
-    setsInvests(initT2);
+    if (sInvests.busy) return;
+    setsInvests({ ...initT2, busy: true });
     gatUserStakingInvests(userId, page)
       .then((res) => setsInvests({ loaded: true, busy: false, ...res }))
       .catch(() => {});
