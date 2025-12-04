@@ -28,6 +28,36 @@ export async function getUserWallets(id: string): Promise<any> {
   return res.data;
 }
 
+export async function getUserRandomWallets(id: string): Promise<any> {
+  const res = await api.get(`api/admin/users/${id}/random-wallets`);
+  return res.data;
+}
+
+export async function getUserTxns(id: string, page: number): Promise<any> {
+  const res = await api.get(`api/admin/users/${id}/txns`, { params: { page } });
+  return res.data;
+}
+
+export async function gatUserValitatorInvests(
+  id: string,
+  page: number
+): Promise<any> {
+  const res = await api.get(`api/admin/users/${id}/invests`, {
+    params: { page },
+  });
+  return res.data;
+}
+
+export async function gatUserStakingInvests(
+  id: string,
+  page: number
+): Promise<any> {
+  const res = await api.get(`api/admin/users/${id}/staking`, {
+    params: { page },
+  });
+  return res.data;
+}
+
 export async function getUsers(p: number, s: string): Promise<any> {
   try {
     const res = await api.get(`api/admin/users?page=${p}&search=${s}`);

@@ -9,8 +9,12 @@ import { IC, Logo } from "../components/librery";
 import { Drower1, Popup1 } from "./popup";
 import { APP_VERSION, appLogOut, connectWs } from "../services/config";
 import {
+  gatUserStakingInvests,
+  gatUserValitatorInvests,
   getDetails,
   getUserDetails,
+  getUserRandomWallets,
+  getUserTxns,
   getUserWallets,
 } from "../services/dashboard";
 import LoadingPage from "../components/loadingPage";
@@ -21,6 +25,11 @@ import {
   haveKYCNFT,
   weiToICBX,
 } from "../services/ethers";
+import { formatDate, formatEther, formatICBX } from "../services/simple";
+import { Paging1 } from "../components/paging";
+import { makeTxnType } from "../pages/transactions";
+import { StatusTags } from "../widgets/tags";
+import { makeStakeStatus } from "../pages/staking";
 
 export default function HomeLayout() {
   const { pathname } = useLocation();
@@ -312,11 +321,15 @@ function UserDrawer() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [busy, setbusy] = useState(false);
   const [busyBC, setbusyBC] = useState(false);
-  const [wallet, setwallet] = useState({
-    busy: true,
-    loaded: false,
-    data: [],
-  });
+
+  const initT1 = { busy: true, loaded: false, data: [] };
+  const initT2 = { busy: true, loaded: false, data: [], page: 1, total: 0 };
+  const [wallet, setwallet] = useState(initT1);
+  const [randomWallet, setrandomWallet] = useState(initT1);
+  const [txns, settxns] = useState(initT2);
+  const [vInvests, setvInvests] = useState(initT2);
+  const [sInvests, setsInvests] = useState(initT2);
+
   const userId = new URLSearchParams(search).get("user") ?? "";
 
   const [user, setuser]: any = useState({});
@@ -324,7 +337,11 @@ function UserDrawer() {
   const onClose = () => {
     searchParams.delete("user");
     setSearchParams(searchParams);
-    setwallet({ busy: true, loaded: false, data: [] });
+    setwallet(initT1);
+    setrandomWallet(initT1);
+    settxns(initT2);
+    setvInvests(initT2);
+    setsInvests(initT2);
   };
 
   useEffect(() => {
@@ -353,8 +370,37 @@ function UserDrawer() {
   };
 
   const loadWallets = () => {
+    setwallet(initT1);
     getUserWallets(userId)
       .then((res) => setwallet({ loaded: true, busy: false, data: res }))
+      .catch(() => {});
+  };
+
+  const loadRandomWallets = () => {
+    setrandomWallet(initT1);
+    getUserRandomWallets(userId)
+      .then((res) => setrandomWallet({ loaded: true, busy: false, data: res }))
+      .catch(() => {});
+  };
+
+  const loadTxns = (page: any) => {
+    settxns(initT2);
+    getUserTxns(userId, page)
+      .then((res) => settxns({ loaded: true, busy: false, ...res }))
+      .catch(() => {});
+  };
+
+  const loadValitatorInvests = (page: any) => {
+    setvInvests(initT2);
+    gatUserValitatorInvests(userId, page)
+      .then((res) => setvInvests({ loaded: true, busy: false, ...res }))
+      .catch(() => {});
+  };
+
+  const loadStakingInvests = (page: any) => {
+    setsInvests(initT2);
+    gatUserStakingInvests(userId, page)
+      .then((res) => setsInvests({ loaded: true, busy: false, ...res }))
       .catch(() => {});
   };
 
@@ -430,15 +476,25 @@ function UserDrawer() {
               className="flex justify-between item-center p-4"
               onClick={loadWallets}
             >
-              <div className="font-bold text-base">User Wallets</div>
+              <div className="font-bold">User Wallets</div>
               {!wallet.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
             <div className={wallet.loaded ? "" : " hidden"}>
-              <div className="flex font-[600] px-4 pb-4">
+              <div className="flex font-[500] px-4 pb-4">
                 <div className="w-[8%]" />
                 <div className="w-[40%]">Name</div>
                 <div className="w-[60%]">Address</div>
               </div>
+              {wallet.busy && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  Loading...
+                </div>
+              )}
+              {wallet.data.length < 1 && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  No extra wallets added
+                </div>
+              )}
               {wallet.data.map((it: any, k) => (
                 <div className="flex even:bg-[#011022aa] px-4 py-3" key={k}>
                   <div className="w-[8%]">{k + 1}</div>
@@ -450,61 +506,195 @@ function UserDrawer() {
               ))}
             </div>
           </div>
-
-          {/*<div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
-            <div className="flex justify-between item-center">
-              <div className="font-bold">Random Wallets</div>
-              <img src={IC.dropArrow} alt="A" />
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] text-sm overflow-hidden">
+            <div
+              className="flex justify-between item-center p-4"
+              onClick={loadRandomWallets}
+            >
+              <div className="font-bold">User Random Wallets</div>
+              {!randomWallet.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
-            <div className="flex hidden">
-              <div className="py-4 w-[40%]">Name</div>
-              <div className="py-4 w-[60%]">Address</div>
+            <div className={randomWallet.loaded ? "" : " hidden"}>
+              <div className="flex font-[500] px-4 pb-4">
+                <div className="w-[8%]" />
+                <div className="w-[20%] text-center">Index</div>
+                <div className="w-[60%]">Address</div>
+                <div className="w-[16%]">Scan</div>
+              </div>
+              {randomWallet.busy && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  Loading...
+                </div>
+              )}
+              {randomWallet.data.length < 1 && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  Not generated random wallets
+                </div>
+              )}
+              {randomWallet.data.map((it: any, k) => (
+                <div className="flex even:bg-[#011022aa] px-4 py-3" key={k}>
+                  <div className="w-[8%]">{k + 1}</div>
+                  <div className="w-[20%] text-center">{it.index}</div>
+                  <div className="w-[60%]">
+                    <AddressT address={it.address} iconSize={20} />
+                  </div>
+                  <div
+                    className="w-[16%] text-[#4F8FE1] cursor-pointer"
+                    onClick={() =>
+                      window.open("https://icbscan.io/address/" + it.address)
+                    }
+                  >
+                    Scan
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
-            <div className="flex justify-between item-center">
-              <div className="font-bold">Wallet Address</div>
-              <img src={IC.dropArrow} alt="A" />
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] text-sm overflow-hidden">
+            <div
+              className="flex justify-between item-center p-4"
+              onClick={() => loadTxns(1)}
+            >
+              <div className="font-bold">
+                User Transactions{txns.loaded && `(${txns.total})`}
+              </div>
+              {!txns.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
-            <div className="flex hidden">
-              <div className="py-4 w-[40%]">Name</div>
-              <div className="py-4 w-[60%]">Address</div>
+            <div className={txns.loaded ? "" : " hidden"}>
+              <div className="flex font-[500] px-4 pb-4">
+                <div className="w-[42%]">Amount</div>
+                <div className="w-[32%] text-center">Type</div>
+                <div className="w-[32%] text-center">Status</div>
+              </div>
+              {txns.busy && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  Loading...
+                </div>
+              )}
+              {txns.data.length < 1 && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  No transactions found
+                </div>
+              )}
+              {txns.data.map((it: any, k) => (
+                <div
+                  className="flex items-center even:bg-[#011022aa] px-4 py-3"
+                  key={k}
+                >
+                  <div className="w-[42%]">
+                    {formatICBX(formatEther(it.amount || 0))} WICBX
+                  </div>
+                  <div className="w-[32%] flex justify-center">
+                    {makeTxnType(it.type)}
+                  </div>
+                  <div className="w-[32%] flex justify-center">
+                    <StatusTags status={it.status} />
+                  </div>
+                </div>
+              ))}
             </div>
+            <Paging1 total={txns.total} page={txns.page} reload={loadTxns} />
           </div>
-
-          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
-            <div className="flex justify-between item-center">
-              <div className="font-bold">Validator Invests</div>
-              <img src={IC.dropArrow} alt="A" />
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] text-sm overflow-hidden">
+            <div
+              className="flex justify-between item-center p-4"
+              onClick={() => loadValitatorInvests(1)}
+            >
+              <div className="font-bold">
+                Validator Invests
+                {vInvests.loaded && `(${vInvests.total})`}
+              </div>
+              {!vInvests.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
-            <div className="flex hidden">
-              <div className="py-4 w-[40%]">Name</div>
-              <div className="py-4 w-[60%]">Address</div>
+            <div className={vInvests.loaded ? "" : " hidden"}>
+              <div className="flex font-[500] px-4 pb-4">
+                <div className="w-[42%]">Amount</div>
+                <div className="w-[32%] text-center">Invested On</div>
+                <div className="w-[32%] text-center">Status</div>
+              </div>
+              {vInvests.busy && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  Loading...
+                </div>
+              )}
+              {vInvests.data.length < 1 && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  No validator invesment found
+                </div>
+              )}
+              {vInvests.data.map((it: any, k) => (
+                <div
+                  className="flex items-center even:bg-[#011022aa] px-4 py-3"
+                  key={k}
+                >
+                  <div className="w-[42%]">
+                    {formatICBX(formatEther(it.amount || 0))} WICBX
+                  </div>
+                  <div className="w-[32%] text-center text-xs">
+                    {formatDate(it.createdAt)}
+                  </div>
+                  <div className="w-[32%] flex justify-center">
+                    <StatusTags status={it.active ? "ACTIVE" : "NOT_ACTIVE"} />
+                  </div>
+                </div>
+              ))}
             </div>
+            <Paging1
+              total={vInvests.total}
+              page={vInvests.page}
+              reload={loadValitatorInvests}
+            />
           </div>
-
-          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
-            <div className="flex justify-between item-center">
-              <div className="font-bold">Staking Invests</div>
-              <img src={IC.dropArrow} alt="A" />
+          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] text-sm overflow-hidden">
+            <div
+              className="flex justify-between item-center p-4"
+              onClick={() => loadStakingInvests(1)}
+            >
+              <div className="font-bold">
+                Stake Invests{sInvests.loaded && `(${sInvests.total})`}
+              </div>
+              {!sInvests.loaded && <img src={IC.dropArrow} alt="A" />}
             </div>
-            <div className="flex hidden">
-              <div className="py-4 w-[40%]">Name</div>
-              <div className="py-4 w-[60%]">Address</div>
+            <div className={sInvests.loaded ? "" : " hidden"}>
+              <div className="flex font-[500] px-4 pb-4">
+                <div className="w-[42%]">Amount</div>
+                <div className="w-[32%] text-center">Invested On</div>
+                <div className="w-[32%] text-center">Status</div>
+              </div>
+              {sInvests.busy && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  Loading...
+                </div>
+              )}
+              {sInvests.data.length < 1 && (
+                <div className="text-center text-sm pb-4 text-[#C7CCD299]">
+                  No staking investment found
+                </div>
+              )}
+              {sInvests.data.map((it: any, k) => (
+                <div
+                  className="flex items-center even:bg-[#011022aa] px-4 py-3"
+                  key={k}
+                >
+                  <div className="w-[42%]">
+                    {formatICBX(formatEther(it.amount || 0))} WICBX
+                  </div>
+                  <div className="w-[32%] text-center text-xs">
+                    {formatDate(it.createdAt)}
+                  </div>
+                  <div className="w-[32%] flex justify-center">
+                    {makeStakeStatus(it?.status || "")}
+                  </div>
+                </div>
+              ))}
             </div>
+            <Paging1
+              total={sInvests.total}
+              page={sInvests.page}
+              reload={loadStakingInvests}
+            />
           </div>
-
-          <div className="my-2 bg-[#010513] rounded-[10px] border border-[#16263B] p-4 text-sm">
-            <div className="flex justify-between item-center">
-              <div className="font-bold">WICBX Transactions</div>
-              <img src={IC.dropArrow} alt="A" />
-            </div>
-            <div className="flex hidden">
-              <div className="py-4 w-[40%]">Name</div>
-              <div className="py-4 w-[60%]">Address</div>
-            </div>
-          </div> */}
         </div>
       )}
     </Drower1>

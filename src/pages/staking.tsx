@@ -6,6 +6,23 @@ import { AddressT, EthereumBlockie } from "../widgets/ethers";
 import { AppFilter, AppSearch } from "../components/input";
 import { exportStakes, getStakings } from "../services/staking";
 
+export const makeStakeStatus = (status: string) => {
+  let cb = "py-1 px-2 text-xs font-bold rounded flex items-center gap-1 mb-1 ";
+  let c = "text-[#01BF76] bg-[#01BF761a]";
+  let t = "Processed";
+  switch (status) {
+    case "HOLDING":
+      t = "Deposit";
+      c = "text-[#F1941B] bg-[#F1941B1a]";
+      break;
+    case "WITHDRAW":
+      t = "Withdrawn";
+      c = "text-[#DF3A45] bg-[#DF3A451a]";
+      break;
+  }
+  return <div className={cb + c}>{t}</div>;
+};
+
 export default function StakePage() {
   const [busy, setbusy] = useState(false);
   const [datas, setdatas] = useState([]);
@@ -39,24 +56,6 @@ export default function StakePage() {
   const onStatusFilter = (value: string) => {
     setstatus(value);
     _loadDatas(1, search, value);
-  };
-
-  const makeStatus = (it?: any) => {
-    let cb =
-      "py-1 px-2 text-xs font-bold rounded flex items-center gap-1 mb-1 ";
-    let c = "text-[#01BF76] bg-[#01BF761a]";
-    let t = "Processed";
-    switch (it?.status) {
-      case "HOLDING":
-        t = "Deposit";
-        c = "text-[#F1941B] bg-[#F1941B1a]";
-        break;
-      case "WITHDRAW":
-        t = "Withdrawn";
-        c = "text-[#DF3A45] bg-[#DF3A451a]";
-        break;
-    }
-    return <div className={cb + c}>{t}</div>;
   };
 
   const days = (endsOn: string) => {
@@ -112,7 +111,9 @@ export default function StakePage() {
             <div className={elSt + "py-4 w-[30%]"}>User</div>
             <div className={elSt + "py-4 w-[34%]"}>Plan/Days Left</div>
             <div className={elSt + "py-4 w-[26%] justify-end"}>Amount/Time</div>
-            <div className={elSt + "py-4 w-[26%] justify-end"}>Earned/Returned</div>
+            <div className={elSt + "py-4 w-[26%] justify-end"}>
+              Earned/Returned
+            </div>
             <div className={elSt + "py-4 w-[20%] justify-center"}>Status</div>
           </div>
           {busy && <div className="text-center text-sm p-4">Loading...</div>}
@@ -159,7 +160,12 @@ export default function StakePage() {
                 {weiToICBX(_it.invested ?? "0")} ICBX
                 <div>{formatDate(_it.createdAt)}</div>
               </div>
-              <div className={elSt + "w-[26%] text-sm text-right items-end flex-col justify-center"}>
+              <div
+                className={
+                  elSt +
+                  "w-[26%] text-sm text-right items-end flex-col justify-center"
+                }
+              >
                 {_it.status === "PROCESSED"
                   ? weiToICBX(_it?.earned || 0) + " ICBX"
                   : "--"}
@@ -168,7 +174,7 @@ export default function StakePage() {
               </div>
 
               <div className={elSt + "w-[20%] justify-center  text-sm"}>
-                {makeStatus(_it)}
+                {makeStakeStatus(_it?.status || "")}
               </div>
             </div>
           ))}

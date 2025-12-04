@@ -7,6 +7,46 @@ import { Paging } from "../components/paging";
 import { AppFilter, AppSearch } from "../components/input";
 import { formatDate } from "../services/simple";
 
+export const makeTxnType = (type: string) => {
+  let c = "text-[#256DC9] bg-[#256DC91a]";
+  let t = "";
+  switch (type) {
+    case "DEPOSIT":
+      t = "Deposit";
+      c = "text-[#00B676] bg-[#00B6761a]";
+      break;
+    case "WITHDRAWAL":
+      t = "Withdrawal";
+      c = "text-[#DF3A45] bg-[#DF3A451a]";
+      break;
+    case "OUT":
+      t = "To Validator";
+      break;
+    case "IN":
+      t = "From Validator";
+      break;
+    case "PROFIT":
+      t = "Profit";
+      c = "text-[#F1941B] bg-[#F1941B1a]";
+      break;
+    case "STAKE_UP":
+      t = "From Stake";
+      break;
+    case "STAKE_DOWN":
+      t = "To Stake";
+      break;
+  }
+  return (
+    <div
+      className={
+        "py-1 px-2 text-xs font-bold rounded flex items-center gap-1 mb-1 " + c
+      }
+    >
+      {t}
+    </div>
+  );
+};
+
 export default function TransactionsPage() {
   const [busy, setbusy] = useState(false);
   const [datas, setdatas] = useState([]);
@@ -50,47 +90,6 @@ export default function TransactionsPage() {
   const onTypeFilter = (value: string) => {
     settype(value);
     _loadDatas(1, search, status, value);
-  };
-
-  const makeType = (it?: any) => {
-    let c = "text-[#256DC9] bg-[#256DC91a]";
-    let t = "";
-    switch (it?.type) {
-      case "DEPOSIT":
-        t = "Deposit";
-        c = "text-[#00B676] bg-[#00B6761a]";
-        break;
-      case "WITHDRAWAL":
-        t = "Withdrawal";
-        c = "text-[#DF3A45] bg-[#DF3A451a]";
-        break;
-      case "OUT":
-        t = "To Validator";
-        break;
-      case "IN":
-        t = "From Validator";
-        break;
-      case "PROFIT":
-        t = "Profit";
-        c = "text-[#F1941B] bg-[#F1941B1a]";
-        break;
-      case "STAKE_UP":
-        t = "From Stake";
-        break;
-      case "STAKE_DOWN":
-        t = "To Stake";
-        break;
-    }
-    return (
-      <div
-        className={
-          "py-1 px-2 text-xs font-bold rounded flex items-center gap-1 mb-1 " +
-          c
-        }
-      >
-        {t}
-      </div>
-    );
   };
 
   const elSt =
@@ -192,7 +191,7 @@ export default function TransactionsPage() {
               </div>
 
               <div className={elSt + "w-[20%] flex-col items-start text-sm"}>
-                {makeType(_it)}
+                {makeTxnType(_it?.type || "")}
                 <StatusTags status={_it.status} />
               </div>
             </div>

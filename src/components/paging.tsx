@@ -62,3 +62,33 @@ export function Paging({ total, page, reload }: any) {
     </div>
   );
 }
+
+export function Paging1({ total, page, reload }: any) {
+  if (total < 11) return;
+
+  const end = Math.ceil(total / 10);
+
+  return (
+    <div className="flex justify-between items-center mx-4 my-1 py-3 border-t border-[#16263B]">
+      <b className="text-xs">Page {page}</b>
+      <div className="flex gap-2">
+        {page > 1 && (
+          <div
+            className="cursor-pointer p-1 px-4 text-center border border-[#16263B] rounded"
+            onClick={() => reload(page - 1)}
+          >
+            Previous
+          </div>
+        )}
+        {page < end && (
+          <div
+            className="cursor-pointer p-1 px-6 text-center border border-[#16263B] rounded"
+            onClick={() => reload(page + 1)}
+          >
+            Next
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
