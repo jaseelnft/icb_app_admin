@@ -370,7 +370,7 @@ function UserDrawer() {
   };
 
   const loadWallets = () => {
-    if (wallet.busy) return;
+    if (wallet.loaded || wallet.busy) return;
     setwallet({ ...initT1, busy: true });
     getUserWallets(userId)
       .then((res) => setwallet({ loaded: true, busy: false, data: res }))
@@ -378,7 +378,7 @@ function UserDrawer() {
   };
 
   const loadRandomWallets = () => {
-    if (randomWallet.busy) return;
+    if (randomWallet.loaded || randomWallet.busy) return;
     setrandomWallet({ ...initT1, busy: true });
     getUserRandomWallets(userId)
       .then((res) => setrandomWallet({ loaded: true, busy: false, data: res }))
@@ -386,7 +386,7 @@ function UserDrawer() {
   };
 
   const loadTxns = (page: any) => {
-    if (txns.busy) return;
+    if (txns.loaded || txns.busy) return;
     settxns({ ...initT2, busy: true });
     getUserTxns(userId, page)
       .then((res) => settxns({ loaded: true, busy: false, ...res }))
@@ -394,7 +394,7 @@ function UserDrawer() {
   };
 
   const loadValitatorInvests = (page: any) => {
-    if (vInvests.busy) return;
+    if (vInvests.loaded || vInvests.busy) return;
     setvInvests({ ...initT2, busy: true });
     gatUserValitatorInvests(userId, page)
       .then((res) => setvInvests({ loaded: true, busy: false, ...res }))
@@ -402,7 +402,7 @@ function UserDrawer() {
   };
 
   const loadStakingInvests = (page: any) => {
-    if (sInvests.busy) return;
+    if (sInvests.loaded || sInvests.busy) return;
     setsInvests({ ...initT2, busy: true });
     gatUserStakingInvests(userId, page)
       .then((res) => setsInvests({ loaded: true, busy: false, ...res }))
