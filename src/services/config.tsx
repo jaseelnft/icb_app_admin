@@ -82,7 +82,7 @@ api.interceptors.response.use(
         msg = msg[firstField][0];
       } catch (error) {}
     }
-    showErrorToast(msg);
+    if (!(error?.response?.status === 401)) showErrorToast(msg);
     return Promise.reject(error);
   }
 );
@@ -103,7 +103,6 @@ export const connectWs = () => {
   // const token = localStorage.getItem("authToken") || "";
   // const auth = { from: "ADMIN", token };
   // socket = io(BASE_WS, { transports: ["websocket"], auth });
-  
   // socket.on("message", (data: any) => {
   //   if (data.type === "MSG") {
   //     showSupportNotification("You hava a new message");
