@@ -439,9 +439,9 @@ function UserDrawer() {
                 <div className="w-[40%]">Name</div>
                 <div className="w-[60%]">Address</div>
               </div>
-              {[...wallet.data,...wallet.data,...wallet.data].map((it: any, k) => (
-                <div className="flex even:bg-[#011022] px-4 py-3" key={k}>
-                  <div className="w-[8%]">{k+1}</div>
+              {wallet.data.map((it: any, k) => (
+                <div className="flex even:bg-[#011022aa] px-4 py-3" key={k}>
+                  <div className="w-[8%]">{k + 1}</div>
                   <div className="w-[40%]">{it.name}</div>
                   <div className="w-[60%]">
                     <AddressT address={it.address} iconSize={20} />
