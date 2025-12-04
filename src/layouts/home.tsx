@@ -689,7 +689,7 @@ function UserDrawer() {
                   key={k}
                 >
                   <div className="w-[42%]">
-                    {formatICBX(formatEther(it.amount || 0))} WICBX
+                    {formatICBX(formatEther(it.invested || 0))} WICBX
                   </div>
                   <div className="w-[32%] text-center text-xs">
                     {formatDate(it.createdAt)}
